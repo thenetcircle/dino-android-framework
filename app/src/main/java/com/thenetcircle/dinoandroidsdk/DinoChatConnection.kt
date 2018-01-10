@@ -59,7 +59,7 @@ class DinoChatConnection(url: String, listener: DinoConnectionListener) {
                     loggedIn = true
                     connectionListener.onLogin(loginResultModel)
                 } else if (loginResultModel != null) {
-                    connectionListener.onError(DinoError.getErrorByCode(loginResultModel.statusCode))
+                    connectionListener.onError(DinoError.getErrorByCode(loginResultModel.statusCode!!))
                     disconnect()
                 } else {
                     connectionListener.onError(DinoError.UNKNOWN_ERROR)
@@ -87,7 +87,7 @@ class DinoChatConnection(url: String, listener: DinoConnectionListener) {
                 if(channelListModelResult != null && channelListModelResult.statusCode == 200) {
                     connectionListener.onChannelListReceived(channelListModelResult)
                 } else if (channelListModelResult != null) {
-                    connectionListener.onError(DinoError.getErrorByCode(channelListModelResult.statusCode))
+                    connectionListener.onError(DinoError.getErrorByCode(channelListModelResult.statusCode!!))
                     disconnect()
                 } else {
                     connectionListener.onError(DinoError.UNKNOWN_ERROR)
@@ -116,7 +116,7 @@ class DinoChatConnection(url: String, listener: DinoConnectionListener) {
                 if(roomModelResult != null && roomModelResult.statusCode == 200) {
                     connectionListener.onChannelRoomReceived(roomModelResult)
                 } else if (roomModelResult != null) {
-                    connectionListener.onError(DinoError.getErrorByCode(roomModelResult.statusCode))
+                    connectionListener.onError(DinoError.getErrorByCode(roomModelResult.statusCode!!))
                     disconnect()
                 } else {
                     connectionListener.onError(DinoError.UNKNOWN_ERROR)

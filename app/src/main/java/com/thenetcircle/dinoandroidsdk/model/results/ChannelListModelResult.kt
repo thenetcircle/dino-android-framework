@@ -6,10 +6,9 @@ import com.google.gson.annotations.SerializedName
  * Created by aaron on 09/01/2018.
  */
 
-data class ChannelListModelResult(
-		@SerializedName("status_code") val statusCode: Int, //200
-		@SerializedName("data") val data: ChannelListData
-)
+class ChannelListModelResult : ModelResultParent(){
+		@SerializedName("data") val data: ChannelListData? = null
+}
 
 data class ChannelListData(
 		@SerializedName("object") val objectX: ChannelListObject,

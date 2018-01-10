@@ -7,10 +7,9 @@ import com.google.gson.annotations.SerializedName
  */
 
 
-data class RoomListModelResult(
-		@SerializedName("status_code") val statusCode: Int, //200
-		@SerializedName("data") val data: RoomData
-)
+class RoomListModelResult : ModelResultParent() {
+		@SerializedName("data") val data: RoomData? = null
+}
 
 data class RoomData(
 		@SerializedName("object") val objectX: RoomListObject,

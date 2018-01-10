@@ -7,10 +7,10 @@ import com.google.gson.annotations.SerializedName
  */
 
 
-data class LoginModelResult(
-		@SerializedName("status_code") val statusCode: Int, //200
-		@SerializedName("data") val data: Data
-)
+class LoginModelResult : ModelResultParent() {
+	@SerializedName("data")
+	val data: Data? = null
+}
 
 data class Data(
         @SerializedName("id") val id: String, //<server-generated UUID>

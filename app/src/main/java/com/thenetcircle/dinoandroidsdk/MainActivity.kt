@@ -24,7 +24,7 @@ class MainActivity : AppCompatActivity(), DinoConnectionListener {
     }
 
     override fun onConnection() {
-        val loginModel = LoginModel(179677, "Aaron", "2a6519f8aea73f87a18737ebd9f38041f879070e")
+        val loginModel = LoginModel(179677, "Aaron", "881832c408f599617aaa8da306a36f4a36cb1611")
         dinoChatConnection!!.login(loginModel)
     }
 
@@ -38,7 +38,7 @@ class MainActivity : AppCompatActivity(), DinoConnectionListener {
     }
 
     override fun onChannelListReceived(channelListModelResult: ChannelListModelResult) {
-        for (ob: ChannelAttachment  in channelListModelResult.data.objectX.attachments) {
+        for (ob: ChannelAttachment  in channelListModelResult.data!!.objectX.attachments) {
             Log.d("onChannelListReceived", ob.objectType)
             if(ob.objectType.toLowerCase() != "temporary") {
                 dinoChatConnection!!.getRoomList(RoomListModel(ob.id))

@@ -7,9 +7,9 @@ import com.google.gson.annotations.SerializedName
  */
 class RoomListModel(channelID: String) {
     @SerializedName("verb")
-    var verb : String = "list"
+    private var verb : String = "list"
     @SerializedName("object")
-    var roomObjectModel : RoomListModel = RoomListModel(channelID)
+    private var roomObjectModel : RoomObjectModel = RoomObjectModel(channelID)
 
     private class RoomObjectModel(channelID: String) {
         @SerializedName("url")
