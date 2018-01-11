@@ -1,12 +1,14 @@
 # README #
 
-This Framework is designed to allow for connections to the Dino framework
+This Framework is designed to allow for connections to a Dino server
+
+This project is still in prototype development and is also being used as a personal introduction to Kotlin, improvements and changes will be made regularly
 
 More information about Dino is available at https://thenetcircle.github.io/dino/
 
 ### How do I get set up? ###
 
-Currently, the UI does not exist, you will need to hardcode and access token using the following curl request in terminal (internal only)
+Currently, the UI is limited and only works to connect and disconnect, the hardcoded access token is the last working access token using the curl request shown below. to use the project, you may need to call the api below (internal TNC staff only currently)
 
 	curl -k -X "POST" "https://red.tianwen.php7.hallokoko.lab/api_dev.php/v2/auth/access_token.json"      -H 'Cookie: session_id=1a6ed908d2cd75b8734f8cdad96c98313ecbb6a2'      -H 'Content-Type: application/json; charset=utf-8'      -d $'{
   		"username": "kkk@flirten.de",
