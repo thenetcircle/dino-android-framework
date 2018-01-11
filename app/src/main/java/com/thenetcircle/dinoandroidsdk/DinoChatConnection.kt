@@ -22,10 +22,10 @@ import java.lang.IllegalArgumentException
  */
 class DinoChatConnection(url: String, listener: DinoConnectionListener) {
     private val gson = GsonBuilder().disableHtmlEscaping().create()
-    val connectionURL: String
-    val connectionListener: DinoConnectionListener
-    var socket: Socket? = null
-    var loggedIn: Boolean? = false
+    private val connectionURL: String
+    private val connectionListener: DinoConnectionListener
+    private var socket: Socket? = null
+    private var loggedIn: Boolean? = false
 
     init {
         if (TextUtils.isEmpty(url)) {
@@ -47,7 +47,6 @@ class DinoChatConnection(url: String, listener: DinoConnectionListener) {
     }
 
     private inline fun <reified T : ModelResultParent> processResult(@NonNull data: String): T? {
-        val gson = GsonBuilder().disableHtmlEscaping().create()
         val model = gson.fromJson<T>(data, T::class.java)
         if (model != null && model.statusCode == 200) {
             return model
