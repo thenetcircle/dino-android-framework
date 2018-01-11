@@ -1,7 +1,6 @@
 package com.thenetcircle.dinoandroidsdk
 
 import android.support.annotation.NonNull
-import android.text.TextUtils
 import com.google.gson.GsonBuilder
 import com.thenetcircle.dinoandroidsdk.model.data.ChannelListModel
 import com.thenetcircle.dinoandroidsdk.model.data.LoginModel
@@ -14,34 +13,27 @@ import io.socket.client.IO
 import io.socket.client.Socket
 import io.socket.engineio.client.transports.WebSocket
 import org.json.JSONObject
-import java.lang.IllegalArgumentException
 
 
 /**
  * Created by aaron on 09/01/2018.
  */
-class DinoChatConnection(url: String, listener: DinoConnectionListener) {
+class DinoChatConnection(listener: DinoConnectionListener) {
     private val gson = GsonBuilder().disableHtmlEscaping().create()
-    private val connectionURL: String
-    private val connectionListener: DinoConnectionListener
+    private val connectionListener: DinoConnectionListener = listener
     private var socket: Socket? = null
-    private var loggedIn: Boolean? = false
+    var isLoggedIn: Boolean = false
+    var isConnected : Boolean = false
+        get() = if (socket != null) socket!!.connected() else false
 
-    init {
-        if (TextUtils.isEmpty(url)) {
-            throw IllegalArgumentException("URL is empty")
-        }
-        connectionURL = url
-        connectionListener = listener
-    }
+    fun startConnection(url: String) {
 
-    fun startConnection() {
-        socket = connectNewSocket(connectionURL)
+        socket = connectNewSocket(url)
         socket!!.on(Socket.EVENT_CONNECT_ERROR) { connectionListener.onError(DinoError.EVENT_CONNECT_ERROR) }
         socket!!.on(Socket.EVENT_DISCONNECT) { connectionListener.onError(DinoError.EVENT_DISCONNECT) }
         socket!!.on("gn_connect") {
             socket!!.off("gn_connect")
-            connectionListener.onConnection()
+            connectionListener.onConnect()
         }
         socket!!.connect()
     }
@@ -68,7 +60,7 @@ class DinoChatConnection(url: String, listener: DinoConnectionListener) {
                 socket!!.off("gn_login")
                 val model = processResult<LoginModelResult>(args[0].toString())
                 if (model != null) {
-                    loggedIn = true
+                    isLoggedIn = true
                     connectionListener.onResult(model)
                 }
             } else {
@@ -124,6 +116,8 @@ class DinoChatConnection(url: String, listener: DinoConnectionListener) {
         if (socket != null) {
             socket!!.off(Socket.EVENT_DISCONNECT)
             socket!!.disconnect()
+            socket = null
+            connectionListener.onDisconnect()
         }
     }
 
@@ -133,7 +127,7 @@ class DinoChatConnection(url: String, listener: DinoConnectionListener) {
             return false
         }
 
-        if (loggedIn == false) {
+        if (isLoggedIn == false) {
             connectionListener.onError(DinoError.LOCAL_NOT_LOGGED_IN)
             return false
         }

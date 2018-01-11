@@ -4,6 +4,12 @@ apply plugin: 'kotlin-android'
 
 apply plugin: 'kotlin-android-extensions'
 
+repositories {
+    google()
+    jcenter()
+    maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
+}
+
 android {
     compileSdkVersion 26
     defaultConfig {
@@ -25,8 +31,11 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation"org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
-    implementation 'com.android.support:appcompat-v7:26.1.0'
     implementation 'com.android.support.constraint:constraint-layout:1.0.2'
+    implementation 'com.android.support:support-v4:26.1.0'
+    implementation 'com.android.support:appcompat-v7:26.1.0'
+    compile 'com.jakewharton:kotterknife:0.1.0-SNAPSHOT'
+
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
@@ -37,3 +46,20 @@ dependencies {
         exclude group: 'org.json', module: 'json'
     }
 }
+
+configurations.all {
+    resolutionStrategy {
+        eachDependency { details ->
+            // Force all of the primary support libraries to use the same version.
+            if (details.requested.group == 'com.android.support'
+                    && details.requested.name != 'multidex'
+                    && details.requested.name != 'multidex-instrumentation') {
+                details.useVersion "26.1.0"
+            }
+        }
+    }
+}
+
+
+
+

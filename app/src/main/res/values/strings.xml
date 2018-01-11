@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">Dino Android Sdk</string>
+    <string name="user_id">User ID:</string>
+    <string name="user_details">User Details</string>
+    <string name="display_name">Display Name:</string>
+    <string name="token">Token:</string>
+    <string name="connect">Connect</string>
+    <string name="server_url">Server url:</string>
+    <string name="disconnect">Disconnect</string>
 </resources>
