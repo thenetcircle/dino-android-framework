@@ -7,16 +7,24 @@
     android:orientation="vertical"
     tools:context="com.thenetcircle.dinoandroidsdk.MainActivity">
 
-    <LinearLayout
+    <Button
+        android:id="@+id/connectBtn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:text="@string/connect" />
+
+    <LinearLayout
+        android:id="@+id/user_details"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
         android:background="#BBBBBB"
         android:orientation="vertical"
+        android:layout_weight="1"
         android:padding="8dp">
 
         <TextView
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:text="@string/user_details"
             android:textSize="16sp" />
 
@@ -103,16 +111,29 @@
 
     </LinearLayout>
 
-    <Button
-        android:id="@+id/connectBtn"
+    <LinearLayout
+        android:id="@+id/connected_functions"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/connect" />
+        android:layout_height="0dp"
+        android:background="#BBBBBB"
+        android:orientation="vertical"
+        android:layout_weight="1"
+        android:visibility="gone"
+        android:padding="8dp">
 
+        <Button
+            android:id="@+id/channel_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/get_channel_list" />
+
+    </LinearLayout>
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_marginTop="8dp"
         android:background="#BBBBBB">
 
         <TextView
