@@ -115,6 +115,7 @@ class DinoChatConnection(listener: DinoConnectionListener) {
     fun disconnect() {
         if (socket != null) {
             socket!!.off(Socket.EVENT_DISCONNECT)
+            socket!!.off(Socket.EVENT_CONNECT_ERROR)
             socket!!.disconnect()
             socket = null
             connectionListener.onDisconnect()

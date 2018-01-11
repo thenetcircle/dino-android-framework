@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.widget.Button
 import android.widget.EditText
+import android.widget.TextView
 import com.thenetcircle.dinoandroidsdk.model.data.ChannelListModel
 import com.thenetcircle.dinoandroidsdk.model.data.LoginModel
 import com.thenetcircle.dinoandroidsdk.model.data.RoomListModel
@@ -21,6 +22,7 @@ class MainActivity : AppCompatActivity(), DinoConnectionListener {
     val userID: EditText by bindView(R.id.user_id)
     val displayName: EditText by bindView(R.id.display_name)
     val token: EditText by bindView(R.id.token)
+    val statusBox : TextView by bindView(R.id.status_box);
     val connect : Button by bindView(R.id.connectBtn)
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -33,6 +35,7 @@ class MainActivity : AppCompatActivity(), DinoConnectionListener {
         token.setText("54d088c7b78649dc3443a416afa0bd08ffcfa8a4")
         connect.setOnClickListener({
             if(!dinoChatConnection.isConnected) {
+                statusBox.append("Connecting\n")
                 dinoChatConnection.startConnection(serverUrl.text.toString())
             } else {
                 dinoChatConnection.disconnect()
@@ -44,19 +47,22 @@ class MainActivity : AppCompatActivity(), DinoConnectionListener {
         val loginModel = LoginModel(userID.text.toString().toInt(), displayName.text.toString(), token.text.toString())
         dinoChatConnection.login(loginModel)
         connect.text = getString(R.string.disconnect)
+        runOnUiThread({statusBox.append("Connected\n")})
 
     }
 
     override fun onDisconnect() {
         connect.text = getString(R.string.connect)
+        runOnUiThread({statusBox.append("Disconnected\n")})
     }
 
     override fun onError(error: DinoError) {
-        Log.e("Error", error.toString())
+        runOnUiThread({statusBox.append("Error: " + error.toString()+"\n")})
         dinoChatConnection.disconnect()
     }
 
     override fun onResult(loginModelResult: LoginModelResult) {
+        runOnUiThread({statusBox.append("Logged in Successfully\n")})
         dinoChatConnection.getChannelList(ChannelListModel())
     }
 
