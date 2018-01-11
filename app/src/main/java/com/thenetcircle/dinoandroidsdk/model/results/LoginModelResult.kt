@@ -1,4 +1,5 @@
 package com.thenetcircle.dinoandroidsdk.model.results
+
 import com.google.gson.annotations.SerializedName
 
 
@@ -8,8 +9,8 @@ import com.google.gson.annotations.SerializedName
 
 
 class LoginModelResult : ModelResultParent() {
-	@SerializedName("data")
-	val data: Data? = null
+    @SerializedName("data")
+    val data: Data? = null
 }
 
 data class Data(
@@ -21,8 +22,8 @@ data class Data(
 )
 
 data class Object(
-		@SerializedName("objectType") val objectType: String, //history
-		@SerializedName("attachments") val attachments: List<ObjectAttachment>
+        @SerializedName("objectType") val objectType: String, //history
+        @SerializedName("attachments") val attachments: List<ObjectAttachment>
 )
 
 data class ActorAttachment(
@@ -35,18 +36,18 @@ data class ActorAttachment(
 )
 
 data class Author(
-		@SerializedName("id") val id: String, //<sender id>
-		@SerializedName("displayName") val displayName: String //<sender name in base64>
+        @SerializedName("id") val id: String, //<sender id>
+        @SerializedName("displayName") val displayName: String //<sender name in base64>
 )
 
 data class LoginResultActor(
-		@SerializedName("id") val id: String, //<user id>
-		@SerializedName("displayName") val displayName: String, //<user name in base64>
-		@SerializedName("attachments") val attachments: List<ActorAttachment>
+        @SerializedName("id") val id: String, //<user id>
+        @SerializedName("displayName") val displayName: String, //<user name in base64>
+        @SerializedName("attachments") val attachments: List<ActorAttachment>
 )
 
 data class ObjectAttachment(
-		@SerializedName("objectType") val objectType: String, //room_role
-		@SerializedName("id") val id: String, //<room UUID>
-		@SerializedName("content") val content: String //moderatorowner
+        @SerializedName("objectType") val objectType: String, //room_role
+        @SerializedName("id") val id: String, //<room UUID>
+        @SerializedName("content") val content: String //moderatorowner
 )

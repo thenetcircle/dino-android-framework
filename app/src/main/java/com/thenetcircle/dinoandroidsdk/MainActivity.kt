@@ -1,7 +1,7 @@
 package com.thenetcircle.dinoandroidsdk
 
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import com.thenetcircle.dinoandroidsdk.model.data.ChannelListModel
 import com.thenetcircle.dinoandroidsdk.model.data.LoginModel
@@ -13,7 +13,7 @@ import com.thenetcircle.dinoandroidsdk.model.results.RoomListModelResult
 
 class MainActivity : AppCompatActivity(), DinoConnectionListener {
 
-    var dinoChatConnection : DinoChatConnection? = null
+    var dinoChatConnection: DinoChatConnection? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,7 +24,7 @@ class MainActivity : AppCompatActivity(), DinoConnectionListener {
     }
 
     override fun onConnection() {
-        val loginModel = LoginModel(179677, "Aaron", "881832c408f599617aaa8da306a36f4a36cb1611")
+        val loginModel = LoginModel(179677, "Aaron", "54d088c7b78649dc3443a416afa0bd08ffcfa8a4")
         dinoChatConnection!!.login(loginModel)
     }
 
@@ -33,20 +33,20 @@ class MainActivity : AppCompatActivity(), DinoConnectionListener {
         dinoChatConnection!!.disconnect()
     }
 
-    override fun onLogin(loginModelResult: LoginModelResult) {
+    override fun onResult(loginModelResult: LoginModelResult) {
         dinoChatConnection!!.getChannelList(ChannelListModel())
     }
 
-    override fun onChannelListReceived(channelListModelResult: ChannelListModelResult) {
-        for (ob: ChannelAttachment  in channelListModelResult.data!!.objectX.attachments) {
+    override fun onResult(channelListModelResult: ChannelListModelResult) {
+        for (ob: ChannelAttachment in channelListModelResult.data!!.objectX.attachments) {
             Log.d("onChannelListReceived", ob.objectType)
-            if(ob.objectType.toLowerCase() != "temporary") {
+            if (ob.objectType.toLowerCase() != "temporary") {
                 dinoChatConnection!!.getRoomList(RoomListModel(ob.id))
             }
         }
     }
 
-    override fun onChannelRoomReceived(roomListModelResult: RoomListModelResult) {
-        Log.e("onChannelRoomReceived", roomListModelResult.statusCode.toString());
+    override fun onResult(roomListModelResult: RoomListModelResult) {
+        Log.e("onChannelRoomReceived", roomListModelResult.statusCode.toString())
     }
 }

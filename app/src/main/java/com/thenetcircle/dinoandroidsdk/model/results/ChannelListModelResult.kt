@@ -1,4 +1,5 @@
 package com.thenetcircle.dinoandroidsdk.model.results
+
 import com.google.gson.annotations.SerializedName
 
 
@@ -6,30 +7,31 @@ import com.google.gson.annotations.SerializedName
  * Created by aaron on 09/01/2018.
  */
 
-class ChannelListModelResult : ModelResultParent(){
-		@SerializedName("data") val data: ChannelListData? = null
+class ChannelListModelResult : ModelResultParent() {
+    @SerializedName("data")
+    val data: ChannelListData? = null
 }
 
 data class ChannelListData(
-		@SerializedName("object") val objectX: ChannelListObject,
-		@SerializedName("verb") val verb: String //list
+        @SerializedName("object") val objectX: ChannelListObject,
+        @SerializedName("verb") val verb: String //list
 )
 
 data class ChannelListObject(
-		@SerializedName("objectType") val objectType: String, //channels
-		@SerializedName("attachments") val attachments: List<ChannelAttachment>
+        @SerializedName("objectType") val objectType: String, //channels
+        @SerializedName("attachments") val attachments: List<ChannelAttachment>
 )
 
 data class ChannelAttachment(
-		@SerializedName("id") val id: String, //<channel UUID>
-		@SerializedName("displayName") val displayName: String, //<channel name>
-		@SerializedName("url") val url: Int, //8
-		@SerializedName("objectType") val objectType: String, //static
-		@SerializedName("attachments") val attachments: List<Attachment>
+        @SerializedName("id") val id: String, //<channel UUID>
+        @SerializedName("displayName") val displayName: String, //<channel name>
+        @SerializedName("url") val url: Int, //8
+        @SerializedName("objectType") val objectType: String, //static
+        @SerializedName("attachments") val attachments: List<Attachment>
 )
 
 data class Attachment(
-		@SerializedName("summary") val summary: String, //message
-		@SerializedName("objectType") val objectType: String, //membership
-		@SerializedName("content") val content: String //1
+        @SerializedName("summary") val summary: String, //message
+        @SerializedName("objectType") val objectType: String, //membership
+        @SerializedName("content") val content: String //1
 )

@@ -1,5 +1,6 @@
 package com.thenetcircle.dinoandroidsdk
 
+import android.support.annotation.NonNull
 import android.text.TextUtils
 import com.google.gson.GsonBuilder
 import com.thenetcircle.dinoandroidsdk.model.data.ChannelListModel
@@ -7,6 +8,7 @@ import com.thenetcircle.dinoandroidsdk.model.data.LoginModel
 import com.thenetcircle.dinoandroidsdk.model.data.RoomListModel
 import com.thenetcircle.dinoandroidsdk.model.results.ChannelListModelResult
 import com.thenetcircle.dinoandroidsdk.model.results.LoginModelResult
+import com.thenetcircle.dinoandroidsdk.model.results.ModelResultParent
 import com.thenetcircle.dinoandroidsdk.model.results.RoomListModelResult
 import io.socket.client.IO
 import io.socket.client.Socket
@@ -20,10 +22,10 @@ import java.lang.IllegalArgumentException
  */
 class DinoChatConnection(url: String, listener: DinoConnectionListener) {
     private val gson = GsonBuilder().disableHtmlEscaping().create()
-    val connectionURL : String
-    val connectionListener : DinoConnectionListener
+    val connectionURL: String
+    val connectionListener: DinoConnectionListener
     var socket: Socket? = null
-    var loggedIn : Boolean? = false
+    var loggedIn: Boolean? = false
 
     init {
         if (TextUtils.isEmpty(url)) {
@@ -44,26 +46,31 @@ class DinoChatConnection(url: String, listener: DinoConnectionListener) {
         socket!!.connect()
     }
 
+    private inline fun <reified T : ModelResultParent> processResult(@NonNull data: String): T? {
+        val gson = GsonBuilder().disableHtmlEscaping().create()
+        val model = gson.fromJson<T>(data, T::class.java)
+        if (model != null && model.statusCode == 200) {
+            return model
+        } else {
+            connectionListener.onError(if (model != null) DinoError.getErrorByCode(model.statusCode!!) else DinoError.UNKNOWN_ERROR)
+            disconnect()
+        }
+        return null
+    }
+
+
     fun login(loginModel: LoginModel) {
         if (socket == null) {
             connectionListener.onError(DinoError.NO_SOCKET_ERROR)
             return
         }
-
-        socket!!.on("gn_login") {
-            args ->
-            if(args.isNotEmpty()) {
+        socket!!.on("gn_login") { args ->
+            if (args.isNotEmpty()) {
                 socket!!.off("gn_login")
-                val loginResultModel = gson.fromJson<LoginModelResult>(args[0].toString(), LoginModelResult::class.java)
-                if (loginResultModel != null && loginResultModel.statusCode == 200) {
+                val model = processResult<LoginModelResult>(args[0].toString())
+                if (model != null) {
                     loggedIn = true
-                    connectionListener.onLogin(loginResultModel)
-                } else if (loginResultModel != null) {
-                    connectionListener.onError(DinoError.getErrorByCode(loginResultModel.statusCode!!))
-                    disconnect()
-                } else {
-                    connectionListener.onError(DinoError.UNKNOWN_ERROR)
-                    disconnect()
+                    connectionListener.onResult(model)
                 }
             } else {
                 connectionListener.onError(DinoError.UNKNOWN_ERROR)
@@ -75,26 +82,17 @@ class DinoChatConnection(url: String, listener: DinoConnectionListener) {
     }
 
     fun getChannelList(channelListModel: ChannelListModel) {
-        if(!generalChecks()) {
+        if (!generalChecks()) {
             return
         }
-
-        socket!!.on("gn_list_channels") {
-            args ->
+        socket!!.on("gn_list_channels") { args ->
             socket!!.off("gn_list_channels")
-            if(args.isNotEmpty()) {
-                val channelListModelResult = gson.fromJson<ChannelListModelResult>(args[0].toString(), ChannelListModelResult::class.java)
-                if(channelListModelResult != null && channelListModelResult.statusCode == 200) {
-                    connectionListener.onChannelListReceived(channelListModelResult)
-                } else if (channelListModelResult != null) {
-                    connectionListener.onError(DinoError.getErrorByCode(channelListModelResult.statusCode!!))
-                    disconnect()
-                } else {
-                    connectionListener.onError(DinoError.UNKNOWN_ERROR)
-                    disconnect()
+            if (args.isNotEmpty()) {
+                val model = processResult<ChannelListModelResult>(args[0].toString())
+                if (model != null) {
+                    connectionListener.onResult(model)
                 }
-            }
-            else {
+            } else {
                 connectionListener.onError(DinoError.UNKNOWN_ERROR)
                 disconnect()
             }
@@ -104,26 +102,17 @@ class DinoChatConnection(url: String, listener: DinoConnectionListener) {
     }
 
     fun getRoomList(roomListModel: RoomListModel) {
-        if(!generalChecks()) {
+        if (!generalChecks()) {
             return
         }
-
-        socket!!.on("gn_list_rooms") {
-            args ->
+        socket!!.on("gn_list_rooms") { args ->
             socket!!.off("gn_list_rooms")
-            if(args.isNotEmpty()) {
-                val roomModelResult = gson.fromJson<RoomListModelResult>(args[0].toString(), RoomListModelResult::class.java)
-                if(roomModelResult != null && roomModelResult.statusCode == 200) {
-                    connectionListener.onChannelRoomReceived(roomModelResult)
-                } else if (roomModelResult != null) {
-                    connectionListener.onError(DinoError.getErrorByCode(roomModelResult.statusCode!!))
-                    disconnect()
-                } else {
-                    connectionListener.onError(DinoError.UNKNOWN_ERROR)
-                    disconnect()
+            if (args.isNotEmpty()) {
+                val model = processResult<RoomListModelResult>(args[0].toString())
+                if (model != null) {
+                    connectionListener.onResult(model)
                 }
-            }
-            else {
+            } else {
                 connectionListener.onError(DinoError.UNKNOWN_ERROR)
                 disconnect()
             }
@@ -139,24 +128,25 @@ class DinoChatConnection(url: String, listener: DinoConnectionListener) {
         }
     }
 
-    private fun generalChecks() : Boolean {
+    private fun generalChecks(): Boolean {
         if (socket == null) {
             connectionListener.onError(DinoError.NO_SOCKET_ERROR)
             return false
         }
 
-        if(loggedIn == false) {
-            connectionListener.onError(DinoError.NOT_LOGGED_IN)
+        if (loggedIn == false) {
+            connectionListener.onError(DinoError.LOCAL_NOT_LOGGED_IN)
             return false
         }
 
         return true
     }
 
-    private fun connectNewSocket(url: String) : Socket {
+    private fun connectNewSocket(url: String): Socket {
         val opts = IO.Options()
         opts.transports = arrayOf(WebSocket.NAME)
         opts.forceNew = true
-        return IO.socket(url,opts)
+        return IO.socket(url, opts)
     }
 }
+

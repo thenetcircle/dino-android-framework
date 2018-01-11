@@ -3,11 +3,11 @@ package com.thenetcircle.dinoandroidsdk
 /**
  * Created by aaron on 09/01/2018.
  */
-enum class DinoError constructor(var errorCode:Int) {
+enum class DinoError constructor(var errorCode: Int) {
     NO_SOCKET_ERROR(100),
     EVENT_CONNECT_ERROR(101),
     EVENT_DISCONNECT(102),
-    NOT_LOGGED_IN(103),
+    LOCAL_NOT_LOGGED_IN(103),
 
     UNKNOWN_ERROR(250),
     MISSING_ACTOR_ID(500),

@@ -12,9 +12,9 @@ interface DinoConnectionListener {
 
     fun onError(error: DinoError)
 
-    fun onLogin(loginModelResult: LoginModelResult)
+    fun onResult(loginModelResult: LoginModelResult)
 
-    fun onChannelListReceived(channelListModelResult: ChannelListModelResult)
+    fun onResult(channelListModelResult: ChannelListModelResult)
 
-    fun onChannelRoomReceived(roomListModelResult: RoomListModelResult)
+    fun onResult(roomListModelResult: RoomListModelResult)
 }
