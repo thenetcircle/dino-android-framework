@@ -2,7 +2,7 @@
 
 This Framework is designed to allow for connections to a Dino server
 
-This project is still in prototype development and is also being used as a personal introduction to Kotlin, improvements and changes will be made regularly
+This project is still in prototype development and is also being used as a personal introduction to Kotlin, improvements and changes will be made regularly to protect against screw-ups on my end.
 
 More information about Dino is available at https://thenetcircle.github.io/dino/
 

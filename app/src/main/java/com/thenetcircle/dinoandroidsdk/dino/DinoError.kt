@@ -1,4 +1,4 @@
-package com.thenetcircle.dinoandroidsdk
+package com.thenetcircle.dinoandroidsdk.dino
 
 /**
  * Created by aaron on 09/01/2018.

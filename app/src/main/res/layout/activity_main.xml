@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:layout_margin="16dp"
     android:orientation="vertical"
-    tools:context="com.thenetcircle.dinoandroidsdk.MainActivity">
+    tools:context="com.thenetcircle.dinoandroidsdk.TNCMainActivity">
 
     <Button
         android:id="@+id/connectBtn"

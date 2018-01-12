@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:layout_margin="16dp">
+
+    <ProgressBar
+        android:id="@+id/progress_wheel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_marginTop="8dp"
+        android:background="#BBBBBB">
+
+        <TextView
+            android:id="@+id/channel_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/channel_list"/>
+    </ScrollView>
+
+</LinearLayout>

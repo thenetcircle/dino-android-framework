@@ -1,4 +1,4 @@
-package com.thenetcircle.dinoandroidsdk.model.data
+package com.thenetcircle.dinoandroidsdk.dino.model.data
 
 import android.util.Base64
 import com.google.gson.annotations.SerializedName
