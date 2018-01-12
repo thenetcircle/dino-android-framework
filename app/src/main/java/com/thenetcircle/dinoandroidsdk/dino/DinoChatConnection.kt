@@ -80,10 +80,12 @@ class DinoChatConnection {
     }
 
     fun getChannelList(channelListModel: ChannelListModel, @NonNull channelListListener: DinoChannelListListener, @NonNull errorListener: DinoErrorListener) {
+        generalChecks(errorListener)
         processRequest("list_channels", "gn_list_channels", channelListModel, channelListListener, errorListener)
     }
 
     fun getRoomList(roomListModel: RoomListModel, @NonNull roomEntryListener: DinoRoomEntryListener, @NonNull errorListener: DinoErrorListener) {
+        generalChecks(errorListener)
         processRequest("list_rooms", "gn_list_rooms", roomListModel, roomEntryListener, errorListener)
     }
 
@@ -106,7 +108,6 @@ class DinoChatConnection {
             connectionListener.onError(DinoError.LOCAL_NOT_LOGGED_IN)
             return false
         }
-
         return true
     }
 

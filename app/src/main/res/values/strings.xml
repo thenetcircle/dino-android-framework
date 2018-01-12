@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Dino Android Sdk</string>
+    <string name="app_name">Dino Android Framework Demo</string>
     <string name="user_id">User ID:</string>
     <string name="user_details">User Details</string>
     <string name="display_name">Display Name:</string>

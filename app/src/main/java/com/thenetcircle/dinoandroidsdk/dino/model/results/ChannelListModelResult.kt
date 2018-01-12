@@ -13,7 +13,7 @@ class ChannelListModelResult : ModelResultParent() {
 }
 
 data class ChannelListData(
-        @SerializedName("object") val objectX: ChannelListObject,
+        @SerializedName("object") val channels: ChannelListObject,
         @SerializedName("verb") val verb: String //list
 )
 

@@ -14,7 +14,6 @@ import com.thenetcircle.dinoandroidsdk.dino.interfaces.DinoErrorListener
 import com.thenetcircle.dinoandroidsdk.dino.interfaces.DinoLoginListener
 import com.thenetcircle.dinoandroidsdk.dino.model.data.LoginModel
 import com.thenetcircle.dinoandroidsdk.dino.model.results.LoginModelResult
-import kotlinx.android.synthetic.main.activity_main.*
 import kotterknife.bindView
 
 class TNCMainActivity : TNCBaseActivity(), DinoConnectionListener, DinoLoginListener, DinoErrorListener {
@@ -38,7 +37,7 @@ class TNCMainActivity : TNCBaseActivity(), DinoConnectionListener, DinoLoginList
         serverUrl.setText("http://10.60.1.124:9210/ws")
         userID.setText("179677")
         displayName.setText("Aaron")
-        token.setText("f6a6892fee32300e374a181b2da0217498c98845")
+        token.setText("f0a52d25a10552255dc251a11700c03af2732b79")
         connect.setOnClickListener({
             if (currentFocus.windowToken != null) {
                 val imm = applicationContext.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
