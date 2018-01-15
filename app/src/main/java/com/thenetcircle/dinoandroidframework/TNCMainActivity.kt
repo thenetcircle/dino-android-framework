@@ -1,4 +1,4 @@
-package com.thenetcircle.dinoandroidsdk
+package com.thenetcircle.dinoandroidframework
 
 import android.content.Context
 import android.content.Intent
@@ -8,12 +8,12 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
-import com.thenetcircle.dinoandroidsdk.dino.DinoError
-import com.thenetcircle.dinoandroidsdk.dino.interfaces.DinoConnectionListener
-import com.thenetcircle.dinoandroidsdk.dino.interfaces.DinoErrorListener
-import com.thenetcircle.dinoandroidsdk.dino.interfaces.DinoLoginListener
-import com.thenetcircle.dinoandroidsdk.dino.model.data.LoginModel
-import com.thenetcircle.dinoandroidsdk.dino.model.results.LoginModelResult
+import com.thenetcircle.dinoandroidframework.dino.DinoError
+import com.thenetcircle.dinoandroidframework.dino.interfaces.DinoConnectionListener
+import com.thenetcircle.dinoandroidframework.dino.interfaces.DinoErrorListener
+import com.thenetcircle.dinoandroidframework.dino.interfaces.DinoLoginListener
+import com.thenetcircle.dinoandroidframework.dino.model.data.LoginModel
+import com.thenetcircle.dinoandroidframework.dino.model.results.LoginModelResult
 import kotterknife.bindView
 
 class TNCMainActivity : TNCBaseActivity(), DinoConnectionListener, DinoLoginListener, DinoErrorListener {
@@ -37,7 +37,7 @@ class TNCMainActivity : TNCBaseActivity(), DinoConnectionListener, DinoLoginList
         serverUrl.setText("http://10.60.1.124:9210/ws")
         userID.setText("179677")
         displayName.setText("Aaron")
-        token.setText("f0a52d25a10552255dc251a11700c03af2732b79")
+        token.setText("b5335f65774696911e9fba71fe9f3430ce7f801c")
         connect.setOnClickListener({
             if (currentFocus.windowToken != null) {
                 val imm = applicationContext.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager

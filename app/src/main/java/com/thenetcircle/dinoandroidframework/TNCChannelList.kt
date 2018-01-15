@@ -1,5 +1,6 @@
-package com.thenetcircle.dinoandroidsdk
+package com.thenetcircle.dinoandroidframework
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Base64
 import android.util.Log
@@ -7,12 +8,12 @@ import android.view.View
 import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.ProgressBar
-import com.thenetcircle.dinoandroidsdk.dino.DinoError
-import com.thenetcircle.dinoandroidsdk.dino.interfaces.DinoChannelListListener
-import com.thenetcircle.dinoandroidsdk.dino.interfaces.DinoErrorListener
-import com.thenetcircle.dinoandroidsdk.dino.model.data.ChannelListModel
-import com.thenetcircle.dinoandroidsdk.dino.model.results.ChannelAttachment
-import com.thenetcircle.dinoandroidsdk.dino.model.results.ChannelListModelResult
+import com.thenetcircle.dinoandroidframework.dino.DinoError
+import com.thenetcircle.dinoandroidframework.dino.interfaces.DinoChannelListListener
+import com.thenetcircle.dinoandroidframework.dino.interfaces.DinoErrorListener
+import com.thenetcircle.dinoandroidframework.dino.model.data.ChannelListModel
+import com.thenetcircle.dinoandroidframework.dino.model.results.ChannelAttachment
+import com.thenetcircle.dinoandroidframework.dino.model.results.ChannelListModelResult
 import kotterknife.bindView
 import java.nio.charset.Charset
 
@@ -47,6 +48,14 @@ class TNCChannelList : TNCBaseActivity(), DinoChannelListListener, DinoErrorList
 
             val b = Button(this)
             b.text = String(Base64.decode(ob.displayName,Base64.NO_WRAP), Charset.defaultCharset())
+            b.tag = ob.id
+
+            b.setOnClickListener {
+                val intent = Intent(this, TNCRoomList::class.java)
+                intent.putExtra(TNCRoomList.CHANNELID, b.tag as String)
+                startActivity(intent)
+            }
+
             channelContainer.addView(b)
         }
     }

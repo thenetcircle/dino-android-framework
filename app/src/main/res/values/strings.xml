@@ -10,4 +10,7 @@
     <string name="status">Status:</string>
     <string name="get_channel_list">Get Channel List</string>
     <string name="channel_list">Channel List</string>
+    <string name="current_rooms">Current Joinable Rooms:</string>
+    <string name="room_name">Room Name:</string>
+    <string name="create_room">Create Room</string>
 </resources>

@@ -1,15 +1,15 @@
-package com.thenetcircle.dinoandroidsdk.dino
+package com.thenetcircle.dinoandroidframework.dino
 
 import android.os.Handler
 import android.os.Looper
 import android.support.annotation.NonNull
 import com.google.gson.GsonBuilder
-import com.thenetcircle.dinoandroidsdk.dino.interfaces.*
-import com.thenetcircle.dinoandroidsdk.dino.model.data.ChannelListModel
-import com.thenetcircle.dinoandroidsdk.dino.model.data.LoginModel
-import com.thenetcircle.dinoandroidsdk.dino.model.data.RoomListModel
-import com.thenetcircle.dinoandroidsdk.dino.model.results.LoginModelResult
-import com.thenetcircle.dinoandroidsdk.dino.model.results.ModelResultParent
+import com.thenetcircle.dinoandroidframework.dino.interfaces.*
+import com.thenetcircle.dinoandroidframework.dino.model.data.ChannelListModel
+import com.thenetcircle.dinoandroidframework.dino.model.data.LoginModel
+import com.thenetcircle.dinoandroidframework.dino.model.data.RoomListModel
+import com.thenetcircle.dinoandroidframework.dino.model.results.LoginModelResult
+import com.thenetcircle.dinoandroidframework.dino.model.results.ModelResultParent
 import io.socket.client.IO
 import io.socket.client.Socket
 import io.socket.engineio.client.transports.WebSocket

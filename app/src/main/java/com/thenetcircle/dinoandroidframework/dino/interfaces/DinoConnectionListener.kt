@@ -1,4 +1,4 @@
-package com.thenetcircle.dinoandroidsdk.dino.interfaces
+package com.thenetcircle.dinoandroidframework.dino.interfaces
 
 /**
  * Created by aaron on 09/01/2018.

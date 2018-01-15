@@ -1,5 +1,7 @@
 # README #
 
+[![Build Status](https://travis-ci.org/thenetcircle/dino-android-framework.svg?branch=master)](https://travis-ci.org/thenetcircle/dino-android-framework)
+
 This Framework is designed to allow for connections to a Dino server
 
 This project is still in prototype development and is also being used as a personal introduction to Kotlin, improvements and changes will be made regularly to protect against screw-ups on my end.
