@@ -5,9 +5,7 @@ import android.os.Looper
 import android.support.annotation.NonNull
 import com.google.gson.GsonBuilder
 import com.thenetcircle.dinoandroidframework.dino.interfaces.*
-import com.thenetcircle.dinoandroidframework.dino.model.data.ChannelListModel
-import com.thenetcircle.dinoandroidframework.dino.model.data.LoginModel
-import com.thenetcircle.dinoandroidframework.dino.model.data.RoomListModel
+import com.thenetcircle.dinoandroidframework.dino.model.data.*
 import com.thenetcircle.dinoandroidframework.dino.model.results.LoginModelResult
 import com.thenetcircle.dinoandroidframework.dino.model.results.ModelResultParent
 import io.socket.client.IO
@@ -27,7 +25,6 @@ class DinoChatConnection {
         get() = if (socket != null) socket!!.connected() else false
 
     fun startConnection(url: String, @NonNull connectionListener: DinoConnectionListener, @NonNull errorListener: DinoErrorListener) {
-
         socket = connectNewSocket(url)
         socket!!.on(Socket.EVENT_CONNECT_ERROR) { errorListener.onError(DinoError.EVENT_CONNECT_ERROR) }
         socket!!.on(Socket.EVENT_DISCONNECT) { errorListener.onError(DinoError.EVENT_DISCONNECT) }
@@ -87,6 +84,16 @@ class DinoChatConnection {
     fun getRoomList(roomListModel: RoomListModel, @NonNull roomEntryListener: DinoRoomEntryListener, @NonNull errorListener: DinoErrorListener) {
         generalChecks(errorListener)
         processRequest("list_rooms", "gn_list_rooms", roomListModel, roomEntryListener, errorListener)
+    }
+
+    fun createPrivateRoom(privateModel: CreateRoomPrivateModel, @NonNull roomCreationListener: DinoRoomCreationListener, @NonNull errorListener: DinoErrorListener) {
+        generalChecks(errorListener)
+        processRequest("create", "gn_create", privateModel, roomCreationListener, errorListener)
+    }
+
+    fun joinRoom(joinModel: JoinRoomModel, @NonNull joinRoomListener: DinoJoinRoomListener, @NonNull errorListener: DinoErrorListener) {
+        generalChecks(errorListener)
+        processRequest("join", "gn_join", joinModel, joinRoomListener, errorListener)
     }
 
     fun disconnect() {

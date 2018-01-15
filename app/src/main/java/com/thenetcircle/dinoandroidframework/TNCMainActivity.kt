@@ -37,9 +37,9 @@ class TNCMainActivity : TNCBaseActivity(), DinoConnectionListener, DinoLoginList
         serverUrl.setText("http://10.60.1.124:9210/ws")
         userID.setText("179677")
         displayName.setText("Aaron")
-        token.setText("b5335f65774696911e9fba71fe9f3430ce7f801c")
+        token.setText("46765a8b80653e7bdfeae655ccfec4d710d8589e")
         connect.setOnClickListener({
-            if (currentFocus.windowToken != null) {
+            if (currentFocus != null && currentFocus.windowToken != null) {
                 val imm = applicationContext.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
                 imm.hideSoftInputFromWindow(currentFocus.windowToken, 0)
             }
@@ -83,6 +83,7 @@ class TNCMainActivity : TNCBaseActivity(), DinoConnectionListener, DinoLoginList
     }
 
     override fun onResult(loginModelResult: LoginModelResult) {
+        loginObject = loginModelResult
         statusBox.append("Logged in Successfully\n")
         //dinoChatConnection.getChannelList(ChannelListModel())
     }

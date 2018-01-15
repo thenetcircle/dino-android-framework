@@ -1,9 +1,6 @@
 package com.thenetcircle.dinoandroidframework.dino.interfaces
 
-import com.thenetcircle.dinoandroidframework.dino.model.results.ChannelListModelResult
-import com.thenetcircle.dinoandroidframework.dino.model.results.LoginModelResult
-import com.thenetcircle.dinoandroidframework.dino.model.results.ModelResultParent
-import com.thenetcircle.dinoandroidframework.dino.model.results.RoomListModelResult
+import com.thenetcircle.dinoandroidframework.dino.model.results.*
 
 /**
  * Created by aaron on 12/01/2018.
@@ -18,3 +15,7 @@ interface DinoLoginListener : DinoParentInterface<LoginModelResult>
 interface DinoRoomEntryListener : DinoParentInterface<RoomListModelResult>
 
 interface DinoChannelListListener : DinoParentInterface<ChannelListModelResult>
+
+interface DinoRoomCreationListener : DinoParentInterface<RoomCreateResultModel>
+
+interface DinoJoinRoomListener : DinoParentInterface<JoinRoomResultModel>
