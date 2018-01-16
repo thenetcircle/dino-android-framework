@@ -14,14 +14,27 @@
  * limitations under the License.
  */
 
-package com.thenetcircle.dinoandroidframework.dino.model.results
+package com.thenetcircle.dinoandroidframework.dino.model.data
 
 import com.google.gson.annotations.SerializedName
 
+
 /**
- * Created by aaron on 10/01/2018.
+ * ChatHistory
+ *
+ * A Model for obtaining the Chat history of a given room
  */
-open class ModelResultParent {
-    @SerializedName("status_code")
-    val statusCode: Int? = -1 //200
+class ChatHistory(id: String, updated: String) {
+
+    @SerializedName("target")
+    val target: ChatHistoryTarget = ChatHistoryTarget(id)
+    @SerializedName("updated")
+    val updated: String = updated //<last read timestamp, if configured in server will return messages since this time>
+    @SerializedName("verb")
+    val verb: String = "list"
+
+    class ChatHistoryTarget(id: String) {
+        @SerializedName("id")
+        val id: String = id //<room UUID>
+    }
 }

@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-package com.thenetcircle.dinoandroidframework.dino.model.results
+package com.thenetcircle.dinoandroidframework.adapter
 
-import com.google.gson.annotations.SerializedName
+import android.support.v7.widget.RecyclerView
+import android.view.View
 
 /**
- * Created by aaron on 10/01/2018.
+ * Created by aaron on 16/01/2018.
  */
-open class ModelResultParent {
-    @SerializedName("status_code")
-    val statusCode: Int? = -1 //200
+class TNCChatViewHolderParent(v:View) : RecyclerView.ViewHolder(v) {
+    private var chatView : View = v
 }

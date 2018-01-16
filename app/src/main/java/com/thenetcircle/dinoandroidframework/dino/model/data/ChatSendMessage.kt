@@ -16,12 +16,33 @@
 
 package com.thenetcircle.dinoandroidframework.dino.model.data
 
+import android.util.Base64
 import com.google.gson.annotations.SerializedName
 
+
 /**
- * Created by aaron on 09/01/2018.
+ * Created by aaron on 16/01/2018.
  */
-class ChannelListModel {
+
+
+class ChatSendMessage(roomId: String, message: String) {
     @SerializedName("verb")
-    private val verb = "list"
+    val verb: String = "send"
+    @SerializedName("target")
+    val target: MessageRoomTarget = MessageRoomTarget(roomId)
+    @SerializedName("object")
+    val objectX: MessageContentObject = MessageContentObject(message)
+
+    class MessageContentObject(message: String) {
+        @SerializedName("content")
+        val content: String = Base64.encodeToString(message.toByteArray(), Base64.NO_WRAP)
+    }
+
+    class MessageRoomTarget(id: String) {
+        @SerializedName("id")
+        val id: String = id;
+        @SerializedName("objectType")
+        val objectType: String = "private"
+    }
+
 }

@@ -14,14 +14,24 @@
  * limitations under the License.
  */
 
-package com.thenetcircle.dinoandroidframework.dino.model.results
+package com.thenetcircle.dinoandroidframework.activity
 
-import com.google.gson.annotations.SerializedName
+import android.os.Bundle
+import com.thenetcircle.dinoandroidframework.dino.model.results.RoomObject
+import com.thenetcircle.dinoandroidframework.fragment.TNCChatRoomFragment
 
 /**
- * Created by aaron on 10/01/2018.
+ * Created by aaron on 16/01/2018.
  */
-open class ModelResultParent {
-    @SerializedName("status_code")
-    val statusCode: Int? = -1 //200
+class TNCChatRoomActivity : TNCBaseActivity() {
+
+    private val chatRoomFragment = TNCChatRoomFragment()
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        fragmentTrans(chatRoomFragment)
+
+        chatRoomFragment.room = intent.extras.get("ROOM") as RoomObject
+    }
+
 }
