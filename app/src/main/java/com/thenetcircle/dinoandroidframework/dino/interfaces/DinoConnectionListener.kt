@@ -5,4 +5,6 @@ package com.thenetcircle.dinoandroidframework.dino.interfaces
  */
 interface DinoConnectionListener {
     fun onConnect()
+
+    fun onDisconnect()
 }

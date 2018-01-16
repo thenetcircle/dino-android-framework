@@ -19,8 +19,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.thenetcircle.dinoandroidframework.TNCChannelList" />
-        <activity android:name=".TNCRoomList" />
+        <activity android:name="com.thenetcircle.dinoandroidframework.TNCChannelListActivity" />
+        <activity android:name=".TNCRoomListActivity" />
     </application>
 
 </manifest>

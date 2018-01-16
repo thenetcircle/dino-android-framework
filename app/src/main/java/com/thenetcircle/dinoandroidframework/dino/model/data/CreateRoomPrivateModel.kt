@@ -30,12 +30,12 @@ class CreateRoomPrivateModel(channelURL: String, displayName: String, myUserID: 
         }
     }
 
-    class RoomDataObject(url : String) {
+    class RoomDataObject(url: String) {
         @SerializedName("url")
         val url: String = url
     }
 
-    class RoomDataAttatchment( summary: String) {
+    class RoomDataAttatchment(summary: String) {
         @SerializedName("objectType")
         val objectType: String = "owners"
 

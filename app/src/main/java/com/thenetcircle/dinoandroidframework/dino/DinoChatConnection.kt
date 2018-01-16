@@ -24,13 +24,28 @@ class DinoChatConnection {
     var isConnected: Boolean = false
         get() = if (socket != null) socket!!.connected() else false
 
-    fun startConnection(url: String, @NonNull connectionListener: DinoConnectionListener, @NonNull errorListener: DinoErrorListener) {
+    var connectionListener: DinoConnectionListener? = null
+
+    fun startConnection(url: String, @NonNull errorListener: DinoErrorListener) {
+        if (connectionListener == null) {
+            throw IllegalArgumentException("DinoConnectionListener must be set")
+        }
+
         socket = connectNewSocket(url)
-        socket!!.on(Socket.EVENT_CONNECT_ERROR) { errorListener.onError(DinoError.EVENT_CONNECT_ERROR) }
-        socket!!.on(Socket.EVENT_DISCONNECT) { errorListener.onError(DinoError.EVENT_DISCONNECT) }
+
+        socket!!.on(Socket.EVENT_CONNECT_ERROR) {
+            errorListener.onError(DinoError.EVENT_CONNECT_ERROR)
+            connectionListener?.onDisconnect()
+        }
+
+        socket!!.on(Socket.EVENT_DISCONNECT) {
+            errorListener.onError(DinoError.EVENT_DISCONNECT)
+            connectionListener?.onDisconnect()
+        }
+
         socket!!.on("gn_connect") {
             socket!!.off("gn_connect")
-            connectionListener.onConnect()
+            Handler(Looper.getMainLooper()).post({ connectionListener?.onConnect() })
         }
         socket!!.connect()
     }
@@ -38,17 +53,17 @@ class DinoChatConnection {
     private inline fun <reified T : ModelResultParent> processResult(@NonNull data: String, @NonNull listener: DinoParentInterface<T>, @NonNull errorListener: DinoErrorListener): Boolean {
         val model = gson.fromJson<T>(data, T::class.java)
         if (model != null && model.statusCode == 200) {
-            Handler(Looper.getMainLooper()).post({listener.onResult(model)})
+            Handler(Looper.getMainLooper()).post({ listener.onResult(model) })
             return true
         } else {
             val error = if (model != null) DinoError.getErrorByCode(model.statusCode!!) else DinoError.UNKNOWN_ERROR
-            Handler(Looper.getMainLooper()).post({errorListener.onError(error)})
+            Handler(Looper.getMainLooper()).post({ errorListener.onError(error) })
         }
         return false
     }
 
 
-    private inline fun <D : Any, reified R : ModelResultParent> processRequest(@NonNull requestEvent:String, @NonNull responseEvent:String, @NonNull dataModel: D, @NonNull listener: DinoParentInterface<R>, @NonNull errorListener: DinoErrorListener) {
+    private inline fun <D : Any, reified R : ModelResultParent> processRequest(@NonNull requestEvent: String, @NonNull responseEvent: String, @NonNull dataModel: D, @NonNull listener: DinoParentInterface<R>, @NonNull errorListener: DinoErrorListener) {
         if (socket == null) {
             errorListener.onError(DinoError.NO_SOCKET_ERROR)
             return
@@ -67,8 +82,7 @@ class DinoChatConnection {
 
     fun login(loginModel: LoginModel, @NonNull loginListener: DinoLoginListener, @NonNull errorListener: DinoErrorListener) {
 
-        processRequest("login", "gn_login", loginModel, object:DinoLoginListener
-        {
+        processRequest("login", "gn_login", loginModel, object : DinoLoginListener {
             override fun onResult(result: LoginModelResult) {
                 isLoggedIn = true
                 loginListener.onResult(result)
