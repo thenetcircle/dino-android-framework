@@ -17,11 +17,20 @@
 package com.thenetcircle.dinoandroidframework.adapter
 
 import android.support.v7.widget.RecyclerView
+import android.util.Base64
 import android.view.View
+import android.widget.TextView
+import com.thenetcircle.dinoandroidframework.R
+import com.thenetcircle.dinoandroidframework.dino.model.results.ChatSendMessageResult
 
 /**
  * Created by aaron on 16/01/2018.
  */
 class TNCChatViewHolderParent(v:View) : RecyclerView.ViewHolder(v) {
     private var chatView : View = v
+
+    fun bind(message: ChatSendMessageResult) {
+        val chatBox = chatView.findViewById<TextView>(R.id.chatMessage)
+        chatBox.text = String(Base64.decode(message.data?.message?.content, Base64.NO_WRAP))
+    }
 }

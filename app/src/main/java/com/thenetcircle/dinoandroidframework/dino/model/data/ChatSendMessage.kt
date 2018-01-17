@@ -40,9 +40,9 @@ class ChatSendMessage(roomId: String, message: String) {
 
     class MessageRoomTarget(id: String) {
         @SerializedName("id")
-        val id: String = id;
+        val id: String = id
         @SerializedName("objectType")
-        val objectType: String = "private"
+        val objectType: String = "room"
     }
 
 }

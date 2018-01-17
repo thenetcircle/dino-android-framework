@@ -37,3 +37,5 @@ interface DinoRoomCreationListener : DinoParentInterface<RoomCreateResultModel>
 interface DinoJoinRoomListener : DinoParentInterface<JoinRoomResultModel>
 
 interface DinoChatHistoryListener : DinoParentInterface<ChatHistoryResult>
+
+interface DinoChatMessageListener : DinoParentInterface<ChatSendMessageResult>

@@ -17,6 +17,7 @@
 package com.thenetcircle.dinoandroidframework.fragment
 
 import android.app.Fragment
+import android.content.Context
 import android.os.Bundle
 import android.text.TextUtils
 import android.util.Base64
@@ -33,7 +34,7 @@ import java.nio.charset.Charset
 /**
  * Created by aaron on 16/01/2018.
  */
-class TNCRoomListFragment : Fragment() {
+class TNCRoomListFragment : Fragment(), View.OnClickListener {
 
     interface RoomListListener {
         fun createRoom(roomName: String)
@@ -56,24 +57,29 @@ class TNCRoomListFragment : Fragment() {
         loadingRooms()
     }
 
+    override fun onAttach(context: Context?) {
+        super.onAttach(context)
+        roomListInterface = context as RoomListListener
+    }
+
     fun loadingRooms() {
         progress_wheel.visibility = View.VISIBLE
-        room_list_container.removeAllViews();
-
+        room_list_container.removeAllViews()
     }
 
     fun listRooms(roomList: RoomListModelResult) {
+        room_list_container.removeAllViews()
         progress_wheel.visibility = View.GONE
         for (ob: RoomObject in roomList.data!!.objectX.attachments) {
             val b = Button(activity)
             b.text = String(Base64.decode(ob.displayName, Base64.NO_WRAP), Charset.defaultCharset())
             b.tag = ob.id
-            b.setOnClickListener {
-                roomListInterface?.joinRoom(b.tag as String)
-            }
+            b.setOnClickListener(this)
             room_list_container.addView(b)
         }
     }
 
-
+    override fun onClick(v: View) {
+        roomListInterface?.joinRoom(v.tag as String)
+    }
 }

@@ -17,21 +17,42 @@
 package com.thenetcircle.dinoandroidframework.adapter
 
 import android.support.v7.widget.RecyclerView
+import android.view.LayoutInflater
 import android.view.ViewGroup
+import com.thenetcircle.dinoandroidframework.R
+import com.thenetcircle.dinoandroidframework.dino.model.results.ChatSendMessageResult
 
 /**
  * Created by aaron on 16/01/2018.
  */
-class TNCChatRoomAdapter :  RecyclerView.Adapter<TNCChatViewHolderParent>(){
-    override fun onBindViewHolder(holder: TNCChatViewHolderParent?, position: Int) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+class TNCChatRoomAdapter(myUserID : Int) :  RecyclerView.Adapter<TNCChatViewHolderParent>(){
+
+    var messages : ArrayList<ChatSendMessageResult> = ArrayList()
+    var myID : Int = myUserID
+
+    fun addMessage(message: ChatSendMessageResult) {
+        messages.add(message)
+        notifyDataSetChanged()
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): TNCChatViewHolderParent {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    override fun onBindViewHolder(holder: TNCChatViewHolderParent, position: Int) {
+        holder.bind(messages[position])
+    }
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TNCChatViewHolderParent {
+        val inflatedView = LayoutInflater.from(parent.context).inflate(if (viewType == 0) R.layout.chat_room_sent else  R.layout.chat_room_received, parent, false)
+        return TNCChatViewHolderParent(inflatedView)
     }
 
     override fun getItemCount(): Int {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        return messages.size //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun getItemViewType(position: Int): Int {
+        val message = messages.get(position)
+        if(message.data?.actor?.id?.toInt() == myID) {
+            return 0
+        }
+        return 1
     }
 }

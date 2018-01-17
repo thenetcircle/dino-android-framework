@@ -16,6 +16,7 @@
 
 package com.thenetcircle.dinoandroidframework.activity
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import com.thenetcircle.dinoandroidframework.dino.DinoError
@@ -29,6 +30,7 @@ import com.thenetcircle.dinoandroidframework.dino.model.data.RoomListModel
 import com.thenetcircle.dinoandroidframework.dino.model.results.JoinRoomResultModel
 import com.thenetcircle.dinoandroidframework.dino.model.results.RoomCreateResultModel
 import com.thenetcircle.dinoandroidframework.dino.model.results.RoomListModelResult
+import com.thenetcircle.dinoandroidframework.fragment.TNCChatRoomFragment
 import com.thenetcircle.dinoandroidframework.fragment.TNCRoomListFragment
 
 /**
@@ -64,7 +66,10 @@ class TNCRoomListActivity : TNCBaseActivity(), DinoRoomEntryListener, DinoErrorL
     override fun joinRoom(roomID: String) {
         dinoChatConnection.joinRoom(JoinRoomModel(roomID), object : DinoJoinRoomListener {
             override fun onResult(result: JoinRoomResultModel) {
-                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+                val intent = Intent(this@TNCRoomListActivity, TNCChatRoomActivity::class.java)
+                intent.putExtra(TNCChatRoomActivity.ROOM_EXTRA, result)
+                intent.putExtra(TNCChatRoomActivity.ROOM_ID, roomID)
+                startActivity(intent)
             }
         }, this)
     }

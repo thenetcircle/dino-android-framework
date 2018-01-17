@@ -21,11 +21,15 @@ import android.content.Context
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.text.TextUtils
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.thenetcircle.dinoandroidframework.R
-import com.thenetcircle.dinoandroidframework.dino.model.results.RoomObject
+import com.thenetcircle.dinoandroidframework.activity.TNCBaseActivity
+import com.thenetcircle.dinoandroidframework.adapter.TNCChatRoomAdapter
+import com.thenetcircle.dinoandroidframework.dino.model.results.ChatSendMessageResult
+import com.thenetcircle.dinoandroidframework.dino.model.results.JoinRoomResultModel
 import kotlinx.android.synthetic.main.fragment_chat_room.*
 
 /**
@@ -39,7 +43,8 @@ class TNCChatRoomFragment : Fragment() , View.OnClickListener {
 
     private lateinit var linearLayoutManager: LinearLayoutManager
     private var chatRoomListener : ChatRoomListener? = null
-    var room : RoomObject? = null
+    private var recyclerAdapter : TNCChatRoomAdapter = TNCChatRoomAdapter(TNCBaseActivity.loginObject?.data?.actor?.id!!.toInt())
+    var room : JoinRoomResultModel? = null
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater?.inflate(R.layout.fragment_chat_room, container, false)
@@ -50,11 +55,18 @@ class TNCChatRoomFragment : Fragment() , View.OnClickListener {
 
         linearLayoutManager = LinearLayoutManager(activity)
         chatView.layoutManager = linearLayoutManager
+        chatView.adapter = recyclerAdapter
+        sendBtn.setOnClickListener(this)
+
     }
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)
         chatRoomListener = context as ChatRoomListener
+    }
+
+    fun displayMessage(message: ChatSendMessageResult) {
+        recyclerAdapter.addMessage(message)
     }
 
     override fun onClick(v: View) {

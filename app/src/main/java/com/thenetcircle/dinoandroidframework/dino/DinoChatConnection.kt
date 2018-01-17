@@ -131,6 +131,35 @@ class DinoChatConnection {
         processRequest("history", "gn_history", chatHistory, dinoChatHistoryListener, errorListener)
     }
 
+    fun sendMessage(chatSendMessage: ChatSendMessage, @NonNull errorListener: DinoErrorListener) {
+        generalChecks(errorListener)
+        if (socket == null) {
+            errorListener.onError(DinoError.NO_SOCKET_ERROR)
+            return
+        }
+        socket!!.emit("message", JSONObject(gson.toJson(chatSendMessage)))
+    }
+
+    fun registerMessageListener(@NonNull dinoChatSendConfirmListener: DinoChatMessageListener, @NonNull errorListener: DinoErrorListener) {
+        if (socket == null) {
+            errorListener.onError(DinoError.NO_SOCKET_ERROR)
+            return
+        }
+        socket!!.on("gn_message") { args ->
+            Handler(Looper.getMainLooper()).post({
+                processResult(args[0].toString(), dinoChatSendConfirmListener, errorListener)
+            })
+        }
+    }
+
+    fun unRegisterMessageListener() {
+        if (socket == null) {
+            return
+        }
+
+        socket!!.off("gn_message")
+    }
+
     fun disconnect() {
         if (socket != null) {
             socket!!.off(Socket.EVENT_DISCONNECT)

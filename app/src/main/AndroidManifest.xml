@@ -21,6 +21,7 @@
         </activity>
         <activity android:name="com.thenetcircle.dinoandroidframework.activity.TNCChannelListActivity" />
         <activity android:name=".activity.TNCRoomListActivity" />
+        <activity android:name=".activity.TNCChatRoomActivity" />
     </application>
 
 </manifest>
