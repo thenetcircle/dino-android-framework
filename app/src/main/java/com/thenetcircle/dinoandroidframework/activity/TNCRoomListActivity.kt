@@ -30,7 +30,6 @@ import com.thenetcircle.dinoandroidframework.dino.model.data.RoomListModel
 import com.thenetcircle.dinoandroidframework.dino.model.results.JoinRoomResultModel
 import com.thenetcircle.dinoandroidframework.dino.model.results.RoomCreateResultModel
 import com.thenetcircle.dinoandroidframework.dino.model.results.RoomListModelResult
-import com.thenetcircle.dinoandroidframework.fragment.TNCChatRoomFragment
 import com.thenetcircle.dinoandroidframework.fragment.TNCRoomListFragment
 
 /**
@@ -51,7 +50,7 @@ class TNCRoomListActivity : TNCBaseActivity(), DinoRoomEntryListener, DinoErrorL
     }
 
     override fun createRoom(roomName: String) {
-        dinoChatConnection.createPrivateRoom(CreateRoomPrivateModel(intent.extras.getString(CHANNELID), roomName, loginObject!!.data!!.actor.id.toInt(), 1234), object : DinoRoomCreationListener {
+        dinoChatConnection.createPrivateRoom(CreateRoomPrivateModel(intent.extras.getString(CHANNELID), roomName, loginObject!!.data!!.actor.id.toInt(), 179906), object : DinoRoomCreationListener {
             override fun onResult(result: RoomCreateResultModel) {
                 dinoChatConnection.getRoomList(RoomListModel(intent.extras.getString(CHANNELID)), this@TNCRoomListActivity, this@TNCRoomListActivity)
             }
@@ -64,14 +63,9 @@ class TNCRoomListActivity : TNCBaseActivity(), DinoRoomEntryListener, DinoErrorL
     }
 
     override fun joinRoom(roomID: String) {
-        dinoChatConnection.joinRoom(JoinRoomModel(roomID), object : DinoJoinRoomListener {
-            override fun onResult(result: JoinRoomResultModel) {
-                val intent = Intent(this@TNCRoomListActivity, TNCChatRoomActivity::class.java)
-                intent.putExtra(TNCChatRoomActivity.ROOM_EXTRA, result)
-                intent.putExtra(TNCChatRoomActivity.ROOM_ID, roomID)
-                startActivity(intent)
-            }
-        }, this)
+        val intent = Intent(this, TNCChatRoomActivity::class.java)
+        intent.putExtra(TNCChatRoomActivity.ROOM_ID, roomID)
+        startActivity(intent)
     }
 
     override fun onError(error: DinoError) {

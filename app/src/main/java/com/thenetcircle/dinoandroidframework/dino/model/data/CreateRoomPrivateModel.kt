@@ -41,7 +41,7 @@ class CreateRoomPrivateModel(channelURL: String, displayName: String, myUserID: 
         val attatchments: ArrayList<RoomDataAttatchment> = ArrayList()
 
         init {
-            val summary = myUserID.toString() + "," + theirUserID.toString();
+            val summary = myUserID.toString() + "," + theirUserID.toString()
             attatchments.add(RoomDataAttatchment(summary))
         }
     }

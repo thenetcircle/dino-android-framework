@@ -20,17 +20,17 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.thenetcircle.dinoandroidframework.R
-import com.thenetcircle.dinoandroidframework.dino.model.results.ChatSendMessageResult
+import com.thenetcircle.dinoandroidframework.dino.model.results.MessageReceived
 
 /**
  * Created by aaron on 16/01/2018.
  */
-class TNCChatRoomAdapter(myUserID : Int) :  RecyclerView.Adapter<TNCChatViewHolderParent>(){
+class TNCChatRoomAdapter(myUserID: Int) : RecyclerView.Adapter<TNCChatViewHolderParent>() {
 
-    var messages : ArrayList<ChatSendMessageResult> = ArrayList()
-    var myID : Int = myUserID
+    var messages: ArrayList<MessageReceived> = ArrayList()
+    var myID: Int = myUserID
 
-    fun addMessage(message: ChatSendMessageResult) {
+    fun addMessage(message: MessageReceived) {
         messages.add(message)
         notifyDataSetChanged()
     }
@@ -40,7 +40,7 @@ class TNCChatRoomAdapter(myUserID : Int) :  RecyclerView.Adapter<TNCChatViewHold
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TNCChatViewHolderParent {
-        val inflatedView = LayoutInflater.from(parent.context).inflate(if (viewType == 0) R.layout.chat_room_sent else  R.layout.chat_room_received, parent, false)
+        val inflatedView = LayoutInflater.from(parent.context).inflate(if (viewType == 0) R.layout.chat_room_sent else R.layout.chat_room_received, parent, false)
         return TNCChatViewHolderParent(inflatedView)
     }
 
@@ -50,7 +50,7 @@ class TNCChatRoomAdapter(myUserID : Int) :  RecyclerView.Adapter<TNCChatViewHold
 
     override fun getItemViewType(position: Int): Int {
         val message = messages.get(position)
-        if(message.data?.actor?.id?.toInt() == myID) {
+        if (message?.actor?.id?.toInt() == myID) {
             return 0
         }
         return 1

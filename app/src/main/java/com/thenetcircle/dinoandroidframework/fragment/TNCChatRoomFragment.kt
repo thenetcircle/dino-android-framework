@@ -21,30 +21,29 @@ import android.content.Context
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.text.TextUtils
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.thenetcircle.dinoandroidframework.R
 import com.thenetcircle.dinoandroidframework.activity.TNCBaseActivity
 import com.thenetcircle.dinoandroidframework.adapter.TNCChatRoomAdapter
-import com.thenetcircle.dinoandroidframework.dino.model.results.ChatSendMessageResult
 import com.thenetcircle.dinoandroidframework.dino.model.results.JoinRoomResultModel
+import com.thenetcircle.dinoandroidframework.dino.model.results.MessageReceived
 import kotlinx.android.synthetic.main.fragment_chat_room.*
 
 /**
  * Created by aaron on 16/01/2018.
  */
-class TNCChatRoomFragment : Fragment() , View.OnClickListener {
+class TNCChatRoomFragment : Fragment(), View.OnClickListener {
 
     interface ChatRoomListener {
         fun sendMessage(message: String)
     }
 
     private lateinit var linearLayoutManager: LinearLayoutManager
-    private var chatRoomListener : ChatRoomListener? = null
-    private var recyclerAdapter : TNCChatRoomAdapter = TNCChatRoomAdapter(TNCBaseActivity.loginObject?.data?.actor?.id!!.toInt())
-    var room : JoinRoomResultModel? = null
+    private var chatRoomListener: ChatRoomListener? = null
+    private var recyclerAdapter: TNCChatRoomAdapter = TNCChatRoomAdapter(TNCBaseActivity.loginObject?.data?.actor?.id!!.toInt())
+    var room: JoinRoomResultModel? = null
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater?.inflate(R.layout.fragment_chat_room, container, false)
@@ -65,13 +64,13 @@ class TNCChatRoomFragment : Fragment() , View.OnClickListener {
         chatRoomListener = context as ChatRoomListener
     }
 
-    fun displayMessage(message: ChatSendMessageResult) {
+    fun displayMessage(message: MessageReceived) {
         recyclerAdapter.addMessage(message)
     }
 
     override fun onClick(v: View) {
-        if(v == sendBtn) {
-            if(!TextUtils.isEmpty(chatBox.text)) {
+        if (v == sendBtn) {
+            if (!TextUtils.isEmpty(chatBox.text)) {
                 chatRoomListener?.sendMessage(chatBox.text.toString())
                 chatBox.text.clear()
             }

@@ -50,12 +50,12 @@ class DinoChatConnection {
         socket = connectNewSocket(url)
 
         socket!!.on(Socket.EVENT_CONNECT_ERROR) {
-            errorListener.onError(DinoError.EVENT_CONNECT_ERROR)
+            Handler(Looper.getMainLooper()).post({ errorListener.onError(DinoError.EVENT_CONNECT_ERROR) })
             connectionListener?.onDisconnect()
         }
 
         socket!!.on(Socket.EVENT_DISCONNECT) {
-            errorListener.onError(DinoError.EVENT_DISCONNECT)
+            Handler(Looper.getMainLooper()).post({ errorListener.onError(DinoError.EVENT_DISCONNECT) })
             connectionListener?.onDisconnect()
         }
 
@@ -140,16 +140,21 @@ class DinoChatConnection {
         socket!!.emit("message", JSONObject(gson.toJson(chatSendMessage)))
     }
 
-    fun registerMessageListener(@NonNull dinoChatSendConfirmListener: DinoChatMessageListener, @NonNull errorListener: DinoErrorListener) {
+    fun registerMessageListener(@NonNull dinoMessageListener: DinoMessageReceivedListener, @NonNull errorListener: DinoErrorListener) {
         if (socket == null) {
             errorListener.onError(DinoError.NO_SOCKET_ERROR)
             return
         }
-        socket!!.on("gn_message") { args ->
+        socket!!.on("message") { args ->
             Handler(Looper.getMainLooper()).post({
-                processResult(args[0].toString(), dinoChatSendConfirmListener, errorListener)
+                processResult(args[0].toString(), dinoMessageListener, errorListener)
             })
         }
+    }
+
+    fun leaveRoom(leaveRoomModel: LeaveRoomModel, @NonNull errorListener: DinoErrorListener) {
+        generalChecks(errorListener)
+        socket!!.emit("leave", JSONObject(gson.toJson(leaveRoomModel)))
     }
 
     fun unRegisterMessageListener() {

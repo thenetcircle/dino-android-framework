@@ -15,6 +15,7 @@
  */
 
 package com.thenetcircle.dinoandroidframework.dino.model.results
+
 import com.google.gson.annotations.SerializedName
 
 
@@ -22,34 +23,34 @@ import com.google.gson.annotations.SerializedName
  * Created by aaron on 16/01/2018.
  */
 
-class ChatHistoryResult : ModelResultParent(){
-		@SerializedName("data")
-        val data: ChatHistoryData? = null
+class ChatHistoryResult : ModelResultParent() {
+    @SerializedName("data")
+    val data: ChatHistoryData? = null
 }
 
 data class ChatHistoryData(
-		@SerializedName("object") val chatHistory: ChatHistoryObject,
-		@SerializedName("target") val target: ChatRoomTarget,
-		@SerializedName("verb") val verb: String //history
+        @SerializedName("object") val chatHistory: ChatHistoryObject,
+        @SerializedName("target") val target: ChatRoomTarget,
+        @SerializedName("verb") val verb: String //history
 )
 
 data class ChatRoomTarget(
-		@SerializedName("id") val id: String //<room UUID>
+        @SerializedName("id") val id: String //<room UUID>
 )
 
 data class ChatHistoryObject(
-		@SerializedName("objectType") val objectType: String, //messages
-		@SerializedName("attachments") val attachments: List<ChatEntry>
+        @SerializedName("objectType") val objectType: String, //messages
+        @SerializedName("attachments") val attachments: List<ChatEntry>
 )
 
 data class ChatEntry(
-		@SerializedName("author") val author: ChatHistoryAuthor,
-		@SerializedName("id") val id: String, //<message ID>
-		@SerializedName("content") val content: String, //<the message content>
-		@SerializedName("published") val published: String //<the time it was sent RFC3339>
+        @SerializedName("author") val author: ChatHistoryAuthor,
+        @SerializedName("id") val id: String, //<message ID>
+        @SerializedName("content") val content: String, //<the message content>
+        @SerializedName("published") val published: String //<the time it was sent RFC3339>
 )
 
 data class ChatHistoryAuthor(
-		@SerializedName("id") val id: String, //<the user id of the sender>
-		@SerializedName("displayName") val displayName: String //<the user name of the sender>
+        @SerializedName("id") val id: String, //<the user id of the sender>
+        @SerializedName("displayName") val displayName: String //<the user name of the sender>
 )

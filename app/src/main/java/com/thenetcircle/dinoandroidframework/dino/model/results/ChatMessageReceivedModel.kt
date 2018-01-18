@@ -15,6 +15,7 @@
  */
 
 package com.thenetcircle.dinoandroidframework.dino.model.results
+
 import com.google.gson.annotations.SerializedName
 
 
@@ -23,33 +24,33 @@ import com.google.gson.annotations.SerializedName
  */
 
 
-class ChatSendMessageResult() : ModelResultParent(){
-		@SerializedName("data")
-        val data: ChatSendMessageData? = null
+class ChatSendMessageResult() : ModelResultParent() {
+    @SerializedName("data")
+    val data: ChatSendMessageData? = null
 }
 
 data class ChatSendMessageData(
-		@SerializedName("id") val id: String, //c42ebf01-3d50-4f27-a345-4ed213be045d
-		@SerializedName("published") val published: String, //2016-10-07T10:45:34Z
-		@SerializedName("actor") val actor: MessageUser,
-		@SerializedName("verb") val verb: String, //send
-		@SerializedName("target") val target: MessageRoomTarget,
-		@SerializedName("object") val message: ChatMessageObject
+        @SerializedName("id") val id: String, //c42ebf01-3d50-4f27-a345-4ed213be045d
+        @SerializedName("published") val published: String, //2016-10-07T10:45:34Z
+        @SerializedName("actor") val actor: MessageUser,
+        @SerializedName("verb") val verb: String, //send
+        @SerializedName("target") val target: MessageRoomTarget,
+        @SerializedName("object") val message: ChatMessageObject
 )
 
 data class MessageRoomTarget(
-		@SerializedName("id") val id: String, //<room ID>
-		@SerializedName("displayName") val displayName: String //<room name>
+        @SerializedName("id") val id: String, //<room ID>
+        @SerializedName("displayName") val displayName: String //<room name>
 )
 
 data class ChatMessageObject(
-		@SerializedName("content") val content: String, //<the message>
-		@SerializedName("displayName") val displayName: String, //<the channel name>
-		@SerializedName("url") val url: String, //<the channel id>
-		@SerializedName("objectType") val objectType: String //<room/private>
+        @SerializedName("content") val content: String, //<the message>
+        @SerializedName("displayName") val displayName: String, //<the channel name>
+        @SerializedName("url") val url: String, //<the channel id>
+        @SerializedName("objectType") val objectType: String //<room/private>
 )
 
 data class MessageUser(
-		@SerializedName("id") val id: String, //<your user ID>
-		@SerializedName("displayName") val displayName: String //<your user name>
+        @SerializedName("id") val id: String, //<your user ID>
+        @SerializedName("displayName") val displayName: String //<your user name>
 )

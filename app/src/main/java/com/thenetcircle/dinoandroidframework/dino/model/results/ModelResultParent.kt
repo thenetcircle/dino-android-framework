@@ -23,6 +23,8 @@ import java.io.Serializable
  * Created by aaron on 10/01/2018.
  */
 open class ModelResultParent : Serializable {
+
+    //always pass unless otherwise told.
     @SerializedName("status_code")
-    val statusCode: Int? = -1 //200
+    val statusCode: Int? = 200
 }

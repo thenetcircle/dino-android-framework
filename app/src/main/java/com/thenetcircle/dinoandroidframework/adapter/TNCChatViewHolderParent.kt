@@ -21,16 +21,16 @@ import android.util.Base64
 import android.view.View
 import android.widget.TextView
 import com.thenetcircle.dinoandroidframework.R
-import com.thenetcircle.dinoandroidframework.dino.model.results.ChatSendMessageResult
+import com.thenetcircle.dinoandroidframework.dino.model.results.MessageReceived
 
 /**
  * Created by aaron on 16/01/2018.
  */
-class TNCChatViewHolderParent(v:View) : RecyclerView.ViewHolder(v) {
-    private var chatView : View = v
+class TNCChatViewHolderParent(v: View) : RecyclerView.ViewHolder(v) {
+    private var chatView: View = v
 
-    fun bind(message: ChatSendMessageResult) {
+    fun bind(message: MessageReceived) {
         val chatBox = chatView.findViewById<TextView>(R.id.chatMessage)
-        chatBox.text = String(Base64.decode(message.data?.message?.content, Base64.NO_WRAP))
+        chatBox.text = String(Base64.decode(message.objectX?.content, Base64.NO_WRAP))
     }
 }

@@ -17,53 +17,61 @@
 package com.thenetcircle.dinoandroidframework.activity
 
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
 import com.thenetcircle.dinoandroidframework.dino.DinoError
-import com.thenetcircle.dinoandroidframework.dino.interfaces.DinoChatMessageListener
 import com.thenetcircle.dinoandroidframework.dino.interfaces.DinoErrorListener
+import com.thenetcircle.dinoandroidframework.dino.interfaces.DinoJoinRoomListener
+import com.thenetcircle.dinoandroidframework.dino.interfaces.DinoMessageReceivedListener
 import com.thenetcircle.dinoandroidframework.dino.model.data.ChatSendMessage
-import com.thenetcircle.dinoandroidframework.dino.model.results.ChatSendMessageResult
+import com.thenetcircle.dinoandroidframework.dino.model.data.JoinRoomModel
+import com.thenetcircle.dinoandroidframework.dino.model.data.LeaveRoomModel
 import com.thenetcircle.dinoandroidframework.dino.model.results.JoinRoomResultModel
+import com.thenetcircle.dinoandroidframework.dino.model.results.MessageReceived
 import com.thenetcircle.dinoandroidframework.fragment.TNCChatRoomFragment
 
 /**
  * Created by aaron on 16/01/2018.
  */
-class TNCChatRoomActivity : TNCBaseActivity(), DinoChatMessageListener, DinoErrorListener , TNCChatRoomFragment.ChatRoomListener {
+class TNCChatRoomActivity : TNCBaseActivity(), DinoMessageReceivedListener, DinoErrorListener, TNCChatRoomFragment.ChatRoomListener {
     private val chatRoomFragment = TNCChatRoomFragment()
 
     companion object {
         val ROOM_ID: String = "ROOM_ID"
-        val ROOM_EXTRA: String = "ROOM_EXTRA"
     }
 
-    private var roomID : String? = ""
+    private var roomID: String? = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         fragmentTrans(chatRoomFragment)
-        chatRoomFragment.room = intent.extras.get(ROOM_EXTRA) as JoinRoomResultModel
+        //chatRoomFragment.room = intent.extras.get(ROOM_EXTRA) as JoinRoomResultModel
         roomID = intent.extras.get(ROOM_ID) as String?
     }
 
     override fun onResume() {
         super.onResume()
+        dinoChatConnection.joinRoom(JoinRoomModel(roomID!!), object:DinoJoinRoomListener {
+            override fun onResult(result: JoinRoomResultModel) {
+                chatRoomFragment.room = result
+            }
+        }, this)
         dinoChatConnection.registerMessageListener(this, this)
     }
 
     override fun onPause() {
         super.onPause()
         dinoChatConnection.unRegisterMessageListener()
+        dinoChatConnection.leaveRoom(LeaveRoomModel(roomID!!), this)
     }
 
     override fun sendMessage(message: String) {
         dinoChatConnection.sendMessage(ChatSendMessage(roomID!!, message), this)
     }
 
-    override fun onResult(result: ChatSendMessageResult) {
+    override fun onResult(result: MessageReceived) {
         chatRoomFragment.displayMessage(result)
     }
+
 
     override fun onError(error: DinoError) {
         Toast.makeText(this, error.toString(), Toast.LENGTH_LONG).show()

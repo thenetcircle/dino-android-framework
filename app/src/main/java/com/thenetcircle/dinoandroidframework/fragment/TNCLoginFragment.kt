@@ -60,7 +60,7 @@ class TNCLoginFragment : Fragment() {
         server_url.setText("http://10.60.1.124:9210/ws")
         user_id.setText("179677")
         display_name.setText("Aaron")
-        token.setText("dcccebb43eff7ff622310b0743b592ffb6657bf8")
+        token.setText("8274f955f1c3b88cd99d309e56e88d104de66834")
         connectBtn.setOnClickListener({
             if (activity.currentFocus != null && activity.currentFocus.windowToken != null) {
                 val imm = activity.applicationContext.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
@@ -99,9 +99,11 @@ class TNCLoginFragment : Fragment() {
     }
 
     fun onError(error: DinoError) {
-        status_box.append("Error: " + error.toString() + "\n")
-        connectBtn.text = getString(R.string.connect)
-        user_details.visibility = View.VISIBLE
-        connected_functions.visibility = View.GONE
+        if (status_box != null) {
+            status_box.append("Error: " + error.toString() + "\n")
+            connectBtn.text = getString(R.string.connect)
+            user_details.visibility = View.VISIBLE
+            connected_functions.visibility = View.GONE
+        }
     }
 }
