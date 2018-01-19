@@ -18,6 +18,11 @@ apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 
+repositories {
+    google()
+    jcenter()
+}
+
 android {
     compileSdkVersion 26
 
@@ -37,7 +42,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-
+    buildToolsVersion '26.0.3'
 }
 
 dependencies {
@@ -50,6 +55,4 @@ dependencies {
         exclude group: 'org.json', module: 'json'
     }
     testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'com.android.support.test:runner:1.0.1'
-    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
 }
