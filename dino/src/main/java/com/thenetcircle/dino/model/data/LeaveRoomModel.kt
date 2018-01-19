@@ -14,16 +14,23 @@
  * limitations under the License.
  */
 
-package com.thenetcircle.dinoandroidframework
+package com.thenetcircle.dino.model.data
 
-import android.app.Application
-import com.thenetcircle.dino.DinoChatConnection
+import com.google.gson.annotations.SerializedName
+
 
 /**
- * Created by aaron on 11/01/2018.
+ * Created by aaron on 18/01/2018.
  */
-class TNCApplication : Application() {
-    companion object {
-        var dinoConnection: DinoChatConnection = DinoChatConnection()
+
+class LeaveRoomModel(roomId: String) {
+    @SerializedName("target")
+    val target: LeaveRoomTarget = LeaveRoomTarget(roomId)
+    @SerializedName("verb")
+    val verb: String = "leave"
+
+    class LeaveRoomTarget(roomId: String) {
+        @SerializedName("id")
+        val id: String = roomId
     }
 }

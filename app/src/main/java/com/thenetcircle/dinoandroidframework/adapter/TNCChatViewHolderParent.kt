@@ -21,7 +21,7 @@ import android.util.Base64
 import android.view.View
 import android.widget.TextView
 import com.thenetcircle.dinoandroidframework.R
-import com.thenetcircle.dinoandroidframework.dino.model.results.MessageReceived
+import com.thenetcircle.dino.model.results.MessageReceived
 
 /**
  * Created by aaron on 16/01/2018.

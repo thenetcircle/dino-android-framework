@@ -19,17 +19,14 @@ package com.thenetcircle.dinoandroidframework.activity
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
-import com.thenetcircle.dinoandroidframework.dino.DinoError
-import com.thenetcircle.dinoandroidframework.dino.interfaces.DinoErrorListener
-import com.thenetcircle.dinoandroidframework.dino.interfaces.DinoJoinRoomListener
-import com.thenetcircle.dinoandroidframework.dino.interfaces.DinoRoomCreationListener
-import com.thenetcircle.dinoandroidframework.dino.interfaces.DinoRoomEntryListener
-import com.thenetcircle.dinoandroidframework.dino.model.data.CreateRoomPrivateModel
-import com.thenetcircle.dinoandroidframework.dino.model.data.JoinRoomModel
-import com.thenetcircle.dinoandroidframework.dino.model.data.RoomListModel
-import com.thenetcircle.dinoandroidframework.dino.model.results.JoinRoomResultModel
-import com.thenetcircle.dinoandroidframework.dino.model.results.RoomCreateResultModel
-import com.thenetcircle.dinoandroidframework.dino.model.results.RoomListModelResult
+import com.thenetcircle.dino.DinoError
+import com.thenetcircle.dino.interfaces.DinoErrorListener
+import com.thenetcircle.dino.interfaces.DinoRoomCreationListener
+import com.thenetcircle.dino.interfaces.DinoRoomEntryListener
+import com.thenetcircle.dino.model.data.CreateRoomPrivateModel
+import com.thenetcircle.dino.model.data.RoomListModel
+import com.thenetcircle.dino.model.results.RoomCreateResultModel
+import com.thenetcircle.dino.model.results.RoomListModelResult
 import com.thenetcircle.dinoandroidframework.fragment.TNCRoomListFragment
 
 /**

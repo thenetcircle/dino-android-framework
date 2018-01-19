@@ -14,16 +14,14 @@
  * limitations under the License.
  */
 
-package com.thenetcircle.dinoandroidframework
+package com.thenetcircle.dino.model.data
 
-import android.app.Application
-import com.thenetcircle.dino.DinoChatConnection
+import com.google.gson.annotations.SerializedName
 
 /**
- * Created by aaron on 11/01/2018.
+ * Created by aaron on 09/01/2018.
  */
-class TNCApplication : Application() {
-    companion object {
-        var dinoConnection: DinoChatConnection = DinoChatConnection()
-    }
+class ChannelListModel {
+    @SerializedName("verb")
+    private val verb = "list"
 }

@@ -14,16 +14,13 @@
  * limitations under the License.
  */
 
-package com.thenetcircle.dinoandroidframework
-
-import android.app.Application
-import com.thenetcircle.dino.DinoChatConnection
+package com.thenetcircle.dino.interfaces
 
 /**
- * Created by aaron on 11/01/2018.
+ * Created by aaron on 09/01/2018.
  */
-class TNCApplication : Application() {
-    companion object {
-        var dinoConnection: DinoChatConnection = DinoChatConnection()
-    }
+interface DinoConnectionListener {
+    fun onConnect()
+
+    fun onDisconnect()
 }

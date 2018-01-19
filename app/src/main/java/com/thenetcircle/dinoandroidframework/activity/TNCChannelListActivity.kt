@@ -19,11 +19,11 @@ package com.thenetcircle.dinoandroidframework.activity
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
-import com.thenetcircle.dinoandroidframework.dino.DinoError
-import com.thenetcircle.dinoandroidframework.dino.interfaces.DinoChannelListListener
-import com.thenetcircle.dinoandroidframework.dino.interfaces.DinoErrorListener
-import com.thenetcircle.dinoandroidframework.dino.model.data.ChannelListModel
-import com.thenetcircle.dinoandroidframework.dino.model.results.ChannelListModelResult
+import com.thenetcircle.dino.DinoError
+import com.thenetcircle.dino.interfaces.DinoChannelListListener
+import com.thenetcircle.dino.interfaces.DinoErrorListener
+import com.thenetcircle.dino.model.data.ChannelListModel
+import com.thenetcircle.dino.model.results.ChannelListModelResult
 import com.thenetcircle.dinoandroidframework.fragment.TNCChannelListFragment
 
 /**

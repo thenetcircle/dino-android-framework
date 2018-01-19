@@ -19,17 +19,22 @@ package com.thenetcircle.dinoandroidframework.activity
 import android.app.Fragment
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.util.Base64
 import android.widget.Toast
 import com.thenetcircle.dinoandroidframework.R
 import com.thenetcircle.dinoandroidframework.TNCApplication
-import com.thenetcircle.dinoandroidframework.dino.DinoChatConnection
-import com.thenetcircle.dinoandroidframework.dino.interfaces.DinoConnectionListener
-import com.thenetcircle.dinoandroidframework.dino.model.results.LoginModelResult
+import com.thenetcircle.dino.DinoChatConnection
+import com.thenetcircle.dino.DinoError
+import com.thenetcircle.dino.interfaces.DinoConnectionListener
+import com.thenetcircle.dino.interfaces.DinoErrorListener
+import com.thenetcircle.dino.interfaces.DinoMessageReceivedListener
+import com.thenetcircle.dino.model.results.LoginModelResult
+import com.thenetcircle.dino.model.results.MessageReceived
 
 /**
  * Created by aaron on 11/01/2018.
  */
-open class TNCBaseActivity : AppCompatActivity(), DinoConnectionListener {
+open class TNCBaseActivity : AppCompatActivity(), DinoConnectionListener, DinoErrorListener {
     companion object {
         var loginObject: LoginModelResult? = null
     }
@@ -40,6 +45,25 @@ open class TNCBaseActivity : AppCompatActivity(), DinoConnectionListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         dinoChatConnection.connectionListener = this
+
+        dinoChatConnection.messageReceivedListener = object : DinoMessageReceivedListener {
+            override fun onResult(result: MessageReceived) {
+                val text = String(Base64.decode(result.objectX?.content, Base64.NO_WRAP))
+                Toast.makeText(this@TNCBaseActivity, "Message Received: " + text, Toast.LENGTH_LONG).show()
+            }
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if(dinoChatConnection.isLoggedIn) {
+            dinoChatConnection.registerMessageListener(this)
+        }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        dinoChatConnection.unRegisterMessageListener()
     }
 
     protected fun fragmentTrans(frag: Fragment) {
@@ -59,4 +83,9 @@ open class TNCBaseActivity : AppCompatActivity(), DinoConnectionListener {
         Toast.makeText(this, "You have been Disconnected", Toast.LENGTH_LONG).show()
     }
 
+
+
+    override fun onError(error: DinoError) {
+        Toast.makeText(this, error.toString(), Toast.LENGTH_LONG).show()
+    }
 }

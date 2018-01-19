@@ -18,11 +18,11 @@ package com.thenetcircle.dinoandroidframework.activity
 
 import android.content.Intent
 import android.os.Bundle
-import com.thenetcircle.dinoandroidframework.dino.DinoError
-import com.thenetcircle.dinoandroidframework.dino.interfaces.DinoErrorListener
-import com.thenetcircle.dinoandroidframework.dino.interfaces.DinoLoginListener
-import com.thenetcircle.dinoandroidframework.dino.model.data.LoginModel
-import com.thenetcircle.dinoandroidframework.dino.model.results.LoginModelResult
+import com.thenetcircle.dino.DinoError
+import com.thenetcircle.dino.interfaces.DinoErrorListener
+import com.thenetcircle.dino.interfaces.DinoLoginListener
+import com.thenetcircle.dino.model.data.LoginModel
+import com.thenetcircle.dino.model.results.LoginModelResult
 import com.thenetcircle.dinoandroidframework.fragment.TNCLoginFragment
 
 class TNCMainActivity : TNCBaseActivity(), TNCLoginFragment.LoginFragmentListener, DinoLoginListener, DinoErrorListener {

@@ -14,16 +14,17 @@
  * limitations under the License.
  */
 
-package com.thenetcircle.dinoandroidframework
+package com.thenetcircle.dino.model.results
 
-import android.app.Application
-import com.thenetcircle.dino.DinoChatConnection
+import com.google.gson.annotations.SerializedName
+import java.io.Serializable
 
 /**
- * Created by aaron on 11/01/2018.
+ * Created by aaron on 10/01/2018.
  */
-class TNCApplication : Application() {
-    companion object {
-        var dinoConnection: DinoChatConnection = DinoChatConnection()
-    }
+open class ModelResultParent : Serializable {
+
+    //always pass unless otherwise told.
+    @SerializedName("status_code")
+    val statusCode: Int? = 200
 }

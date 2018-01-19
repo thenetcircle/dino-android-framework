@@ -14,16 +14,20 @@
  * limitations under the License.
  */
 
-package com.thenetcircle.dinoandroidframework
+package com.thenetcircle.dino;
 
-import android.app.Application
-import com.thenetcircle.dino.DinoChatConnection
+import org.junit.Test;
+
+import static org.junit.Assert.*;
 
 /**
- * Created by aaron on 11/01/2018.
+ * Example local unit test, which will execute on the development machine (host).
+ *
+ * @see <a href="http://d.android.com/tools/testing">Testing documentation</a>
  */
-class TNCApplication : Application() {
-    companion object {
-        var dinoConnection: DinoChatConnection = DinoChatConnection()
+public class ExampleUnitTest {
+    @Test
+    public void addition_isCorrect() throws Exception {
+        assertEquals(4, 2 + 2);
     }
 }

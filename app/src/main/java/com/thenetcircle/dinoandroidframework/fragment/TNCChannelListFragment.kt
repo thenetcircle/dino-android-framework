@@ -25,8 +25,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import com.thenetcircle.dinoandroidframework.R
-import com.thenetcircle.dinoandroidframework.dino.model.results.ChannelAttachment
-import com.thenetcircle.dinoandroidframework.dino.model.results.ChannelListModelResult
+import com.thenetcircle.dino.model.results.ChannelAttachment
+import com.thenetcircle.dino.model.results.ChannelListModelResult
 import kotlinx.android.synthetic.main.fragment_channel_list.*
 import java.nio.charset.Charset
 

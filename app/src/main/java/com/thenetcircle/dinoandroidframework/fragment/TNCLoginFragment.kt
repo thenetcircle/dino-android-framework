@@ -25,8 +25,8 @@ import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import com.thenetcircle.dinoandroidframework.R
 import com.thenetcircle.dinoandroidframework.activity.TNCBaseActivity
-import com.thenetcircle.dinoandroidframework.dino.DinoError
-import com.thenetcircle.dinoandroidframework.dino.model.data.LoginModel
+import com.thenetcircle.dino.DinoError
+import com.thenetcircle.dino.model.data.LoginModel
 import kotlinx.android.synthetic.main.fragment_login.*
 
 /**
@@ -60,7 +60,7 @@ class TNCLoginFragment : Fragment() {
         server_url.setText("http://10.60.1.124:9210/ws")
         user_id.setText("179677")
         display_name.setText("Aaron")
-        token.setText("8274f955f1c3b88cd99d309e56e88d104de66834")
+        token.setText("6982ccc3e246b4df24dbb0d4fa5cbbf5906fef5a")
         connectBtn.setOnClickListener({
             if (activity.currentFocus != null && activity.currentFocus.windowToken != null) {
                 val imm = activity.applicationContext.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager

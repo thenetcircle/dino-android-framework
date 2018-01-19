@@ -20,7 +20,7 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.thenetcircle.dinoandroidframework.R
-import com.thenetcircle.dinoandroidframework.dino.model.results.MessageReceived
+import com.thenetcircle.dino.model.results.MessageReceived
 
 /**
  * Created by aaron on 16/01/2018.

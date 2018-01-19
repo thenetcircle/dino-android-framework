@@ -27,8 +27,8 @@ import android.view.ViewGroup
 import com.thenetcircle.dinoandroidframework.R
 import com.thenetcircle.dinoandroidframework.activity.TNCBaseActivity
 import com.thenetcircle.dinoandroidframework.adapter.TNCChatRoomAdapter
-import com.thenetcircle.dinoandroidframework.dino.model.results.JoinRoomResultModel
-import com.thenetcircle.dinoandroidframework.dino.model.results.MessageReceived
+import com.thenetcircle.dino.model.results.JoinRoomResultModel
+import com.thenetcircle.dino.model.results.MessageReceived
 import kotlinx.android.synthetic.main.fragment_chat_room.*
 
 /**

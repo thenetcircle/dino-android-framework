@@ -18,15 +18,15 @@ package com.thenetcircle.dinoandroidframework.activity
 
 import android.os.Bundle
 import android.widget.Toast
-import com.thenetcircle.dinoandroidframework.dino.DinoError
-import com.thenetcircle.dinoandroidframework.dino.interfaces.DinoErrorListener
-import com.thenetcircle.dinoandroidframework.dino.interfaces.DinoJoinRoomListener
-import com.thenetcircle.dinoandroidframework.dino.interfaces.DinoMessageReceivedListener
-import com.thenetcircle.dinoandroidframework.dino.model.data.ChatSendMessage
-import com.thenetcircle.dinoandroidframework.dino.model.data.JoinRoomModel
-import com.thenetcircle.dinoandroidframework.dino.model.data.LeaveRoomModel
-import com.thenetcircle.dinoandroidframework.dino.model.results.JoinRoomResultModel
-import com.thenetcircle.dinoandroidframework.dino.model.results.MessageReceived
+import com.thenetcircle.dino.DinoError
+import com.thenetcircle.dino.interfaces.DinoErrorListener
+import com.thenetcircle.dino.interfaces.DinoJoinRoomListener
+import com.thenetcircle.dino.interfaces.DinoMessageReceivedListener
+import com.thenetcircle.dino.model.data.ChatSendMessage
+import com.thenetcircle.dino.model.data.JoinRoomModel
+import com.thenetcircle.dino.model.data.LeaveRoomModel
+import com.thenetcircle.dino.model.results.JoinRoomResultModel
+import com.thenetcircle.dino.model.results.MessageReceived
 import com.thenetcircle.dinoandroidframework.fragment.TNCChatRoomFragment
 
 /**
@@ -50,17 +50,16 @@ class TNCChatRoomActivity : TNCBaseActivity(), DinoMessageReceivedListener, Dino
 
     override fun onResume() {
         super.onResume()
-        dinoChatConnection.joinRoom(JoinRoomModel(roomID!!), object:DinoJoinRoomListener {
+        dinoChatConnection.joinRoom(JoinRoomModel(roomID!!), object : DinoJoinRoomListener {
             override fun onResult(result: JoinRoomResultModel) {
                 chatRoomFragment.room = result
             }
         }, this)
-        dinoChatConnection.registerMessageListener(this, this)
+
     }
 
     override fun onPause() {
         super.onPause()
-        dinoChatConnection.unRegisterMessageListener()
         dinoChatConnection.leaveRoom(LeaveRoomModel(roomID!!), this)
     }
 
@@ -70,9 +69,9 @@ class TNCChatRoomActivity : TNCBaseActivity(), DinoMessageReceivedListener, Dino
 
     override fun onResult(result: MessageReceived) {
         chatRoomFragment.displayMessage(result)
+
+
     }
-
-
     override fun onError(error: DinoError) {
         Toast.makeText(this, error.toString(), Toast.LENGTH_LONG).show()
     }
