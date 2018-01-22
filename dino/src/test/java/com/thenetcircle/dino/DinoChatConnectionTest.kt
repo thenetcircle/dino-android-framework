@@ -21,6 +21,7 @@ import com.thenetcircle.dino.interfaces.DinoConnectionListener
 import com.thenetcircle.dino.interfaces.DinoErrorListener
 import io.socket.client.Socket
 import io.socket.emitter.Emitter
+import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -59,13 +60,14 @@ class DinoChatConnectionTest {
         PowerMockito.mockStatic(Looper::class.java)
         Mockito.`when`(Looper.getMainLooper()).thenReturn(looper)
         Mockito.`when`(Looper.myLooper()).thenReturn(looper)
+
+        dinoChatConnection.connectionListener = dinoConnectionListener
     }
 
     inline fun <reified T : Any> argumentCaptor() = ArgumentCaptor.forClass(T::class.java)
 
     @Test
     fun checkConnectionCallback() {
-        dinoChatConnection.connectionListener = dinoConnectionListener
         dinoChatConnection.startConnection(socket, dinoErrorListener)
 
         Mockito.verify(socket).on(Mockito.eq(Socket.EVENT_DISCONNECT), Mockito.any())
@@ -79,8 +81,30 @@ class DinoChatConnectionTest {
     }
 
     @Test
+    fun checkConnectionErrorCallback() {
+        dinoChatConnection.startConnection(socket, dinoErrorListener)
+        val captor = argumentCaptor<Emitter.Listener>()
+        Mockito.verify(socket).on(Mockito.eq(Socket.EVENT_CONNECT_ERROR), captor.capture())
+        captor.value.call()
+        val error = DinoError.EVENT_CONNECT_ERROR
+        Mockito.verify(dinoErrorListener).onError(error)
+        Mockito.verify(dinoConnectionListener).onDisconnect()
+    }
+
+    @Test
+    fun checkConnectionDisconnectCallback() {
+        dinoChatConnection.startConnection(socket, dinoErrorListener)
+        val captor = argumentCaptor<Emitter.Listener>()
+        Mockito.verify(socket).on(Mockito.eq(Socket.EVENT_DISCONNECT), captor.capture())
+        captor.value.call()
+        val error = DinoError.EVENT_DISCONNECT
+        Mockito.verify(dinoErrorListener).onError(error)
+        Mockito.verify(dinoConnectionListener).onDisconnect()
+    }
+
+
+    @Test
     fun checkConnectionDisconnect() {
-        dinoChatConnection.connectionListener = dinoConnectionListener
         dinoChatConnection.startConnection(socket, dinoErrorListener)
         dinoChatConnection.disconnect()
         Mockito.verify(socket).off(Mockito.eq(Socket.EVENT_DISCONNECT))
@@ -88,4 +112,26 @@ class DinoChatConnectionTest {
         Mockito.verify(socket).disconnect()
     }
 
+    @Test
+    fun checkGeneralChecks() {
+        Assert.assertFalse(dinoChatConnection.generalChecks(dinoErrorListener))
+        var error = DinoError.NO_SOCKET_ERROR
+        Mockito.verify(dinoErrorListener).onError(error)
+
+        dinoChatConnection.startConnection(socket, dinoErrorListener)
+
+        Assert.assertFalse(dinoChatConnection.generalChecks(dinoErrorListener))
+        error = DinoError.LOCAL_NOT_LOGGED_IN
+        Mockito.verify(dinoErrorListener).onError(error)
+
+        dinoChatConnection.isLoggedIn = true
+
+        Assert.assertTrue(dinoChatConnection.generalChecks(dinoErrorListener))
+    }
+
+    @Test(expected = IllegalArgumentException::class)
+    fun checkListenerIsExplicitlySet() {
+        dinoChatConnection.connectionListener = null
+        dinoChatConnection.startConnection(socket, dinoErrorListener)
+    }
 }

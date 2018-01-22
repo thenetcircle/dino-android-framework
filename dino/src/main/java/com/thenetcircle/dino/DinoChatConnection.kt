@@ -51,16 +51,23 @@ class DinoChatConnection {
         if (connectionListener == null) {
             throw IllegalArgumentException("DinoConnectionListener must be set")
         }
-
         socket = newSocket
 
         socket!!.on(Socket.EVENT_CONNECT_ERROR) {
-            Handler(Looper.getMainLooper()).post({ errorListener.onError(DinoError.EVENT_CONNECT_ERROR) })
+            if(Looper.getMainLooper() == Looper.myLooper()) {
+                errorListener.onError(DinoError.EVENT_CONNECT_ERROR)
+            } else {
+                Handler(Looper.getMainLooper()).post({ errorListener.onError(DinoError.EVENT_CONNECT_ERROR)})
+            }
             connectionListener?.onDisconnect()
         }
 
         socket!!.on(Socket.EVENT_DISCONNECT) {
-            Handler(Looper.getMainLooper()).post({ errorListener.onError(DinoError.EVENT_DISCONNECT) })
+            if(Looper.getMainLooper() == Looper.myLooper()) {
+                errorListener.onError(DinoError.EVENT_DISCONNECT)
+            } else {
+                Handler(Looper.getMainLooper()).post({ errorListener.onError(DinoError.EVENT_DISCONNECT) })
+            }
             connectionListener?.onDisconnect()
         }
 
@@ -183,13 +190,13 @@ class DinoChatConnection {
         }
     }
 
-    private fun generalChecks(@NonNull connectionListener: DinoErrorListener): Boolean {
+    fun generalChecks(@NonNull connectionListener: DinoErrorListener): Boolean {
         if (socket == null) {
             connectionListener.onError(DinoError.NO_SOCKET_ERROR)
             return false
         }
 
-        if (isLoggedIn == false) {
+        if (!isLoggedIn) {
             connectionListener.onError(DinoError.LOCAL_NOT_LOGGED_IN)
             return false
         }
