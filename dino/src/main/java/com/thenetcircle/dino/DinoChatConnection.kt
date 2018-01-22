@@ -44,11 +44,15 @@ class DinoChatConnection {
     var messageReceivedListener : DinoMessageReceivedListener? = null
 
     fun startConnection(url: String, @NonNull errorListener: DinoErrorListener) {
+        startConnection(connectNewSocket(url), errorListener)
+    }
+
+    fun startConnection(newSocket: Socket, @NonNull errorListener: DinoErrorListener) {
         if (connectionListener == null) {
             throw IllegalArgumentException("DinoConnectionListener must be set")
         }
 
-        socket = connectNewSocket(url)
+        socket = newSocket
 
         socket!!.on(Socket.EVENT_CONNECT_ERROR) {
             Handler(Looper.getMainLooper()).post({ errorListener.onError(DinoError.EVENT_CONNECT_ERROR) })
@@ -62,7 +66,11 @@ class DinoChatConnection {
 
         socket!!.on("gn_connect") {
             socket!!.off("gn_connect")
-            Handler(Looper.getMainLooper()).post({ connectionListener?.onConnect() })
+            if(Looper.getMainLooper() == Looper.myLooper()) {
+                connectionListener?.onConnect()
+            } else {
+                Handler(Looper.getMainLooper()).post({ connectionListener?.onConnect() })
+            }
         }
         socket!!.connect()
     }
@@ -188,7 +196,7 @@ class DinoChatConnection {
         return true
     }
 
-    private fun connectNewSocket(url: String): Socket {
+    fun connectNewSocket(url: String): Socket {
         val opts = IO.Options()
         opts.transports = arrayOf(WebSocket.NAME)
         opts.forceNew = true
