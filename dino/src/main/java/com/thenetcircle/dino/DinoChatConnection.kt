@@ -56,19 +56,26 @@ class DinoChatConnection {
         socket!!.on(Socket.EVENT_CONNECT_ERROR) {
             if(Looper.getMainLooper() == Looper.myLooper()) {
                 errorListener.onError(DinoError.EVENT_CONNECT_ERROR)
+                connectionListener?.onDisconnect()
             } else {
-                Handler(Looper.getMainLooper()).post({ errorListener.onError(DinoError.EVENT_CONNECT_ERROR)})
+                Handler(Looper.getMainLooper()).post({
+                    errorListener.onError(DinoError.EVENT_CONNECT_ERROR)
+                    connectionListener?.onDisconnect()
+                })
             }
-            connectionListener?.onDisconnect()
         }
 
         socket!!.on(Socket.EVENT_DISCONNECT) {
             if(Looper.getMainLooper() == Looper.myLooper()) {
                 errorListener.onError(DinoError.EVENT_DISCONNECT)
+                connectionListener?.onDisconnect()
             } else {
-                Handler(Looper.getMainLooper()).post({ errorListener.onError(DinoError.EVENT_DISCONNECT) })
+                Handler(Looper.getMainLooper()).post({
+                    errorListener.onError(DinoError.EVENT_DISCONNECT)
+                    connectionListener?.onDisconnect()
+                })
             }
-            connectionListener?.onDisconnect()
+
         }
 
         socket!!.on("gn_connect") {

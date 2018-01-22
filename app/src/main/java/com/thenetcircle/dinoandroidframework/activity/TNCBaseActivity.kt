@@ -49,7 +49,8 @@ open class TNCBaseActivity : AppCompatActivity(), DinoConnectionListener, DinoEr
         dinoChatConnection.messageReceivedListener = object : DinoMessageReceivedListener {
             override fun onResult(result: MessageReceived) {
                 val text = String(Base64.decode(result.objectX?.content, Base64.NO_WRAP))
-                Toast.makeText(this@TNCBaseActivity, "Message Received: " + text, Toast.LENGTH_LONG).show()
+                val senderID = result.actor?.id
+                Toast.makeText(this@TNCBaseActivity, "Message Received: $text From User: $senderID", Toast.LENGTH_LONG).show()
             }
         }
     }

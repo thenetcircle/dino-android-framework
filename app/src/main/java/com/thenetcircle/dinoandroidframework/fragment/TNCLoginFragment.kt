@@ -60,7 +60,7 @@ class TNCLoginFragment : Fragment() {
         server_url.setText("http://10.60.1.124:9210/ws")
         user_id.setText("179677")
         display_name.setText("Aaron")
-        token.setText("6982ccc3e246b4df24dbb0d4fa5cbbf5906fef5a")
+        token.setText("be2838cdc26c9a27279b02416c20787dd2c6bf91")
         connectBtn.setOnClickListener({
             if (activity.currentFocus != null && activity.currentFocus.windowToken != null) {
                 val imm = activity.applicationContext.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
