@@ -19,13 +19,16 @@ package com.thenetcircle.dino
 import android.os.Handler
 import android.os.Looper
 import android.support.annotation.NonNull
+import android.util.Log
 import com.google.gson.GsonBuilder
 import com.thenetcircle.dino.interfaces.*
 import com.thenetcircle.dino.model.data.*
 import com.thenetcircle.dino.model.results.LoginModelResult
+import com.thenetcircle.dino.model.results.MessageReceived
 import com.thenetcircle.dino.model.results.ModelResultParent
 import io.socket.client.IO
 import io.socket.client.Socket
+import io.socket.emitter.Emitter
 import io.socket.engineio.client.transports.WebSocket
 import org.json.JSONObject
 
@@ -36,12 +39,27 @@ import org.json.JSONObject
 class DinoChatConnection {
     private val gson = GsonBuilder().disableHtmlEscaping().create()
     private var socket: Socket? = null
+
+    var currentLoggedInUser: LoginModelResult? = null
+
     var isLoggedIn: Boolean = false
+        get() = currentLoggedInUser != null
+
     var isConnected: Boolean = false
         get() = if (socket != null) socket!!.connected() else false
 
     var connectionListener: DinoConnectionListener? = null
     var messageReceivedListener : DinoMessageReceivedListener? = null
+
+    var dinoConfig : DinoConfig
+
+    constructor() {
+        this.dinoConfig = DinoConfig()
+    }
+
+    constructor(dinoConfig: DinoConfig) {
+        this.dinoConfig = dinoConfig
+    }
 
     fun startConnection(url: String, @NonNull errorListener: DinoErrorListener) {
         startConnection(connectNewSocket(url), errorListener)
@@ -79,7 +97,7 @@ class DinoChatConnection {
         }
 
         socket!!.on("gn_connect") {
-            socket!!.off("gn_connect")
+            off("gn_connect")
             if(Looper.getMainLooper() == Looper.myLooper()) {
                 connectionListener?.onConnect()
             } else {
@@ -87,6 +105,12 @@ class DinoChatConnection {
             }
         }
         socket!!.connect()
+    }
+
+    private fun off(event:String) {
+        if(socket != null) {
+            socket!!.off(event)
+        }
     }
 
     private inline fun <reified T : ModelResultParent> processResult(@NonNull data: String, @NonNull listener: DinoParentInterface<T>, @NonNull errorListener: DinoErrorListener): Boolean {
@@ -101,7 +125,6 @@ class DinoChatConnection {
         return false
     }
 
-
     private inline fun <D : Any, reified R : ModelResultParent> processRequest(@NonNull requestEvent: String, @NonNull responseEvent: String, @NonNull dataModel: D, @NonNull listener: DinoParentInterface<R>, @NonNull errorListener: DinoErrorListener) {
         if (socket == null) {
             errorListener.onError(DinoError.NO_SOCKET_ERROR)
@@ -109,7 +132,7 @@ class DinoChatConnection {
         }
         socket!!.on(responseEvent) { args ->
             if (args.isNotEmpty()) {
-                socket!!.off(responseEvent)
+                off(responseEvent)
                 processResult(args[0].toString(), listener, errorListener)
             } else {
                 errorListener.onError(DinoError.UNKNOWN_ERROR)
@@ -120,10 +143,9 @@ class DinoChatConnection {
     }
 
     fun login(loginModel: LoginModel, @NonNull loginListener: DinoLoginListener, @NonNull errorListener: DinoErrorListener) {
-
         processRequest("login", "gn_login", loginModel, object : DinoLoginListener {
             override fun onResult(result: LoginModelResult) {
-                isLoggedIn = true
+                currentLoggedInUser = result
                 loginListener.onResult(result)
             }
         }, errorListener)
@@ -154,13 +176,33 @@ class DinoChatConnection {
         processRequest("history", "gn_history", chatHistory, dinoChatHistoryListener, errorListener)
     }
 
+    fun sendMessageResponse(@NonNull deliveryReceiptModel: DeliveryReceiptModel, @NonNull errorListener: DinoErrorListener) {
+        generalChecks(errorListener)
+        socket!!.emit(deliveryReceiptModel.verb, JSONObject(gson.toJson(deliveryReceiptModel)))
+    }
+
     fun sendMessage(chatSendMessage: ChatSendMessage, @NonNull errorListener: DinoErrorListener) {
         generalChecks(errorListener)
+        socket!!.emit("message", JSONObject(gson.toJson(chatSendMessage)))
+    }
+
+    fun registerMessageSentListener(@NonNull dinoMessageReceivedListener: DinoChatMessageListener, @NonNull errorListener: DinoErrorListener) {
         if (socket == null) {
             errorListener.onError(DinoError.NO_SOCKET_ERROR)
             return
         }
-        socket!!.emit("message", JSONObject(gson.toJson(chatSendMessage)))
+        socket!!.on("gn_message") { args ->
+            Handler(Looper.getMainLooper()).post({
+                processResult(args[0].toString(), dinoMessageReceivedListener, errorListener)
+            })
+        }
+    }
+
+    fun unRegisterMessageSentListener() {
+        if (socket == null) {
+            return
+        }
+        socket!!.off("gn_message")
     }
 
     fun registerMessageListener(@NonNull errorListener: DinoErrorListener) {
@@ -171,9 +213,36 @@ class DinoChatConnection {
 
         socket!!.on("message") { args ->
             Handler(Looper.getMainLooper()).post({
-                processResult(args[0].toString(), messageReceivedListener!!, errorListener)
+                processResult(args[0].toString(), object:DinoParentInterface<MessageReceived> {
+                    override fun onResult(result: MessageReceived) {
+                        if(dinoConfig.autoSendMessageReceivedACK) {
+                            if(result.actor?.id != currentLoggedInUser?.data?.actor?.id) {
+                                val roomID = result.target?.id
+                                val delModel = DeliveryReceiptModel(DeliveryReceiptModel.DeliveryState.RECEIVED, roomID!!, DeliveryReceiptModel.DeliveryEntry(result.id!!))
+                                sendMessageResponse(delModel, errorListener)
+                            }
+                        }
+                        //send result to listener
+                        messageReceivedListener!!.onResult(result)
+                    }
+                }, errorListener)
             })
         }
+    }
+
+    fun registerMessageStatusUpdateListener(@NonNull listener: DinoMessageStatusUpdateListener, @NonNull errorListener: DinoErrorListener) {
+        if (socket == null) {
+            errorListener.onError(DinoError.NO_SOCKET_ERROR)
+            return
+        }
+
+        val emitter = Emitter.Listener { args ->
+            Log.d("emitter", args[0].toString())
+        }
+
+        socket!!.on("gn_message_read", emitter)
+        socket!!.on("gn_message_received", emitter)
+
     }
 
     fun leaveRoom(leaveRoomModel: LeaveRoomModel, @NonNull errorListener: DinoErrorListener) {
@@ -193,6 +262,7 @@ class DinoChatConnection {
             socket!!.off(Socket.EVENT_DISCONNECT)
             socket!!.off(Socket.EVENT_CONNECT_ERROR)
             socket!!.disconnect()
+            currentLoggedInUser = null
             socket = null
         }
     }

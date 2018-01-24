@@ -17,26 +17,44 @@
 package com.thenetcircle.dinoandroidframework.adapter
 
 import android.support.v7.widget.RecyclerView
+import android.util.Base64
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import com.thenetcircle.dinoandroidframework.R
+import com.thenetcircle.dino.model.data.DeliveryReceiptModel
+import com.thenetcircle.dino.model.results.JoinRoomObjectAttachment
 import com.thenetcircle.dino.model.results.MessageReceived
+import com.thenetcircle.dinoandroidframework.R
 
 /**
  * Created by aaron on 16/01/2018.
  */
 class TNCChatRoomAdapter(myUserID: Int) : RecyclerView.Adapter<TNCChatViewHolderParent>() {
 
-    var messages: ArrayList<MessageReceived> = ArrayList()
+
+    class CHatMessage(var messageID: String, var content: String, var userID: Int, var state: DeliveryReceiptModel.DeliveryState)
+
+
+    var messages: ArrayList<CHatMessage> = ArrayList()
     var myID: Int = myUserID
 
     fun addMessage(message: MessageReceived) {
-        messages.add(message)
+        messages.add(0, CHatMessage(message.id!!, String(Base64.decode(message.objectX?.content, Base64.NO_WRAP)),
+                message?.actor?.id!!.toInt(), DeliveryReceiptModel.DeliveryState.UNKNOWN))
         notifyDataSetChanged()
     }
 
+    fun addMessage(message: JoinRoomObjectAttachment) {
+        messages.add(0, CHatMessage(message.id!!, String(Base64.decode(message.content, Base64.NO_WRAP)),
+                message.author?.id.toInt(), DeliveryReceiptModel.DeliveryState.UNKNOWN))
+        notifyDataSetChanged()
+    }
+
+    fun updateMessageStatus(messageID: String, state: DeliveryReceiptModel.DeliveryState) {
+        messages.filter { it.messageID == messageID }.forEach { it.state = state }
+    }
+
     override fun onBindViewHolder(holder: TNCChatViewHolderParent, position: Int) {
-        holder.bind(messages[position])
+        holder.bind(messages[position].content)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TNCChatViewHolderParent {
@@ -50,7 +68,7 @@ class TNCChatRoomAdapter(myUserID: Int) : RecyclerView.Adapter<TNCChatViewHolder
 
     override fun getItemViewType(position: Int): Int {
         val message = messages.get(position)
-        if (message?.actor?.id?.toInt() == myID) {
+        if (message.userID == myID) {
             return 0
         }
         return 1

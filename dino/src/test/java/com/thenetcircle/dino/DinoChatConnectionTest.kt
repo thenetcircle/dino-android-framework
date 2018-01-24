@@ -19,6 +19,7 @@ package com.thenetcircle.dino
 import android.os.Looper
 import com.thenetcircle.dino.interfaces.DinoConnectionListener
 import com.thenetcircle.dino.interfaces.DinoErrorListener
+import com.thenetcircle.dino.model.results.LoginModelResult
 import io.socket.client.Socket
 import io.socket.emitter.Emitter
 import org.junit.Assert
@@ -124,7 +125,7 @@ class DinoChatConnectionTest {
         error = DinoError.LOCAL_NOT_LOGGED_IN
         Mockito.verify(dinoErrorListener).onError(error)
 
-        dinoChatConnection.isLoggedIn = true
+        dinoChatConnection.currentLoggedInUser = LoginModelResult()
 
         Assert.assertTrue(dinoChatConnection.generalChecks(dinoErrorListener))
     }

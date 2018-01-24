@@ -17,15 +17,17 @@
 package com.thenetcircle.dino.model.data
 
 import com.google.gson.annotations.SerializedName
+import com.thenetcircle.dino.DinoConfig
 
 
 /**
  * Created by aaron on 18/01/2018.
  */
 
-class DeliveryReciptModel(deliveryState: DeliveryState, roomID: String, messageIDs: List<DeliveryEntry>) {
+class DeliveryReceiptModel private constructor(deliveryState: DeliveryState, roomID: String) {
 
     enum class DeliveryState(val state: String) {
+        UNKNOWN("unknown"),
         RECEIVED("receive"),
         READ("read")
     }
@@ -35,7 +37,18 @@ class DeliveryReciptModel(deliveryState: DeliveryState, roomID: String, messageI
     @SerializedName("target")
     val target: DeliveryTarget = DeliveryTarget(roomID)
     @SerializedName("object")
-    val deliveryObject: DeliveryObject = DeliveryObject(messageIDs)
+    var deliveryObject: DeliveryObject? = null
+
+    constructor(deliveryState: DeliveryState, roomID: String, message: DeliveryEntry) : this(deliveryState, roomID) {
+        val list = ArrayList<DeliveryEntry>()
+        list.add(message)
+        deliveryObject = DeliveryObject(list)
+    }
+
+    constructor(deliveryState: DeliveryState, roomID: String, messages: List<DeliveryEntry>) : this(deliveryState, roomID) {
+        deliveryObject = DeliveryObject(messages)
+    }
+
 
     class DeliveryObject(messageIDs: List<DeliveryEntry>) {
         @SerializedName("attachments")

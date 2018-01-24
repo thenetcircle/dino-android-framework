@@ -21,8 +21,6 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.util.Base64
 import android.widget.Toast
-import com.thenetcircle.dinoandroidframework.R
-import com.thenetcircle.dinoandroidframework.TNCApplication
 import com.thenetcircle.dino.DinoChatConnection
 import com.thenetcircle.dino.DinoError
 import com.thenetcircle.dino.interfaces.DinoConnectionListener
@@ -30,11 +28,14 @@ import com.thenetcircle.dino.interfaces.DinoErrorListener
 import com.thenetcircle.dino.interfaces.DinoMessageReceivedListener
 import com.thenetcircle.dino.model.results.LoginModelResult
 import com.thenetcircle.dino.model.results.MessageReceived
+import com.thenetcircle.dinoandroidframework.R
+import com.thenetcircle.dinoandroidframework.TNCApplication
 
 /**
  * Created by aaron on 11/01/2018.
  */
-open class TNCBaseActivity : AppCompatActivity(), DinoConnectionListener, DinoErrorListener {
+open class TNCBaseActivity : AppCompatActivity(), DinoConnectionListener, DinoErrorListener, DinoMessageReceivedListener {
+
     companion object {
         var loginObject: LoginModelResult? = null
     }
@@ -45,19 +46,12 @@ open class TNCBaseActivity : AppCompatActivity(), DinoConnectionListener, DinoEr
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         dinoChatConnection.connectionListener = this
-
-        dinoChatConnection.messageReceivedListener = object : DinoMessageReceivedListener {
-            override fun onResult(result: MessageReceived) {
-                val text = String(Base64.decode(result.objectX?.content, Base64.NO_WRAP))
-                val senderID = result.actor?.id
-                Toast.makeText(this@TNCBaseActivity, "Message Received: $text From User: $senderID", Toast.LENGTH_LONG).show()
-            }
-        }
+        dinoChatConnection.messageReceivedListener = this
     }
 
     override fun onResume() {
         super.onResume()
-        if(dinoChatConnection.isLoggedIn) {
+        if (dinoChatConnection.isLoggedIn) {
             dinoChatConnection.registerMessageListener(this)
         }
     }
@@ -84,6 +78,11 @@ open class TNCBaseActivity : AppCompatActivity(), DinoConnectionListener, DinoEr
         Toast.makeText(this, "You have been Disconnected", Toast.LENGTH_LONG).show()
     }
 
+    override fun onResult(result: MessageReceived) {
+        val text = String(Base64.decode(result.objectX?.content, Base64.NO_WRAP))
+        val senderID = result.actor?.id
+        Toast.makeText(this, "Message Received: $text From User: $senderID", Toast.LENGTH_LONG).show()
+    }
 
 
     override fun onError(error: DinoError) {

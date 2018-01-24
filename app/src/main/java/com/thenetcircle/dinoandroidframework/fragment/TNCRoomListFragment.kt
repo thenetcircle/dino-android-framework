@@ -25,9 +25,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import com.thenetcircle.dinoandroidframework.R
 import com.thenetcircle.dino.model.results.RoomListModelResult
 import com.thenetcircle.dino.model.results.RoomObject
+import com.thenetcircle.dinoandroidframework.R
 import kotlinx.android.synthetic.main.fragment_room_list.*
 import java.nio.charset.Charset
 
@@ -37,7 +37,7 @@ import java.nio.charset.Charset
 class TNCRoomListFragment : Fragment(), View.OnClickListener {
 
     interface RoomListListener {
-        fun createRoom(roomName: String)
+        fun createRoom(roomName: String, toUserID: Int)
         fun joinRoom(roomID: String)
     }
 
@@ -50,8 +50,8 @@ class TNCRoomListFragment : Fragment(), View.OnClickListener {
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         create_room.setOnClickListener {
-            if (!TextUtils.isEmpty(room_name.text.toString())) {
-                roomListInterface?.createRoom(room_name.text.toString())
+            if (!TextUtils.isEmpty(room_name.text) && !TextUtils.isEmpty(user_id.text)) {
+                roomListInterface?.createRoom(room_name.text.toString(), user_id.text.toString().toInt())
             }
         }
         loadingRooms()

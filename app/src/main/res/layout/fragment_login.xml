@@ -16,17 +16,37 @@
     <LinearLayout
         android:id="@+id/user_details"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
+        android:layout_height="wrap_content"
         android:background="#BBBBBB"
         android:orientation="vertical"
         android:padding="8dp">
 
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="36dp"
+            android:orientation="horizontal">
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="100dp"
+            android:layout_height="match_parent"
             android:text="@string/user_details"
+            android:gravity="center"
             android:textSize="16sp" />
+
+            <Button
+                android:layout_marginLeft="16dp"
+                android:id="@+id/userOne"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="179677" />
+
+            <Button
+                android:id="@+id/userTwo"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="9" />
+
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"

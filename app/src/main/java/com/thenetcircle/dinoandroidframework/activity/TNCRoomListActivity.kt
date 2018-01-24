@@ -46,8 +46,8 @@ class TNCRoomListActivity : TNCBaseActivity(), DinoRoomEntryListener, DinoErrorL
         fragmentTrans(roomListFragment)
     }
 
-    override fun createRoom(roomName: String) {
-        dinoChatConnection.createPrivateRoom(CreateRoomPrivateModel(intent.extras.getString(CHANNELID), roomName, loginObject!!.data!!.actor.id.toInt(), 179906), object : DinoRoomCreationListener {
+    override fun createRoom(roomName: String, toUserID: Int) {
+        dinoChatConnection.createPrivateRoom(CreateRoomPrivateModel(intent.extras.getString(CHANNELID), roomName, loginObject!!.data!!.actor.id.toInt(), toUserID), object : DinoRoomCreationListener {
             override fun onResult(result: RoomCreateResultModel) {
                 dinoChatConnection.getRoomList(RoomListModel(intent.extras.getString(CHANNELID)), this@TNCRoomListActivity, this@TNCRoomListActivity)
             }

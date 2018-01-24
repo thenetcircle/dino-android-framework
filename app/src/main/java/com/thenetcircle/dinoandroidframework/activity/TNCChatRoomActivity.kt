@@ -17,26 +17,28 @@
 package com.thenetcircle.dinoandroidframework.activity
 
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import com.thenetcircle.dino.DinoError
+import com.thenetcircle.dino.interfaces.DinoChatMessageListener
 import com.thenetcircle.dino.interfaces.DinoErrorListener
 import com.thenetcircle.dino.interfaces.DinoJoinRoomListener
-import com.thenetcircle.dino.interfaces.DinoMessageReceivedListener
+import com.thenetcircle.dino.interfaces.DinoMessageStatusUpdateListener
 import com.thenetcircle.dino.model.data.ChatSendMessage
+import com.thenetcircle.dino.model.data.DeliveryReceiptModel
 import com.thenetcircle.dino.model.data.JoinRoomModel
 import com.thenetcircle.dino.model.data.LeaveRoomModel
-import com.thenetcircle.dino.model.results.JoinRoomResultModel
-import com.thenetcircle.dino.model.results.MessageReceived
+import com.thenetcircle.dino.model.results.*
 import com.thenetcircle.dinoandroidframework.fragment.TNCChatRoomFragment
 
 /**
  * Created by aaron on 16/01/2018.
  */
-class TNCChatRoomActivity : TNCBaseActivity(), DinoMessageReceivedListener, DinoErrorListener, TNCChatRoomFragment.ChatRoomListener {
+class TNCChatRoomActivity : TNCBaseActivity(), DinoErrorListener, TNCChatRoomFragment.ChatRoomListener, DinoChatMessageListener {
     private val chatRoomFragment = TNCChatRoomFragment()
 
     companion object {
-        val ROOM_ID: String = "ROOM_ID"
+        const val ROOM_ID: String = "ROOM_ID"
     }
 
     private var roomID: String? = ""
@@ -44,7 +46,6 @@ class TNCChatRoomActivity : TNCBaseActivity(), DinoMessageReceivedListener, Dino
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         fragmentTrans(chatRoomFragment)
-        //chatRoomFragment.room = intent.extras.get(ROOM_EXTRA) as JoinRoomResultModel
         roomID = intent.extras.get(ROOM_ID) as String?
     }
 
@@ -53,13 +54,29 @@ class TNCChatRoomActivity : TNCBaseActivity(), DinoMessageReceivedListener, Dino
         dinoChatConnection.joinRoom(JoinRoomModel(roomID!!), object : DinoJoinRoomListener {
             override fun onResult(result: JoinRoomResultModel) {
                 chatRoomFragment.room = result
+                result.data?.roomObjects?.attachments!!
+                        .filter { it.objectType == "history" }
+                        .forEach { processHistory(it) }
+
             }
         }, this)
+        dinoChatConnection.registerMessageSentListener(this, this)
+        dinoChatConnection.registerMessageStatusUpdateListener(object:DinoMessageStatusUpdateListener {
+            override fun onResult(result: MessageStatus) {
 
+            }
+        }, this)
+    }
+
+    private fun processHistory(history: JoinRoomAttachment) {
+        history.attachments
+                .reversed()
+                .forEach { chatRoomFragment.displayMessage(it) }
     }
 
     override fun onPause() {
         super.onPause()
+        dinoChatConnection.unRegisterMessageSentListener()
         dinoChatConnection.leaveRoom(LeaveRoomModel(roomID!!), this)
     }
 
@@ -68,11 +85,18 @@ class TNCChatRoomActivity : TNCBaseActivity(), DinoMessageReceivedListener, Dino
     }
 
     override fun onResult(result: MessageReceived) {
+        //as we are on the chat screen, send the read
+        val roomID = result.target?.id
+        val delModel = DeliveryReceiptModel(DeliveryReceiptModel.DeliveryState.READ, roomID!!, DeliveryReceiptModel.DeliveryEntry(result.id!!))
+        dinoChatConnection.sendMessageResponse(delModel, this)
         chatRoomFragment.displayMessage(result)
-
-
     }
+
     override fun onError(error: DinoError) {
         Toast.makeText(this, error.toString(), Toast.LENGTH_LONG).show()
+    }
+
+    override fun onResult(result: ChatSendMessageResult) {
+        Log.d("TNCChatRoomActivity", "server received message")
     }
 }

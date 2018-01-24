@@ -14,21 +14,12 @@
  * limitations under the License.
  */
 
-package com.thenetcircle.dinoandroidframework.adapter
-
-import android.support.v7.widget.RecyclerView
-import android.view.View
-import android.widget.TextView
-import com.thenetcircle.dinoandroidframework.R
+package com.thenetcircle.dino
 
 /**
- * Created by aaron on 16/01/2018.
+ * Created by aaron on 23/01/2018.
  */
-class TNCChatViewHolderParent(v: View) : RecyclerView.ViewHolder(v) {
-    private var chatView: View = v
+class DinoConfig {
 
-    fun bind(message: String) {
-        val chatBox = chatView.findViewById<TextView>(R.id.chatMessage)
-        chatBox.text = message
-    }
+    var autoSendMessageReceivedACK : Boolean = true
 }

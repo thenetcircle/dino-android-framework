@@ -37,7 +37,7 @@ class CreateRoomPrivateModel(channelURL: String, displayName: String, myUserID: 
         val displayName: String = Base64.encodeToString(displayName.toByteArray(), Base64.NO_WRAP)
         @SerializedName("objectType")
         val objectType: String = "private"
-        @SerializedName("attatchments")
+        @SerializedName("attachments")
         val attatchments: ArrayList<RoomDataAttatchment> = ArrayList()
 
         init {

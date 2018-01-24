@@ -24,11 +24,12 @@ import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.thenetcircle.dino.model.results.JoinRoomObjectAttachment
+import com.thenetcircle.dino.model.results.JoinRoomResultModel
+import com.thenetcircle.dino.model.results.MessageReceived
 import com.thenetcircle.dinoandroidframework.R
 import com.thenetcircle.dinoandroidframework.activity.TNCBaseActivity
 import com.thenetcircle.dinoandroidframework.adapter.TNCChatRoomAdapter
-import com.thenetcircle.dino.model.results.JoinRoomResultModel
-import com.thenetcircle.dino.model.results.MessageReceived
 import kotlinx.android.synthetic.main.fragment_chat_room.*
 
 /**
@@ -51,12 +52,10 @@ class TNCChatRoomFragment : Fragment(), View.OnClickListener {
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        linearLayoutManager = LinearLayoutManager(activity)
+        linearLayoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, true)
         chatView.layoutManager = linearLayoutManager
         chatView.adapter = recyclerAdapter
         sendBtn.setOnClickListener(this)
-
     }
 
     override fun onAttach(context: Context?) {
@@ -65,6 +64,11 @@ class TNCChatRoomFragment : Fragment(), View.OnClickListener {
     }
 
     fun displayMessage(message: MessageReceived) {
+        recyclerAdapter.addMessage(message)
+    }
+
+    fun displayMessage(message: JoinRoomObjectAttachment) {
+        linearLayoutManager.scrollToPosition(0)
         recyclerAdapter.addMessage(message)
     }
 
