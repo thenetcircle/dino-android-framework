@@ -21,5 +21,5 @@ package com.thenetcircle.dino
  */
 class DinoConfig {
 
-    var autoSendMessageReceivedACK : Boolean = true
+    var autoSendMessageReceivedACK: Boolean = true
 }

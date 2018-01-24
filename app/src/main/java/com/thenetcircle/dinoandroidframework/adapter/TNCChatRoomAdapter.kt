@@ -18,12 +18,10 @@ package com.thenetcircle.dinoandroidframework.adapter
 
 import android.support.v7.widget.RecyclerView
 import android.util.Base64
-import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.thenetcircle.dino.model.data.DeliveryReceiptModel
 import com.thenetcircle.dino.model.results.JoinRoomObjectAttachment
 import com.thenetcircle.dino.model.results.MessageReceived
-import com.thenetcircle.dinoandroidframework.R
 
 /**
  * Created by aaron on 16/01/2018.
@@ -51,15 +49,24 @@ class TNCChatRoomAdapter(myUserID: Int) : RecyclerView.Adapter<TNCChatViewHolder
 
     fun updateMessageStatus(messageID: String, state: DeliveryReceiptModel.DeliveryState) {
         messages.filter { it.messageID == messageID }.forEach { it.state = state }
+        notifyDataSetChanged()
     }
 
     override fun onBindViewHolder(holder: TNCChatViewHolderParent, position: Int) {
-        holder.bind(messages[position].content)
+        if (holder is TNCChatSendViewHolder) {
+            holder.bind(messages[position].content, messages[position].state)
+        } else {
+            holder.bind(messages[position].content, messages[position].state)
+        }
+
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TNCChatViewHolderParent {
-        val inflatedView = LayoutInflater.from(parent.context).inflate(if (viewType == 0) R.layout.chat_room_sent else R.layout.chat_room_received, parent, false)
-        return TNCChatViewHolderParent(inflatedView)
+        return if (viewType == 0) {
+            TNCChatSendViewHolder(TNCChatSendViewHolder.createView(parent))
+        } else {
+            TNCChatReceivedViewHolder(TNCChatReceivedViewHolder.createView(parent))
+        }
     }
 
     override fun getItemCount(): Int {

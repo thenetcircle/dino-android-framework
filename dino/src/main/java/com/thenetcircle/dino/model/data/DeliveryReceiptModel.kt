@@ -17,8 +17,6 @@
 package com.thenetcircle.dino.model.data
 
 import com.google.gson.annotations.SerializedName
-import com.thenetcircle.dino.DinoConfig
-
 
 /**
  * Created by aaron on 18/01/2018.

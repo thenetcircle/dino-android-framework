@@ -19,7 +19,6 @@ package com.thenetcircle.dino
 import android.os.Handler
 import android.os.Looper
 import android.support.annotation.NonNull
-import android.util.Log
 import com.google.gson.GsonBuilder
 import com.thenetcircle.dino.interfaces.*
 import com.thenetcircle.dino.model.data.*
@@ -49,9 +48,9 @@ class DinoChatConnection {
         get() = if (socket != null) socket!!.connected() else false
 
     var connectionListener: DinoConnectionListener? = null
-    var messageReceivedListener : DinoMessageReceivedListener? = null
+    var messageReceivedListener: DinoMessageReceivedListener? = null
 
-    var dinoConfig : DinoConfig
+    var dinoConfig: DinoConfig
 
     constructor() {
         this.dinoConfig = DinoConfig()
@@ -72,7 +71,7 @@ class DinoChatConnection {
         socket = newSocket
 
         socket!!.on(Socket.EVENT_CONNECT_ERROR) {
-            if(Looper.getMainLooper() == Looper.myLooper()) {
+            if (Looper.getMainLooper() == Looper.myLooper()) {
                 errorListener.onError(DinoError.EVENT_CONNECT_ERROR)
                 connectionListener?.onDisconnect()
             } else {
@@ -84,7 +83,7 @@ class DinoChatConnection {
         }
 
         socket!!.on(Socket.EVENT_DISCONNECT) {
-            if(Looper.getMainLooper() == Looper.myLooper()) {
+            if (Looper.getMainLooper() == Looper.myLooper()) {
                 errorListener.onError(DinoError.EVENT_DISCONNECT)
                 connectionListener?.onDisconnect()
             } else {
@@ -98,7 +97,7 @@ class DinoChatConnection {
 
         socket!!.on("gn_connect") {
             off("gn_connect")
-            if(Looper.getMainLooper() == Looper.myLooper()) {
+            if (Looper.getMainLooper() == Looper.myLooper()) {
                 connectionListener?.onConnect()
             } else {
                 Handler(Looper.getMainLooper()).post({ connectionListener?.onConnect() })
@@ -107,8 +106,8 @@ class DinoChatConnection {
         socket!!.connect()
     }
 
-    private fun off(event:String) {
-        if(socket != null) {
+    private fun off(event: String) {
+        if (socket != null) {
             socket!!.off(event)
         }
     }
@@ -213,10 +212,10 @@ class DinoChatConnection {
 
         socket!!.on("message") { args ->
             Handler(Looper.getMainLooper()).post({
-                processResult(args[0].toString(), object:DinoParentInterface<MessageReceived> {
+                processResult(args[0].toString(), object : DinoParentInterface<MessageReceived> {
                     override fun onResult(result: MessageReceived) {
-                        if(dinoConfig.autoSendMessageReceivedACK) {
-                            if(result.actor?.id != currentLoggedInUser?.data?.actor?.id) {
+                        if (dinoConfig.autoSendMessageReceivedACK) {
+                            if (result.actor?.id != currentLoggedInUser?.data?.actor?.id) {
                                 val roomID = result.target?.id
                                 val delModel = DeliveryReceiptModel(DeliveryReceiptModel.DeliveryState.RECEIVED, roomID!!, DeliveryReceiptModel.DeliveryEntry(result.id!!))
                                 sendMessageResponse(delModel, errorListener)
@@ -237,12 +236,19 @@ class DinoChatConnection {
         }
 
         val emitter = Emitter.Listener { args ->
-            Log.d("emitter", args[0].toString())
+            processResult(args[0].toString(), listener, errorListener)
         }
 
         socket!!.on("gn_message_read", emitter)
         socket!!.on("gn_message_received", emitter)
+    }
 
+    fun unRegisterMessageStatusUpdateListener() {
+        if (socket == null) {
+            return
+        }
+        socket!!.off("gn_message_read")
+        socket!!.off("gn_message_received")
     }
 
     fun leaveRoom(leaveRoomModel: LeaveRoomModel, @NonNull errorListener: DinoErrorListener) {

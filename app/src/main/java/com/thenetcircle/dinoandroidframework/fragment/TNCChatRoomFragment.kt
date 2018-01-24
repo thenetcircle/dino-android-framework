@@ -24,9 +24,11 @@ import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.thenetcircle.dino.model.data.DeliveryReceiptModel
 import com.thenetcircle.dino.model.results.JoinRoomObjectAttachment
 import com.thenetcircle.dino.model.results.JoinRoomResultModel
 import com.thenetcircle.dino.model.results.MessageReceived
+import com.thenetcircle.dino.model.results.MessageStatus
 import com.thenetcircle.dinoandroidframework.R
 import com.thenetcircle.dinoandroidframework.activity.TNCBaseActivity
 import com.thenetcircle.dinoandroidframework.adapter.TNCChatRoomAdapter
@@ -70,6 +72,14 @@ class TNCChatRoomFragment : Fragment(), View.OnClickListener {
     fun displayMessage(message: JoinRoomObjectAttachment) {
         linearLayoutManager.scrollToPosition(0)
         recyclerAdapter.addMessage(message)
+    }
+
+    fun updateMessageStatus(result: MessageStatus) {
+        result.messageObject?.attachments?.forEach {
+            if (result.verb == "read") {
+                recyclerAdapter.updateMessageStatus(it.id, DeliveryReceiptModel.DeliveryState.READ)
+            }
+        }
     }
 
     override fun onClick(v: View) {

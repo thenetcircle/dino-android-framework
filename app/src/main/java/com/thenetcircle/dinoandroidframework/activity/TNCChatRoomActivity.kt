@@ -61,9 +61,9 @@ class TNCChatRoomActivity : TNCBaseActivity(), DinoErrorListener, TNCChatRoomFra
             }
         }, this)
         dinoChatConnection.registerMessageSentListener(this, this)
-        dinoChatConnection.registerMessageStatusUpdateListener(object:DinoMessageStatusUpdateListener {
+        dinoChatConnection.registerMessageStatusUpdateListener(object : DinoMessageStatusUpdateListener {
             override fun onResult(result: MessageStatus) {
-
+                chatRoomFragment.updateMessageStatus(result)
             }
         }, this)
     }
@@ -78,6 +78,7 @@ class TNCChatRoomActivity : TNCBaseActivity(), DinoErrorListener, TNCChatRoomFra
         super.onPause()
         dinoChatConnection.unRegisterMessageSentListener()
         dinoChatConnection.leaveRoom(LeaveRoomModel(roomID!!), this)
+        dinoChatConnection.unRegisterMessageStatusUpdateListener()
     }
 
     override fun sendMessage(message: String) {
@@ -86,9 +87,11 @@ class TNCChatRoomActivity : TNCBaseActivity(), DinoErrorListener, TNCChatRoomFra
 
     override fun onResult(result: MessageReceived) {
         //as we are on the chat screen, send the read
-        val roomID = result.target?.id
-        val delModel = DeliveryReceiptModel(DeliveryReceiptModel.DeliveryState.READ, roomID!!, DeliveryReceiptModel.DeliveryEntry(result.id!!))
-        dinoChatConnection.sendMessageResponse(delModel, this)
+        if (result.actor?.id != loginObject?.data?.id) {
+            val roomID = result.target?.id
+            val delModel = DeliveryReceiptModel(DeliveryReceiptModel.DeliveryState.READ, roomID!!, DeliveryReceiptModel.DeliveryEntry(result.id!!))
+            dinoChatConnection.sendMessageResponse(delModel, this)
+        }
         chatRoomFragment.displayMessage(result)
     }
 

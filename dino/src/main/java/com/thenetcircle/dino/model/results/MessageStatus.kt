@@ -15,6 +15,7 @@
  */
 
 package com.thenetcircle.dino.model.results
+
 import com.google.gson.annotations.SerializedName
 
 
@@ -22,26 +23,32 @@ import com.google.gson.annotations.SerializedName
  * Created by aaron on 23/01/2018.
  */
 class MessageStatus : ModelResultParent() {
-		@SerializedName("id") val id: String? = null
-		@SerializedName("published") val published: String? = null
-		@SerializedName("actor") val receivingUser: ReceivingUser? = null
-		@SerializedName("verb") val verb: String? = null
-		@SerializedName("target") val target: ReceivingTarget? = null
-		@SerializedName("object") val messageObject: ReceivedMessages? = null
+    @SerializedName("id")
+    val id: String? = null
+    @SerializedName("published")
+    val published: String? = null
+    @SerializedName("actor")
+    val receivingUser: ReceivingUser? = null
+    @SerializedName("verb")
+    val verb: String? = null
+    @SerializedName("target")
+    val target: ReceivingTarget? = null
+    @SerializedName("object")
+    val messageObject: ReceivedMessages? = null
 }
 
 data class ReceivedMessages(
-		@SerializedName("attachments") val attachments: List<ReceivedMessage>
+        @SerializedName("attachments") val attachments: List<ReceivedMessage>
 )
 
 data class ReceivedMessage(
-		@SerializedName("id") val id: String //<message1 uuid>
+        @SerializedName("id") val id: String //<message1 uuid>
 )
 
 data class ReceivingUser(
-		@SerializedName("id") val id: String //<user id of the one sending the read receipt>
+        @SerializedName("id") val id: String //<user id of the one sending the read receipt>
 )
 
 data class ReceivingTarget(
-		@SerializedName("id") val id: String //<uuid of the room the messages are all in>
+        @SerializedName("id") val id: String //<uuid of the room the messages are all in>
 )
