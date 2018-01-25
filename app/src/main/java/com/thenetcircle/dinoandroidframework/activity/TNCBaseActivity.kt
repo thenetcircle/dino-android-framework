@@ -16,8 +16,8 @@
 
 package com.thenetcircle.dinoandroidframework.activity
 
-import android.app.Fragment
 import android.os.Bundle
+import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
 import android.util.Base64
 import android.widget.Toast
@@ -62,7 +62,7 @@ open class TNCBaseActivity : AppCompatActivity(), DinoConnectionListener, DinoEr
     }
 
     protected fun fragmentTrans(frag: Fragment) {
-        fragmentManager.beginTransaction()
+        supportFragmentManager.beginTransaction()
                 .replace(R.id.fragment_container, frag)
                 .commit()
     }

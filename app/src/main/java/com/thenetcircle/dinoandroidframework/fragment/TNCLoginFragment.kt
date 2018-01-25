@@ -16,9 +16,9 @@
 
 package com.thenetcircle.dinoandroidframework.fragment
 
-import android.app.Fragment
 import android.content.Context
 import android.os.Bundle
+import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -62,13 +62,13 @@ class TNCLoginFragment : Fragment() {
         userOne.setOnClickListener {
             user_id.setText("179677")
             display_name.setText("Aaron")
-            token.setText("8dd895b7bd7c418227e26b7bee5f993ea8c68956")
+            token.setText("08bc921239719ac8ee2172e8e9ff959d4e4999f0")
         }
 
         userTwo.setOnClickListener {
             user_id.setText("9")
             display_name.setText("Sam")
-            token.setText("efaf2660c5e03e1df7d72dc00c4d9bc887b3217d")
+            token.setText("d52d73159b05c10afd3c5bde9efe56d4aa80d95a")
         }
 
         connectBtn.setOnClickListener({
