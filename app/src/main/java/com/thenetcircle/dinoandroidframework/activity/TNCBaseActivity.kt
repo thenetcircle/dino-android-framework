@@ -46,13 +46,14 @@ open class TNCBaseActivity : AppCompatActivity(), DinoConnectionListener, DinoEr
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         dinoChatConnection.connectionListener = this
-        dinoChatConnection.messageReceivedListener = this
     }
 
     override fun onResume() {
         super.onResume()
         if (dinoChatConnection.isLoggedIn) {
+            dinoChatConnection.connectionListener = this
             dinoChatConnection.registerMessageListener(this)
+            dinoChatConnection.messageReceivedListener = this
         }
     }
 

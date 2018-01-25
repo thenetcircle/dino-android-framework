@@ -87,7 +87,7 @@ class TNCChatRoomActivity : TNCBaseActivity(), DinoErrorListener, TNCChatRoomFra
 
     override fun onResult(result: MessageReceived) {
         //as we are on the chat screen, send the read
-        if (result.actor?.id != loginObject?.data?.id) {
+        if (result.actor?.id != loginObject?.data?.actor?.id) {
             val roomID = result.target?.id
             val delModel = DeliveryReceiptModel(DeliveryReceiptModel.DeliveryState.READ, roomID!!, DeliveryReceiptModel.DeliveryEntry(result.id!!))
             dinoChatConnection.sendMessageResponse(delModel, this)
