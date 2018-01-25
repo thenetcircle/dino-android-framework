@@ -62,13 +62,13 @@ class TNCLoginFragment : Fragment() {
         userOne.setOnClickListener {
             user_id.setText("179677")
             display_name.setText("Aaron")
-            token.setText("08bc921239719ac8ee2172e8e9ff959d4e4999f0")
+            token.setText("690fd9225146c983aaa09ea0e146af8144c1ecb3")
         }
 
         userTwo.setOnClickListener {
             user_id.setText("9")
             display_name.setText("Sam")
-            token.setText("d52d73159b05c10afd3c5bde9efe56d4aa80d95a")
+            token.setText("8dd31ccdce9e10b8738cf23f9a7517130e6ddc97")
         }
 
         connectBtn.setOnClickListener({

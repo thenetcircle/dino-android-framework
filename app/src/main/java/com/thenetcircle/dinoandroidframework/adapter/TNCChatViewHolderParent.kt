@@ -59,8 +59,8 @@ class TNCChatSendViewHolder(v: View) : TNCChatViewHolderParent(v) {
         val statusView = chatView.findViewById<View>(R.id.messageStatus)
         if (status == DeliveryReceiptModel.DeliveryState.READ) {
             statusView.setBackgroundColor(Color.GREEN)
-        } else {
-            statusView.setBackgroundColor(Color.RED)
+        } else if (status == DeliveryReceiptModel.DeliveryState.RECEIVED) {
+            statusView.setBackgroundColor(Color.BLUE)
         }
     }
 }

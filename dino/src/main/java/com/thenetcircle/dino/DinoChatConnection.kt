@@ -151,37 +151,59 @@ class DinoChatConnection {
     }
 
     fun getChannelList(channelListModel: ChannelListModel, @NonNull channelListListener: DinoChannelListListener, @NonNull errorListener: DinoErrorListener) {
-        generalChecks(errorListener)
+        if (!generalChecks(errorListener)) {
+            return
+        }
         processRequest("list_channels", "gn_list_channels", channelListModel, channelListListener, errorListener)
     }
 
     fun getRoomList(roomListModel: RoomListModel, @NonNull roomEntryListener: DinoRoomEntryListener, @NonNull errorListener: DinoErrorListener) {
-        generalChecks(errorListener)
+        if (!generalChecks(errorListener)) {
+            return
+        }
         processRequest("list_rooms", "gn_list_rooms", roomListModel, roomEntryListener, errorListener)
     }
 
     fun createPrivateRoom(privateModel: CreateRoomPrivateModel, @NonNull roomCreationListener: DinoRoomCreationListener, @NonNull errorListener: DinoErrorListener) {
-        generalChecks(errorListener)
+        if (!generalChecks(errorListener)) {
+            return
+        }
         processRequest("create", "gn_create", privateModel, roomCreationListener, errorListener)
     }
 
     fun joinRoom(joinModel: JoinRoomModel, @NonNull joinRoomListener: DinoJoinRoomListener, @NonNull errorListener: DinoErrorListener) {
-        generalChecks(errorListener)
+        if (!generalChecks(errorListener)) {
+            return
+        }
         processRequest("join", "gn_join", joinModel, joinRoomListener, errorListener)
     }
 
     fun getChatRoomHistory(chatHistory: ChatHistory, @NonNull dinoChatHistoryListener: DinoChatHistoryListener, @NonNull errorListener: DinoErrorListener) {
-        generalChecks(errorListener)
+        if (!generalChecks(errorListener)) {
+            return
+        }
         processRequest("history", "gn_history", chatHistory, dinoChatHistoryListener, errorListener)
     }
 
-    fun sendMessageResponse(@NonNull deliveryReceiptModel: DeliveryReceiptModel, @NonNull errorListener: DinoErrorListener) {
-        generalChecks(errorListener)
-        socket!!.emit(deliveryReceiptModel.verb, JSONObject(gson.toJson(deliveryReceiptModel)))
+
+    fun sendMessageResponseReceived(@NonNull deliveryReceiptModel: DeliveryReceiptModel, @NonNull errorListener: DinoErrorListener) {
+        if (!generalChecks(errorListener)) {
+            return
+        }
+        socket!!.emit("received", JSONObject(gson.toJson(deliveryReceiptModel)))
+    }
+
+    fun sendMessageResponseRead(@NonNull deliveryReceiptModel: DeliveryReceiptModel, @NonNull errorListener: DinoErrorListener) {
+        if (!generalChecks(errorListener)) {
+            return
+        }
+        socket!!.emit("read", JSONObject(gson.toJson(deliveryReceiptModel)))
     }
 
     fun sendMessage(chatSendMessage: ChatSendMessage, @NonNull errorListener: DinoErrorListener) {
-        generalChecks(errorListener)
+        if (!generalChecks(errorListener)) {
+            return
+        }
         socket!!.emit("message", JSONObject(gson.toJson(chatSendMessage)))
     }
 
@@ -218,7 +240,7 @@ class DinoChatConnection {
                             if (result.actor?.id != currentLoggedInUser?.data?.actor?.id) {
                                 val roomID = result.target?.id
                                 val delModel = DeliveryReceiptModel(DeliveryReceiptModel.DeliveryState.RECEIVED, roomID!!, DeliveryReceiptModel.DeliveryEntry(result.id!!))
-                                sendMessageResponse(delModel, errorListener)
+                                sendMessageResponseReceived(delModel, errorListener)
                             }
                         }
                         //send result to listener
@@ -252,7 +274,9 @@ class DinoChatConnection {
     }
 
     fun leaveRoom(leaveRoomModel: LeaveRoomModel, @NonNull errorListener: DinoErrorListener) {
-        generalChecks(errorListener)
+        if (!generalChecks(errorListener)) {
+            return
+        }
         socket!!.emit("leave", JSONObject(gson.toJson(leaveRoomModel)))
     }
 

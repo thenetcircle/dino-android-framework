@@ -53,6 +53,8 @@ class TNCMainActivity : TNCBaseActivity(), TNCLoginFragment.LoginFragmentListene
 
     override fun onConnect() {
         super.onConnect()
+        dinoChatConnection.registerMessageListener(this)
+        dinoChatConnection.messageReceivedListener = this
         loginFragment.onConnect()
     }
 

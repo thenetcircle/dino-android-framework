@@ -16,9 +16,9 @@
 
 package com.thenetcircle.dinoandroidframework.fragment
 
-import android.support.v4.app.Fragment
 import android.content.Context
 import android.os.Bundle
+import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
 import android.text.TextUtils
 import android.view.LayoutInflater
@@ -78,6 +78,8 @@ class TNCChatRoomFragment : Fragment(), View.OnClickListener {
         result.messageObject?.attachments?.forEach {
             if (result.verb == "read") {
                 recyclerAdapter.updateMessageStatus(it.id, DeliveryReceiptModel.DeliveryState.READ)
+            } else if (result.verb == "receive") {
+                recyclerAdapter.updateMessageStatus(it.id, DeliveryReceiptModel.DeliveryState.RECEIVED)
             }
         }
     }

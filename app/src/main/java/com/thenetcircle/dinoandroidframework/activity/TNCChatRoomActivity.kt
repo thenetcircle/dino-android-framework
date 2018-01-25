@@ -90,7 +90,7 @@ class TNCChatRoomActivity : TNCBaseActivity(), DinoErrorListener, TNCChatRoomFra
         if (result.actor?.id != loginObject?.data?.actor?.id) {
             val roomID = result.target?.id
             val delModel = DeliveryReceiptModel(DeliveryReceiptModel.DeliveryState.READ, roomID!!, DeliveryReceiptModel.DeliveryEntry(result.id!!))
-            dinoChatConnection.sendMessageResponse(delModel, this)
+            dinoChatConnection.sendMessageResponseRead(delModel, this)
         }
         chatRoomFragment.displayMessage(result)
     }

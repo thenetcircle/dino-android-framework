@@ -16,9 +16,9 @@
 
 package com.thenetcircle.dinoandroidframework.fragment
 
-import android.support.v4.app.Fragment
 import android.content.Context
 import android.os.Bundle
+import android.support.v4.app.Fragment
 import android.text.TextUtils
 import android.util.Base64
 import android.view.LayoutInflater
