@@ -21,9 +21,13 @@ import com.google.gson.annotations.SerializedName
 
 
 /**
- * Created by aaron on 15/01/2018.
+ * Create a private room within a given channel, 1 - 1 chat
+ *
+ * @param channelURL the UUID of the channel to create the room
+ * @param displayName the name of the room
+ * @param myUserID my user ID
+ * @param theirUserID the User ID for the other member of the private chat room
  */
-
 class CreateRoomPrivateModel(channelURL: String, displayName: String, myUserID: Int, theirUserID: Int) {
     @SerializedName("verb")
     val verb: String = "create"

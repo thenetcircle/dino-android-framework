@@ -19,7 +19,9 @@ package com.thenetcircle.dino.model.data
 import com.google.gson.annotations.SerializedName
 
 /**
- * Created by aaron on 09/01/2018.
+ * Request object for the accessible rooms within a channel
+ *
+ * @param channelID the uuid of then channel
  */
 class RoomListModel(channelID: String) {
     @SerializedName("verb")

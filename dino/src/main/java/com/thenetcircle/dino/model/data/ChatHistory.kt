@@ -23,11 +23,13 @@ import com.google.gson.annotations.SerializedName
  * ChatHistory
  *
  * A Model for obtaining the Chat history of a given room
+ * @param roomID the UUID of the room
+ * @param updated the time stamp from which the history should start
  */
-class ChatHistory(id: String, updated: String) {
+class ChatHistory(roomID: String, updated: String) {
 
     @SerializedName("target")
-    val target: ChatHistoryTarget = ChatHistoryTarget(id)
+    val target: ChatHistoryTarget = ChatHistoryTarget(roomID)
     @SerializedName("updated")
     val updated: String = updated //<last read timestamp, if configured in server will return messages since this time>
     @SerializedName("verb")

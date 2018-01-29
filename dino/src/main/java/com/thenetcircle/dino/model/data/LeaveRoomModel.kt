@@ -20,9 +20,10 @@ import com.google.gson.annotations.SerializedName
 
 
 /**
- * Created by aaron on 18/01/2018.
+ * Leave a room request model
+ *
+ * @param roomID the UUID of a room
  */
-
 class LeaveRoomModel(roomId: String) {
     @SerializedName("target")
     val target: LeaveRoomTarget = LeaveRoomTarget(roomId)

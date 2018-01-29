@@ -20,7 +20,9 @@ import com.google.gson.annotations.SerializedName
 
 
 /**
- * Created by aaron on 15/01/2018.
+ * Join a room request model
+ *
+ * @param roomID the UUID of a room
  */
 class JoinRoomModel(roomID: String) {
 

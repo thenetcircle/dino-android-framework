@@ -18,10 +18,13 @@ package com.thenetcircle.dino.model.data
 
 import com.google.gson.annotations.SerializedName
 
-/**
- * Created by aaron on 18/01/2018.
- */
 
+/**
+ * Update a status of a message from Received to Read
+ *
+ * @param deliveryState the status of the message being send
+ * @param roomID the containing room UUID of these attached messages
+ */
 class DeliveryReceiptModel private constructor(deliveryState: DeliveryState, roomID: String) {
 
     enum class DeliveryState(val state: String) {
@@ -37,12 +40,24 @@ class DeliveryReceiptModel private constructor(deliveryState: DeliveryState, roo
     @SerializedName("object")
     var deliveryObject: DeliveryObject? = null
 
+    /**
+     * constructor to update a single message's delivery state
+     * @param deliveryState the status of the message being send
+     * @param roomID the containing room UUID of these attached message
+     * @param message DeliveryEntry object containing the message ID
+     */
     constructor(deliveryState: DeliveryState, roomID: String, message: DeliveryEntry) : this(deliveryState, roomID) {
         val list = ArrayList<DeliveryEntry>()
         list.add(message)
         deliveryObject = DeliveryObject(list)
     }
 
+    /**
+     * constructor to update a group message's delivery state
+     * @param deliveryState the status of the message being send
+     * @param roomID the containing room UUID of these attached message
+     * @param messages  a List/ Collection of DeliveryEntry objects containing the message IDs
+     */
     constructor(deliveryState: DeliveryState, roomID: String, messages: List<DeliveryEntry>) : this(deliveryState, roomID) {
         deliveryObject = DeliveryObject(messages)
     }
@@ -53,6 +68,10 @@ class DeliveryReceiptModel private constructor(deliveryState: DeliveryState, roo
         val attachments: List<DeliveryEntry> = messageIDs
     }
 
+    /**
+     * a DeliveryEntry object
+     * @param messageUUID the UUID of the message to update
+     */
     class DeliveryEntry(messageUUID: String) {
         @SerializedName("id")
         val id: String = messageUUID

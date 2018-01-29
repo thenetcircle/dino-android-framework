@@ -19,11 +19,13 @@ package com.thenetcircle.dino.model.data
 import android.util.Base64
 import com.google.gson.annotations.SerializedName
 
-
 /**
- * Created by aaron on 09/01/2018.
+ * Login Request model
+ *
+ * @param userID your user id
+ * @param displayName your name to be used in group chats etc.
+ * @param token your login credential
  */
-
 class LoginModel(userID: Int, displayName: String, token: String) {
 
     @SerializedName("verb")

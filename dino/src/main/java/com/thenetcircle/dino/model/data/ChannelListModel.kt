@@ -19,7 +19,7 @@ package com.thenetcircle.dino.model.data
 import com.google.gson.annotations.SerializedName
 
 /**
- * Created by aaron on 09/01/2018.
+ * Request object for the generic channel list accessible by the logged in user
  */
 class ChannelListModel {
     @SerializedName("verb")

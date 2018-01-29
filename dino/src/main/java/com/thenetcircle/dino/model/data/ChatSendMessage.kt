@@ -21,10 +21,11 @@ import com.google.gson.annotations.SerializedName
 
 
 /**
- * Created by aaron on 16/01/2018.
+ * Send a message to a room
+ *
+ * @param roomId the UUID of the room
+ * @param message the message
  */
-
-
 class ChatSendMessage(roomId: String, message: String) {
     @SerializedName("verb")
     val verb: String = "send"
