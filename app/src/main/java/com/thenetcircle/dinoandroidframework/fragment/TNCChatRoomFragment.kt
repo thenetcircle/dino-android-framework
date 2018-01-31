@@ -45,7 +45,7 @@ class TNCChatRoomFragment : Fragment(), View.OnClickListener {
 
     private lateinit var linearLayoutManager: LinearLayoutManager
     private var chatRoomListener: ChatRoomListener? = null
-    private var recyclerAdapter: TNCChatRoomAdapter = TNCChatRoomAdapter(TNCBaseActivity.loginObject?.data?.actor?.id!!.toInt())
+    private var recyclerAdapter: TNCChatRoomAdapter = TNCChatRoomAdapter(TNCBaseActivity.loginObject?.data?.loginActor?.id!!.toInt())
     var room: JoinRoomResultModel? = null
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {

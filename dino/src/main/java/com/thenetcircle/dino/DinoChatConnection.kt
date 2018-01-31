@@ -342,7 +342,7 @@ class DinoChatConnection {
                 processResult(args[0].toString(), object : DinoParentInterface<MessageReceived> {
                     override fun onResult(result: MessageReceived) {
                         if (dinoConfig.autoSendMessageReceivedACK) {
-                            if (result.actor?.id != currentLoggedInUser?.data?.actor?.id) {
+                            if (result.actor?.id != currentLoggedInUser?.data?.loginActor?.id) {
                                 val roomID = result.target?.id
                                 val delModel = DeliveryReceiptModel(DeliveryReceiptModel.DeliveryState.RECEIVED, roomID!!, DeliveryReceiptModel.DeliveryEntry(result.id!!))
                                 sendMessageResponseReceived(delModel, errorListener)

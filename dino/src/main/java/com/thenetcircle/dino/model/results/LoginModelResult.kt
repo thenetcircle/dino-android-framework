@@ -20,30 +20,28 @@ import com.google.gson.annotations.SerializedName
 
 
 /**
- * Created by aaron on 09/01/2018.
+ * A Login in result model
  */
-
-
 class LoginModelResult : ModelResultParent() {
     @SerializedName("data")
-    val data: Data? = null
+    val data: LoginData? = null
 }
 
-data class Data(
+data class LoginData(
         @SerializedName("id") val id: String, //<server-generated UUID>
         @SerializedName("published") val published: String, //<server-generated timestamp, RFC3339 format>
-        @SerializedName("actor") val actor: LoginResultActor,
-        @SerializedName("object") val objectX: Object,
+        @SerializedName("actor") val loginActor: LoginActor,
+        @SerializedName("object") val loginObject: LoginObject,
         @SerializedName("verb") val verb: String //login
 )
 
-data class Object(
+data class LoginObject(
         @SerializedName("objectType") val objectType: String, //history
-        @SerializedName("attachments") val attachments: List<ObjectAttachment>
+        @SerializedName("attachments") val attachments: List<LoginObjectAttachment>
 )
 
-data class ActorAttachment(
-        @SerializedName("author") val author: Author,
+data class LoginAttachment(
+        @SerializedName("author") val author: LoginAuthor,
         @SerializedName("content") val content: String, //<message in base64>
         @SerializedName("id") val id: String, //84421980-d84a-4f6f-9ad7-0357d15d99f8
         @SerializedName("published") val published: String, //2017-11-17T07:19:12Z
@@ -51,18 +49,18 @@ data class ActorAttachment(
         @SerializedName("objectType") val objectType: String //history
 )
 
-data class Author(
+data class LoginAuthor(
         @SerializedName("id") val id: String, //<sender id>
         @SerializedName("displayName") val displayName: String //<sender name in base64>
 )
 
-data class LoginResultActor(
+data class LoginActor(
         @SerializedName("id") val id: String, //<user id>
         @SerializedName("displayName") val displayName: String, //<user name in base64>
-        @SerializedName("attachments") val attachments: List<ActorAttachment>
+        @SerializedName("attachments") val attachments: List<LoginAttachment>
 )
 
-data class ObjectAttachment(
+data class LoginObjectAttachment(
         @SerializedName("objectType") val objectType: String, //room_role
         @SerializedName("id") val id: String, //<room UUID>
         @SerializedName("content") val content: String //moderatorowner
