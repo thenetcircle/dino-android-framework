@@ -17,11 +17,16 @@
 package com.thenetcircle.dino
 
 import android.os.Looper
+import android.util.Base64
+import com.google.gson.Gson
 import com.thenetcircle.dino.interfaces.DinoConnectionListener
 import com.thenetcircle.dino.interfaces.DinoErrorListener
+import com.thenetcircle.dino.interfaces.DinoLoginListener
+import com.thenetcircle.dino.model.data.LoginModel
 import com.thenetcircle.dino.model.results.LoginModelResult
 import io.socket.client.Socket
 import io.socket.emitter.Emitter
+import org.json.JSONObject
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
@@ -39,7 +44,7 @@ import org.powermock.modules.junit4.PowerMockRunner
  */
 
 @RunWith(PowerMockRunner::class)
-@PrepareForTest(Looper::class)
+@PrepareForTest(Looper::class, Base64::class)
 class DinoChatConnectionTest {
     var dinoChatConnection: DinoChatConnection = DinoChatConnection()
 
@@ -48,6 +53,9 @@ class DinoChatConnectionTest {
 
     @Mock
     var dinoConnectionListener = Mockito.mock(DinoConnectionListener::class.java)
+
+    @Mock
+    var dinoLoginListener = Mockito.mock(DinoLoginListener::class.java)
 
     @Mock
     var socket = Mockito.mock(Socket::class.java)
@@ -59,6 +67,7 @@ class DinoChatConnectionTest {
     fun start() {
         MockitoAnnotations.initMocks(this)
         PowerMockito.mockStatic(Looper::class.java)
+        PowerMockito.mockStatic(Base64::class.java)
         Mockito.`when`(Looper.getMainLooper()).thenReturn(looper)
         Mockito.`when`(Looper.myLooper()).thenReturn(looper)
 
@@ -111,6 +120,20 @@ class DinoChatConnectionTest {
         Mockito.verify(socket).off(Mockito.eq(Socket.EVENT_DISCONNECT))
         Mockito.verify(socket).off(Mockito.eq(Socket.EVENT_CONNECT_ERROR))
         Mockito.verify(socket).disconnect()
+    }
+
+    @Test
+    fun checkLogin() {
+        Mockito.`when`(Base64.encodeToString("TEST USER".toByteArray(), Base64.NO_WRAP)).thenReturn("VEVTVCBVU0VS")
+        val loginModel = LoginModel(1234 , "TEST USER", "ABCDEFGHI")
+        dinoChatConnection.startConnection(socket, dinoErrorListener)
+        dinoChatConnection.login(loginModel,dinoLoginListener, dinoErrorListener)
+
+        val captor = argumentCaptor<JSONObject>()
+        Mockito.verify(socket).emit(Mockito.eq("login") , captor.capture())
+        val model = captor.value
+
+        Assert.assertTrue(model.toString() == JSONObject(Gson().toJson(loginModel)).toString())
     }
 
     @Test
