@@ -19,6 +19,7 @@ package com.thenetcircle.dino
 import android.os.Looper
 import android.util.Base64
 import com.google.gson.Gson
+import com.thenetcircle.dino.data.loginModelResultData
 import com.thenetcircle.dino.interfaces.DinoConnectionListener
 import com.thenetcircle.dino.interfaces.DinoErrorListener
 import com.thenetcircle.dino.interfaces.DinoLoginListener
@@ -122,6 +123,10 @@ class DinoChatConnectionTest {
         Mockito.verify(socket).disconnect()
     }
 
+    private fun <T> anyObject(): T {
+        return Mockito.anyObject<T>()
+    }
+
     @Test
     fun checkLogin() {
         Mockito.`when`(Base64.encodeToString("TEST USER".toByteArray(), Base64.NO_WRAP)).thenReturn("VEVTVCBVU0VS")
@@ -129,11 +134,19 @@ class DinoChatConnectionTest {
         dinoChatConnection.startConnection(socket, dinoErrorListener)
         dinoChatConnection.login(loginModel,dinoLoginListener, dinoErrorListener)
 
-        val captor = argumentCaptor<JSONObject>()
-        Mockito.verify(socket).emit(Mockito.eq("login") , captor.capture())
-        val model = captor.value
+
+        val emitterCaptor = argumentCaptor<Emitter.Listener>()
+        Mockito.verify(socket).on(Mockito.eq("gn_login"), emitterCaptor.capture())
+
+        val requestCaptor = argumentCaptor<JSONObject>()
+        Mockito.verify(socket).emit(Mockito.eq("login") , requestCaptor.capture())
+        val model = requestCaptor.value
 
         Assert.assertTrue(model.toString() == JSONObject(Gson().toJson(loginModel)).toString())
+        emitterCaptor.value.call(loginModelResultData)
+
+        Mockito.verify(socket).off(Mockito.eq("gn_login"), Mockito.eq(emitterCaptor.value))
+        Mockito.verify(dinoLoginListener).onResult(anyObject())
     }
 
     @Test

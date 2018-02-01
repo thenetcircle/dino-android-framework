@@ -147,11 +147,19 @@ class DinoChatConnection {
     private inline fun <reified T : ModelResultParent> processResult(@NonNull data: String, @NonNull listener: DinoParentInterface<T>, @NonNull errorListener: DinoErrorListener): Boolean {
         val model = gson.fromJson<T>(data, T::class.java)
         if (model != null && model.statusCode == 200) {
-            Handler(Looper.getMainLooper()).post({ listener.onResult(model) })
+            if (Looper.getMainLooper() == Looper.myLooper()) {
+                listener.onResult(model)
+            } else {
+                Handler(Looper.getMainLooper()).post({ listener.onResult(model) })
+            }
             return true
         } else {
             val error = if (model != null) DinoError.getErrorByCode(model.statusCode!!) else DinoError.UNKNOWN_ERROR
-            Handler(Looper.getMainLooper()).post({ errorListener.onError(error) })
+            if (Looper.getMainLooper() == Looper.myLooper()) {
+                errorListener.onError(error)
+            } else {
+                Handler(Looper.getMainLooper()).post({ errorListener.onError(error) })
+            }
         }
         return false
     }
