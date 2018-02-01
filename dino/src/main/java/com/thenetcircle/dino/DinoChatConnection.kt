@@ -120,14 +120,16 @@ class DinoChatConnection {
 
         }
 
-        socket!!.on("gn_connect") {
-            off("gn_connect")
-            if (Looper.getMainLooper() == Looper.myLooper()) {
-                connectionListener?.onConnect()
-            } else {
-                Handler(Looper.getMainLooper()).post({ connectionListener?.onConnect() })
+        socket!!.on("gn_connect", object:Emitter.Listener {
+            override fun call(vararg args: Any?) {
+                off("gn_connect", this)
+                if (Looper.getMainLooper() == Looper.myLooper()) {
+                    connectionListener?.onConnect()
+                } else {
+                    Handler(Looper.getMainLooper()).post({ connectionListener?.onConnect() })
+                }
             }
-        }
+        })
         socket!!.connect()
     }
 
@@ -136,9 +138,9 @@ class DinoChatConnection {
      *
      * @param event event name
      */
-    private fun off(event: String) {
+    private fun off(event: String, emitter: Emitter.Listener) {
         if (socket != null) {
-            socket!!.off(event)
+            socket!!.off(event, emitter)
         }
     }
 
@@ -159,14 +161,16 @@ class DinoChatConnection {
             errorListener.onError(DinoError.NO_SOCKET_ERROR)
             return
         }
-        socket!!.on(responseEvent) { args ->
-            if (args.isNotEmpty()) {
-                off(responseEvent)
-                processResult(args[0].toString(), listener, errorListener)
-            } else {
-                errorListener.onError(DinoError.UNKNOWN_ERROR)
+        socket!!.on(responseEvent, object:Emitter.Listener {
+            override fun call(vararg args: Any?) {
+                if (args.isNotEmpty()) {
+                    off(responseEvent, this)
+                    processResult(args[0].toString(), listener, errorListener)
+                } else {
+                    errorListener.onError(DinoError.UNKNOWN_ERROR)
+                }
             }
-        }
+        })
 
         socket!!.emit(requestEvent, JSONObject(gson.toJson(dataModel)))
     }
@@ -295,6 +299,20 @@ class DinoChatConnection {
             return
         }
         socket!!.emit("message", JSONObject(gson.toJson(chatSendMessage)))
+    }
+
+    /**
+     * Get Status of messages already sent
+     *
+     * @param messageStatusModel request model
+     * @param MessageStatusRequestListener success listener
+     * @param errorListener fail listener
+     */
+    fun getStatusHistory(messageStatusModel: MessageStatusModel, @NonNull MessageStatusRequestListener: DinoMessageStatusRequestListener, @NonNull errorListener: DinoErrorListener) {
+        if (!generalChecks(errorListener)) {
+            return
+        }
+        processRequest("msg_status", "gn_msg_status", messageStatusModel, MessageStatusRequestListener, errorListener)
     }
 
     /**

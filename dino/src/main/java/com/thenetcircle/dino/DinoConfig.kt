@@ -20,6 +20,5 @@ package com.thenetcircle.dino
  * Created by aaron on 23/01/2018.
  */
 class DinoConfig {
-
     var autoSendMessageReceivedACK: Boolean = true
 }

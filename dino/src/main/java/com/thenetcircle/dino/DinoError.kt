@@ -57,6 +57,14 @@ enum class DinoError constructor(var errorCode: Int) {
     NOT_ONLINE(708),
     TOO_MANY_PRIVATE_ROOMS(709),
 
+    ROOM_NAME_TOO_SHORT(711),
+    INVALID_TOKEN(712),
+    INVALID_LOGIN(713),
+    MSG_TOO_LONG (714),
+    MULTIPLE_ROOMS_WITH_NAME(715),
+    TOO_MANY_ATTACHMENTS(716),
+    NOT_ENABLED(717),
+
     NO_SUCH_USER(800),
     NO_SUCH_CHANNEL(801),
     NO_SUCH_ROOM(802),
@@ -65,7 +73,6 @@ enum class DinoError constructor(var errorCode: Int) {
     NO_ADMIN_ONLINE(805);
 
     companion object {
-
         fun getErrorByCode(code: Int): DinoError {
             for (i in 0 until values().size) {
                 if (values()[i].errorCode == code) {

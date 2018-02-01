@@ -30,13 +30,13 @@ import com.google.gson.annotations.SerializedName
  */
 class CreateRoomPrivateModel(channelURL: String, displayName: String, myUserID: Int, theirUserID: Int) {
     @SerializedName("verb")
-    val verb: String = "create"
+    private val verb: String = "create"
     @SerializedName("object")
-    val objectData: RoomDataObject = RoomDataObject(channelURL)
+    private val objectData: RoomDataObject = RoomDataObject(channelURL)
     @SerializedName("target")
-    val target: RoomTarget = RoomTarget(channelURL, displayName, myUserID, theirUserID)
+    private val target: RoomTarget = RoomTarget(channelURL, displayName, myUserID, theirUserID)
 
-    class RoomTarget(channelURL: String, displayName: String, myUserID: Int, theirUserID: Int) {
+    private class RoomTarget(channelURL: String, displayName: String, myUserID: Int, theirUserID: Int) {
         @SerializedName("displayName")
         val displayName: String = Base64.encodeToString(displayName.toByteArray(), Base64.NO_WRAP)
         @SerializedName("objectType")
@@ -50,12 +50,12 @@ class CreateRoomPrivateModel(channelURL: String, displayName: String, myUserID: 
         }
     }
 
-    class RoomDataObject(url: String) {
+    private class RoomDataObject(url: String) {
         @SerializedName("url")
         val url: String = url
     }
 
-    class RoomDataAttatchment(summary: String) {
+    private class RoomDataAttatchment(summary: String) {
         @SerializedName("objectType")
         val objectType: String = "owners"
 

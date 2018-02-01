@@ -28,18 +28,18 @@ import com.google.gson.annotations.SerializedName
  */
 class ChatSendMessage(roomId: String, message: String) {
     @SerializedName("verb")
-    val verb: String = "send"
+    private val verb: String = "send"
     @SerializedName("target")
-    val target: MessageRoomTarget = MessageRoomTarget(roomId)
+    private val target: MessageRoomTarget = MessageRoomTarget(roomId)
     @SerializedName("object")
-    val messageContent: MessageContentObject = MessageContentObject(message)
+    private val messageContent: MessageContentObject = MessageContentObject(message)
 
-    class MessageContentObject(message: String) {
+    private class MessageContentObject(message: String) {
         @SerializedName("content")
         val content: String = Base64.encodeToString(message.toByteArray(), Base64.NO_WRAP)
     }
 
-    class MessageRoomTarget(id: String) {
+    private class MessageRoomTarget(id: String) {
         @SerializedName("id")
         val id: String = id
         @SerializedName("objectType")

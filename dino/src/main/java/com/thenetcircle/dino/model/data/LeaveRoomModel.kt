@@ -26,11 +26,11 @@ import com.google.gson.annotations.SerializedName
  */
 class LeaveRoomModel(roomId: String) {
     @SerializedName("target")
-    val target: LeaveRoomTarget = LeaveRoomTarget(roomId)
+    private val target: LeaveRoomTarget = LeaveRoomTarget(roomId)
     @SerializedName("verb")
-    val verb: String = "leave"
+    private val verb: String = "leave"
 
-    class LeaveRoomTarget(roomId: String) {
+    private class LeaveRoomTarget(roomId: String) {
         @SerializedName("id")
         val id: String = roomId
     }

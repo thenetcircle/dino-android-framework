@@ -36,9 +36,9 @@ class DeliveryReceiptModel private constructor(deliveryState: DeliveryState, roo
     @SerializedName("verb")
     val verb: String = deliveryState.state
     @SerializedName("target")
-    val target: DeliveryTarget = DeliveryTarget(roomID)
+    private val target: DeliveryTarget = DeliveryTarget(roomID)
     @SerializedName("object")
-    var deliveryObject: DeliveryObject? = null
+    private var deliveryObject: DeliveryObject? = null
 
     /**
      * constructor to update a single message's delivery state
@@ -63,7 +63,7 @@ class DeliveryReceiptModel private constructor(deliveryState: DeliveryState, roo
     }
 
 
-    class DeliveryObject(messageIDs: List<DeliveryEntry>) {
+    private class DeliveryObject(messageIDs: List<DeliveryEntry>) {
         @SerializedName("attachments")
         val attachments: List<DeliveryEntry> = messageIDs
     }
@@ -77,7 +77,7 @@ class DeliveryReceiptModel private constructor(deliveryState: DeliveryState, roo
         val id: String = messageUUID
     }
 
-    class DeliveryTarget(roomID: String) {
+    private class DeliveryTarget(roomID: String) {
         @SerializedName("id")
         val id: String = roomID//<uuid of the room the messages are all in>
     }

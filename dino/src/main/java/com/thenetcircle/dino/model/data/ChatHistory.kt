@@ -29,13 +29,13 @@ import com.google.gson.annotations.SerializedName
 class ChatHistory(roomID: String, updated: String) {
 
     @SerializedName("target")
-    val target: ChatHistoryTarget = ChatHistoryTarget(roomID)
+    private val target: ChatHistoryTarget = ChatHistoryTarget(roomID)
     @SerializedName("updated")
-    val updated: String = updated //<last read timestamp, if configured in server will return messages since this time>
+    private val updated: String = updated //<last read timestamp, if configured in server will return messages since this time>
     @SerializedName("verb")
-    val verb: String = "list"
+    private val verb: String = "list"
 
-    class ChatHistoryTarget(id: String) {
+    private class ChatHistoryTarget(id: String) {
         @SerializedName("id")
         val id: String = id //<room UUID>
     }

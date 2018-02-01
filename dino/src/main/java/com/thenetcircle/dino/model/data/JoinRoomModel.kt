@@ -27,11 +27,11 @@ import com.google.gson.annotations.SerializedName
 class JoinRoomModel(roomID: String) {
 
     @SerializedName("verb")
-    val verb: String = "join"
+    private val verb: String = "join"
     @SerializedName("target")
-    val target: JoinRoomTarget = JoinRoomTarget(roomID)
+    private val target: JoinRoomTarget = JoinRoomTarget(roomID)
 
-    class JoinRoomTarget(roomID: String) {
+    private class JoinRoomTarget(roomID: String) {
         @SerializedName("id")
         val id: String = roomID
     }

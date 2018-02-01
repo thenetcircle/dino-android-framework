@@ -42,6 +42,8 @@ interface DinoChatMessageListener : DinoParentInterface<ChatSendMessageResult>
 
 interface DinoMessageStatusUpdateListener : DinoParentInterface<MessageStatus>
 
+interface DinoMessageStatusRequestListener : DinoParentInterface<MessageStatusModelResult>
+
 interface DinoMessageReceivedListener {
     fun onResult(result: MessageReceived)
 }
