@@ -32,7 +32,6 @@ import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.ArgumentCaptor
 import org.mockito.Mock
 import org.mockito.Mockito
 import org.mockito.MockitoAnnotations
@@ -74,8 +73,6 @@ class DinoChatConnectionTest {
 
         dinoChatConnection.connectionListener = dinoConnectionListener
     }
-
-    inline fun <reified T : Any> argumentCaptor() = ArgumentCaptor.forClass(T::class.java)
 
     @Test
     fun checkConnectionCallback() {
@@ -123,10 +120,6 @@ class DinoChatConnectionTest {
         Mockito.verify(socket).disconnect()
     }
 
-    private fun <T> anyObject(): T {
-        return Mockito.anyObject<T>()
-    }
-
     @Test
     fun checkLogin() {
         Mockito.`when`(Base64.encodeToString("TEST USER".toByteArray(), Base64.NO_WRAP)).thenReturn("VEVTVCBVU0VS")
@@ -146,7 +139,13 @@ class DinoChatConnectionTest {
         emitterCaptor.value.call(loginModelResultData)
 
         Mockito.verify(socket).off(Mockito.eq("gn_login"), Mockito.eq(emitterCaptor.value))
-        Mockito.verify(dinoLoginListener).onResult(anyObject())
+        val resultCaptor = argumentCaptor<LoginModelResult>()
+        Mockito.verify(dinoLoginListener).onResult(com.thenetcircle.dino.capture(resultCaptor))
+
+        val gson = Gson()
+        val obj = gson.fromJson<LoginModelResult>(loginModelResultData, LoginModelResult::class.java)
+
+        Assert.assertTrue(gson.toJson(resultCaptor.value).toString() == gson.toJson(obj).toString())
     }
 
     @Test
