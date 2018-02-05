@@ -32,9 +32,15 @@ open class TNCChatViewHolderParent(v: View) : RecyclerView.ViewHolder(v) {
 
     protected var chatView: View = v
 
-    open fun bind(message: String, status: DeliveryReceiptModel.DeliveryState) {
+    interface TNCChatViewClickListener {
+        fun onClick(messageID : String)
+    }
+
+    open fun bind(messageID: String, message: String, status: DeliveryReceiptModel.DeliveryState, listener: TNCChatViewClickListener) {
         val chatBox = chatView.findViewById<TextView>(R.id.chatMessage)
         chatBox.text = message
+
+        itemView.setOnClickListener { listener.onClick(messageID) }
     }
 }
 
@@ -54,8 +60,8 @@ class TNCChatSendViewHolder(v: View) : TNCChatViewHolderParent(v) {
         }
     }
 
-    override fun bind(message: String, status: DeliveryReceiptModel.DeliveryState) {
-        super.bind(message, status)
+    override fun bind(messageID: String,  message: String, status: DeliveryReceiptModel.DeliveryState, listener: TNCChatViewClickListener) {
+        super.bind(messageID, message, status, listener)
         val statusView = chatView.findViewById<View>(R.id.messageStatus)
         if (status == DeliveryReceiptModel.DeliveryState.READ) {
             statusView.setBackgroundColor(Color.GREEN)

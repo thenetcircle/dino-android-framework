@@ -32,20 +32,23 @@ import com.thenetcircle.dino.model.results.MessageStatus
 import com.thenetcircle.dinoandroidframework.R
 import com.thenetcircle.dinoandroidframework.activity.TNCBaseActivity
 import com.thenetcircle.dinoandroidframework.adapter.TNCChatRoomAdapter
+import com.thenetcircle.dinoandroidframework.adapter.TNCChatViewHolderParent
 import kotlinx.android.synthetic.main.fragment_chat_room.*
 
 /**
  * Created by aaron on 16/01/2018.
  */
-class TNCChatRoomFragment : Fragment(), View.OnClickListener {
+class TNCChatRoomFragment : Fragment(), View.OnClickListener, TNCChatViewHolderParent.TNCChatViewClickListener {
 
     interface ChatRoomListener {
         fun sendMessage(message: String)
+        fun requestMessageStatus(messageId: String)
     }
 
     private lateinit var linearLayoutManager: LinearLayoutManager
     private var chatRoomListener: ChatRoomListener? = null
-    private var recyclerAdapter: TNCChatRoomAdapter = TNCChatRoomAdapter(TNCBaseActivity.loginObject?.data?.loginActor?.id!!.toInt())
+    private var recyclerAdapter: TNCChatRoomAdapter = TNCChatRoomAdapter(TNCBaseActivity.loginObject?.data?.loginActor?.id!!.toInt(),
+            this)
     var room: JoinRoomResultModel? = null
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -91,5 +94,9 @@ class TNCChatRoomFragment : Fragment(), View.OnClickListener {
                 chatBox.text.clear()
             }
         }
+    }
+
+    override fun onClick(messageID: String) {
+        chatRoomListener?.requestMessageStatus(messageID)
     }
 }

@@ -20,23 +20,23 @@ import com.google.gson.annotations.SerializedName
 /**
  * Request model for accessing read/received status of messages within a room
  *
- * @param roomID the UUID of the room
+ * @param userID the UUID of the receiving user
  */
-class MessageStatusModel private constructor (roomID: String) {
+class MessageStatusModel private constructor (userID: String) {
     @SerializedName("verb")
     private val verb: String = "check"
     @SerializedName("target")
-    private val target: MessageStatusRoomTarget = MessageStatusRoomTarget(roomID)
+    private val target: MessageStatusRoomTarget = MessageStatusRoomTarget(userID)
     @SerializedName("object")
     private var messageStatusRequestObject: MessageStatusRequestObject? = null
 
     /**
      * For checking a single Message
      *
-     * @param roomID the UUID of the room
+     * @param roomID the UUID of the receiving user
      * @param message a MessageStatusRequest containing the message UUID (must be apart of the room requested)
      */
-    constructor(roomID: String, message: MessageStatusRequest) : this(roomID) {
+    constructor(userID: String, message: MessageStatusRequest) : this(userID) {
         val list = ArrayList<MessageStatusRequest>()
         list.add(message)
         messageStatusRequestObject = MessageStatusRequestObject(list)

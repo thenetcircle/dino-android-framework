@@ -20,14 +20,8 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import com.thenetcircle.dino.DinoError
-import com.thenetcircle.dino.interfaces.DinoChatMessageListener
-import com.thenetcircle.dino.interfaces.DinoErrorListener
-import com.thenetcircle.dino.interfaces.DinoJoinRoomListener
-import com.thenetcircle.dino.interfaces.DinoMessageStatusUpdateListener
-import com.thenetcircle.dino.model.data.ChatSendMessage
-import com.thenetcircle.dino.model.data.DeliveryReceiptModel
-import com.thenetcircle.dino.model.data.JoinRoomModel
-import com.thenetcircle.dino.model.data.LeaveRoomModel
+import com.thenetcircle.dino.interfaces.*
+import com.thenetcircle.dino.model.data.*
 import com.thenetcircle.dino.model.results.*
 import com.thenetcircle.dinoandroidframework.fragment.TNCChatRoomFragment
 
@@ -35,13 +29,15 @@ import com.thenetcircle.dinoandroidframework.fragment.TNCChatRoomFragment
  * Created by aaron on 16/01/2018.
  */
 class TNCChatRoomActivity : TNCBaseActivity(), DinoErrorListener, TNCChatRoomFragment.ChatRoomListener, DinoChatMessageListener {
-    private val chatRoomFragment = TNCChatRoomFragment()
-
     companion object {
         const val ROOM_ID: String = "ROOM_ID"
     }
 
+    private class TNCChatRoomUser(val userID: String)
+
+    private val chatRoomFragment = TNCChatRoomFragment()
     private var roomID: String? = ""
+    private val roomUserList: ArrayList<TNCChatRoomUser> = ArrayList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -58,6 +54,13 @@ class TNCChatRoomActivity : TNCBaseActivity(), DinoErrorListener, TNCChatRoomFra
                         .filter { it.objectType == "history" }
                         .forEach { processHistory(it) }
 
+                result.data?.roomObjects?.attachments!!
+                        .filter { it.objectType == "owner" }
+                        .forEach {
+                            it.attachments.forEach {
+                                roomUserList.add(TNCChatRoomUser(it.id))
+                            }
+                        }
             }
         }, this)
         dinoChatConnection.registerMessageSentListener(this, this)
@@ -83,6 +86,20 @@ class TNCChatRoomActivity : TNCBaseActivity(), DinoErrorListener, TNCChatRoomFra
 
     override fun sendMessage(message: String) {
         dinoChatConnection.sendMessage(ChatSendMessage(roomID!!, message), this)
+    }
+
+    override fun requestMessageStatus(messageId: String) {
+
+        roomUserList
+                .filter { it.userID != loginObject?.data?.loginActor?.id }
+                .forEach {
+                    dinoChatConnection.getStatusHistory(MessageStatusModel(it.userID, MessageStatusModel.MessageStatusRequest(messageId)),
+                            object : DinoMessageStatusRequestListener {
+                                override fun onResult(result: MessageStatusModelResult) {
+                                    Log.d("status  update", result.toString())
+                                }
+                            }, this)
+                }
     }
 
     override fun onResult(result: MessageReceived) {
