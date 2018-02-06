@@ -23,7 +23,7 @@ import com.google.gson.annotations.SerializedName
  * Created by aaron on 16/01/2018.
  */
 
-class ChatHistoryResult : ModelResultParent() {
+class RequestChatHistoryResult : ModelResultParent() {
     @SerializedName("data")
     val data: ChatHistoryData? = null
 }

@@ -19,7 +19,7 @@ package com.thenetcircle.dinoandroidframework.adapter
 import android.support.v7.widget.RecyclerView
 import android.util.Base64
 import android.view.ViewGroup
-import com.thenetcircle.dino.model.data.DeliveryReceiptModel
+import com.thenetcircle.dino.model.data.SendDeliveryReceiptModel
 import com.thenetcircle.dino.model.results.JoinRoomObjectAttachment
 import com.thenetcircle.dino.model.results.MessageReceived
 
@@ -28,23 +28,23 @@ import com.thenetcircle.dino.model.results.MessageReceived
  */
 class TNCChatRoomAdapter(var myUserID: Int, var listener: TNCChatViewHolderParent.TNCChatViewClickListener) : RecyclerView.Adapter<TNCChatViewHolderParent>() {
 
-    private class ChatMessage(var messageID: String, var content: String, var userID: Int, var state: DeliveryReceiptModel.DeliveryState)
+    private class ChatMessage(var messageID: String, var content: String, var userID: Int, var state: SendDeliveryReceiptModel.DeliveryState)
 
     private var messages: ArrayList<ChatMessage> = ArrayList()
 
     fun addMessage(message: MessageReceived) {
         messages.add(0, ChatMessage(message.id!!, String(Base64.decode(message.objectX?.content, Base64.NO_WRAP)),
-                message?.actor?.id!!.toInt(), DeliveryReceiptModel.DeliveryState.UNKNOWN))
+                message?.actor?.id!!.toInt(), SendDeliveryReceiptModel.DeliveryState.UNKNOWN))
         notifyDataSetChanged()
     }
 
     fun addMessage(message: JoinRoomObjectAttachment) {
         messages.add(0, ChatMessage(message.id!!, String(Base64.decode(message.content, Base64.NO_WRAP)),
-                message.author?.id.toInt(), DeliveryReceiptModel.DeliveryState.UNKNOWN))
+                message.author?.id.toInt(), SendDeliveryReceiptModel.DeliveryState.UNKNOWN))
         notifyDataSetChanged()
     }
 
-    fun updateMessageStatus(messageID: String, state: DeliveryReceiptModel.DeliveryState) {
+    fun updateMessageStatus(messageID: String, state: SendDeliveryReceiptModel.DeliveryState) {
         messages.filter { it.messageID == messageID }.forEach { it.state = state }
         notifyDataSetChanged()
     }

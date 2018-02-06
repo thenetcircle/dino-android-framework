@@ -25,7 +25,7 @@ import com.google.gson.annotations.SerializedName
  * @param deliveryState the status of the message being send
  * @param roomID the containing room UUID of these attached messages
  */
-class DeliveryReceiptModel private constructor(deliveryState: DeliveryState, roomID: String) {
+class SendDeliveryReceiptModel private constructor(deliveryState: DeliveryState, roomID: String) {
 
     enum class DeliveryState(val state: String, val serverValue: String) {
         UNKNOWN("unknown", "-1"),

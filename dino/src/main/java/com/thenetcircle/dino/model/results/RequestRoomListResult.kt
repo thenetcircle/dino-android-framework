@@ -25,7 +25,7 @@ import java.io.Serializable
  */
 
 
-class RoomListModelResult : ModelResultParent() {
+class RequestRoomListResult : ModelResultParent() {
     @SerializedName("data")
     val data: RoomData? = null
 }

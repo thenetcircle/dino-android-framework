@@ -28,21 +28,21 @@ interface DinoParentInterface<in T : ModelResultParent> {
 
 interface DinoLoginListener : DinoParentInterface<LoginModelResult>
 
-interface DinoRoomEntryListener : DinoParentInterface<RoomListModelResult>
+interface DinoRoomEntryListener : DinoParentInterface<RequestRoomListResult>
 
-interface DinoChannelListListener : DinoParentInterface<ChannelListModelResult>
+interface DinoChannelListListener : DinoParentInterface<RequestChannelListResult>
 
 interface DinoRoomCreationListener : DinoParentInterface<RoomCreateResultModel>
 
 interface DinoJoinRoomListener : DinoParentInterface<JoinRoomResultModel>
 
-interface DinoChatHistoryListener : DinoParentInterface<ChatHistoryResult>
+interface DinoChatHistoryListener : DinoParentInterface<RequestChatHistoryResult>
 
 interface DinoChatMessageListener : DinoParentInterface<ChatSendMessageResult>
 
-interface DinoMessageStatusUpdateListener : DinoParentInterface<MessageStatus>
+interface DinoMessageStatusUpdateListener : DinoParentInterface<MessageStatusReceipt>
 
-interface DinoMessageStatusRequestListener : DinoParentInterface<MessageStatusModelResult>
+interface DinoMessageStatusRequestListener : DinoParentInterface<RequestMessageStatusResult>
 
 interface DinoMessageReceivedListener {
     fun onResult(result: MessageReceived)

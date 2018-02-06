@@ -22,7 +22,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import com.thenetcircle.dino.model.data.DeliveryReceiptModel
+import com.thenetcircle.dino.model.data.SendDeliveryReceiptModel
 import com.thenetcircle.dinoandroidframework.R
 
 /**
@@ -36,7 +36,7 @@ open class TNCChatViewHolderParent(v: View) : RecyclerView.ViewHolder(v) {
         fun onClick(messageID: String)
     }
 
-    open fun bind(messageID: String, message: String, status: DeliveryReceiptModel.DeliveryState, listener: TNCChatViewClickListener) {
+    open fun bind(messageID: String, message: String, status: SendDeliveryReceiptModel.DeliveryState, listener: TNCChatViewClickListener) {
         val chatBox = chatView.findViewById<TextView>(R.id.chatMessage)
         chatBox.text = message
 
@@ -60,14 +60,14 @@ class TNCChatSendViewHolder(v: View) : TNCChatViewHolderParent(v) {
         }
     }
 
-    override fun bind(messageID: String, message: String, status: DeliveryReceiptModel.DeliveryState, listener: TNCChatViewClickListener) {
+    override fun bind(messageID: String, message: String, status: SendDeliveryReceiptModel.DeliveryState, listener: TNCChatViewClickListener) {
         super.bind(messageID, message, status, listener)
         val statusView = chatView.findViewById<View>(R.id.messageStatus)
-        if (status == DeliveryReceiptModel.DeliveryState.READ) {
+        if (status == SendDeliveryReceiptModel.DeliveryState.READ) {
             statusView.setBackgroundColor(Color.GREEN)
-        } else if (status == DeliveryReceiptModel.DeliveryState.RECEIVED) {
+        } else if (status == SendDeliveryReceiptModel.DeliveryState.RECEIVED) {
             statusView.setBackgroundColor(Color.BLUE)
-        } else if (status == DeliveryReceiptModel.DeliveryState.NOT_ACK) {
+        } else if (status == SendDeliveryReceiptModel.DeliveryState.NOT_ACK) {
             statusView.setBackgroundColor(Color.GRAY)
         } else {
             statusView.setBackgroundColor(Color.RED)

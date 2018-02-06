@@ -65,7 +65,7 @@ class TNCChatRoomActivity : TNCBaseActivity(), DinoErrorListener, TNCChatRoomFra
         }, this)
         dinoChatConnection.registerMessageSentListener(this, this)
         dinoChatConnection.registerMessageStatusUpdateListener(object : DinoMessageStatusUpdateListener {
-            override fun onResult(result: MessageStatus) {
+            override fun onResult(result: MessageStatusReceipt) {
                 chatRoomFragment.updateMessageStatus(result)
             }
         }, this)
@@ -93,9 +93,9 @@ class TNCChatRoomActivity : TNCBaseActivity(), DinoErrorListener, TNCChatRoomFra
         roomUserList
                 .filter { it.userID != loginObject?.data?.loginActor?.id }
                 .forEach {
-                    dinoChatConnection.getStatusHistory(MessageStatusModel(it.userID, MessageStatusModel.MessageStatusRequest(messageId)),
+                    dinoChatConnection.getStatusHistory(RequestMessageStatusModel(it.userID, RequestMessageStatusModel.MessageStatusRequest(messageId)),
                             object : DinoMessageStatusRequestListener {
-                                override fun onResult(result: MessageStatusModelResult) {
+                                override fun onResult(result: RequestMessageStatusResult) {
                                     chatRoomFragment.updateMessageStatus(messageId, result.data?.currentStatusObject?.messageStatuses?.get(0)?.status!!)
                                 }
                             }, this)
@@ -106,7 +106,7 @@ class TNCChatRoomActivity : TNCBaseActivity(), DinoErrorListener, TNCChatRoomFra
         //as we are on the chat screen, send the read
         if (result.actor?.id != loginObject?.data?.loginActor?.id) {
             val roomID = result.target?.id
-            val delModel = DeliveryReceiptModel(DeliveryReceiptModel.DeliveryState.READ, roomID!!, DeliveryReceiptModel.DeliveryEntry(result.id!!))
+            val delModel = SendDeliveryReceiptModel(SendDeliveryReceiptModel.DeliveryState.READ, roomID!!, SendDeliveryReceiptModel.DeliveryEntry(result.id!!))
             dinoChatConnection.sendMessageResponseRead(delModel, this)
         }
         chatRoomFragment.displayMessage(result)

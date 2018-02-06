@@ -23,7 +23,7 @@ import com.google.gson.annotations.SerializedName
  * Created by aaron on 09/01/2018.
  */
 
-class ChannelListModelResult : ModelResultParent() {
+class RequestChannelListResult : ModelResultParent() {
     @SerializedName("data")
     val data: ChannelListData? = null
 }

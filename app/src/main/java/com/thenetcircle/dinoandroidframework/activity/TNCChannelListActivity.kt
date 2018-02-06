@@ -22,8 +22,8 @@ import android.widget.Toast
 import com.thenetcircle.dino.DinoError
 import com.thenetcircle.dino.interfaces.DinoChannelListListener
 import com.thenetcircle.dino.interfaces.DinoErrorListener
-import com.thenetcircle.dino.model.data.ChannelListModel
-import com.thenetcircle.dino.model.results.ChannelListModelResult
+import com.thenetcircle.dino.model.data.RequestChannelList
+import com.thenetcircle.dino.model.results.RequestChannelListResult
 import com.thenetcircle.dinoandroidframework.fragment.TNCChannelListFragment
 
 /**
@@ -39,11 +39,11 @@ class TNCChannelListActivity : TNCBaseActivity(), DinoChannelListListener, DinoE
 
     override fun onResume() {
         super.onResume()
-        dinoChatConnection.getChannelList(ChannelListModel(), this, this)
+        dinoChatConnection.getChannelList(RequestChannelList(), this, this)
         tncChannelListFragment.updatingChannels()
     }
 
-    override fun onResult(result: ChannelListModelResult) {
+    override fun onResult(result: RequestChannelListResult) {
         tncChannelListFragment.channelResult(result)
     }
 

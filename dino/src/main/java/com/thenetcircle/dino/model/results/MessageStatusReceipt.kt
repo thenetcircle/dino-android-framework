@@ -22,7 +22,7 @@ import com.google.gson.annotations.SerializedName
 /**
  * Created by aaron on 23/01/2018.
  */
-class MessageStatus : ModelResultParent() {
+class MessageStatusReceipt : ModelResultParent() {
     @SerializedName("id")
     val id: String? = null
     @SerializedName("published")

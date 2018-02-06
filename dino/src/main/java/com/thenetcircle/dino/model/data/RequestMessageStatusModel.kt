@@ -23,7 +23,7 @@ import com.google.gson.annotations.SerializedName
  *
  * @param userID the UUID of the receiving user
  */
-class MessageStatusModel private constructor(userID: String) {
+class RequestMessageStatusModel private constructor(userID: String) {
     @SerializedName("verb")
     private val verb: String = "check"
     @SerializedName("target")

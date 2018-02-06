@@ -23,7 +23,7 @@ import com.google.gson.annotations.SerializedName
  *
  * @param channelID the uuid of then channel
  */
-class RoomListModel(channelID: String) {
+class RequestRoomList(channelID: String) {
     @SerializedName("verb")
     private var verb: String = "list"
     @SerializedName("object")

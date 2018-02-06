@@ -17,13 +17,13 @@
 package com.thenetcircle.dino.model.results
 
 import com.google.gson.annotations.SerializedName
-import com.thenetcircle.dino.model.data.DeliveryReceiptModel
+import com.thenetcircle.dino.model.data.SendDeliveryReceiptModel
 
 
 /**
  * Created by aaron on 01/02/2018.
  */
-class MessageStatusModelResult : ModelResultParent() {
+class RequestMessageStatusResult : ModelResultParent() {
     @SerializedName("data")
     val data: MessageStatusModelData? = null
 }
@@ -45,7 +45,7 @@ class CurrentStatus {
     @SerializedName("content")
     private val content: String? = null
 
-    val status: DeliveryReceiptModel.DeliveryState
-        get() = DeliveryReceiptModel.DeliveryState.getStatus(content!!)
+    val status: SendDeliveryReceiptModel.DeliveryState
+        get() = SendDeliveryReceiptModel.DeliveryState.getStatus(content!!)
 
 }

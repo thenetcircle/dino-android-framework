@@ -25,7 +25,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import com.thenetcircle.dino.model.results.ChannelAttachment
-import com.thenetcircle.dino.model.results.ChannelListModelResult
+import com.thenetcircle.dino.model.results.RequestChannelListResult
 import com.thenetcircle.dinoandroidframework.R
 import kotlinx.android.synthetic.main.fragment_channel_list.*
 import java.nio.charset.Charset
@@ -56,7 +56,7 @@ class TNCChannelListFragment : Fragment() {
         channel_list_container.removeAllViews()
     }
 
-    fun channelResult(result: ChannelListModelResult) {
+    fun channelResult(result: RequestChannelListResult) {
         progress_wheel.visibility = View.GONE
         for (ob: ChannelAttachment in result.data!!.channels.attachments) {
 

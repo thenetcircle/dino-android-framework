@@ -24,11 +24,11 @@ import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.thenetcircle.dino.model.data.DeliveryReceiptModel
+import com.thenetcircle.dino.model.data.SendDeliveryReceiptModel
 import com.thenetcircle.dino.model.results.JoinRoomObjectAttachment
 import com.thenetcircle.dino.model.results.JoinRoomResultModel
 import com.thenetcircle.dino.model.results.MessageReceived
-import com.thenetcircle.dino.model.results.MessageStatus
+import com.thenetcircle.dino.model.results.MessageStatusReceipt
 import com.thenetcircle.dinoandroidframework.R
 import com.thenetcircle.dinoandroidframework.activity.TNCBaseActivity
 import com.thenetcircle.dinoandroidframework.adapter.TNCChatRoomAdapter
@@ -77,16 +77,16 @@ class TNCChatRoomFragment : Fragment(), View.OnClickListener, TNCChatViewHolderP
         recyclerAdapter.addMessage(message)
     }
 
-    fun updateMessageStatus(messageID: String, status: DeliveryReceiptModel.DeliveryState) {
+    fun updateMessageStatus(messageID: String, status: SendDeliveryReceiptModel.DeliveryState) {
         recyclerAdapter.updateMessageStatus(messageID, status)
     }
 
-    fun updateMessageStatus(result: MessageStatus) {
+    fun updateMessageStatus(result: MessageStatusReceipt) {
         result.messageObject?.attachments?.forEach {
             if (result.verb == "read") {
-                recyclerAdapter.updateMessageStatus(it.id, DeliveryReceiptModel.DeliveryState.READ)
+                recyclerAdapter.updateMessageStatus(it.id, SendDeliveryReceiptModel.DeliveryState.READ)
             } else if (result.verb == "receive") {
-                recyclerAdapter.updateMessageStatus(it.id, DeliveryReceiptModel.DeliveryState.RECEIVED)
+                recyclerAdapter.updateMessageStatus(it.id, SendDeliveryReceiptModel.DeliveryState.RECEIVED)
             }
         }
     }

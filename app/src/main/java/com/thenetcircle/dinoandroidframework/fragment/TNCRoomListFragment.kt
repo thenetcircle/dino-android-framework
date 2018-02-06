@@ -25,7 +25,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import com.thenetcircle.dino.model.results.RoomListModelResult
+import com.thenetcircle.dino.model.results.RequestRoomListResult
 import com.thenetcircle.dino.model.results.RoomObject
 import com.thenetcircle.dinoandroidframework.R
 import kotlinx.android.synthetic.main.fragment_room_list.*
@@ -67,7 +67,7 @@ class TNCRoomListFragment : Fragment(), View.OnClickListener {
         room_list_container.removeAllViews()
     }
 
-    fun listRooms(roomList: RoomListModelResult) {
+    fun listRooms(roomList: RequestRoomListResult) {
         room_list_container.removeAllViews()
         progress_wheel.visibility = View.GONE
         for (ob: RoomObject in roomList.data!!.objectX.attachments) {

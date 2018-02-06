@@ -18,10 +18,25 @@ package com.thenetcircle.dino.model.data
 
 import com.google.gson.annotations.SerializedName
 
+
 /**
- * Request object for the generic channel list accessible by the logged in user
+ * RequestChatHistoryModel
+ *
+ * A Model for obtaining the Chat history of a given room
+ * @param roomID the UUID of the room
+ * @param updated the time stamp from which the history should start
  */
-class ChannelListModel {
+class RequestChatHistoryModel(roomID: String, updated: String) {
+
+    @SerializedName("target")
+    private val target: ChatHistoryTarget = ChatHistoryTarget(roomID)
+    @SerializedName("updated")
+    private val updated: String = updated //<last read timestamp, if configured in server will return messages since this time>
     @SerializedName("verb")
-    private val verb = "list"
+    private val verb: String = "list"
+
+    private class ChatHistoryTarget(id: String) {
+        @SerializedName("id")
+        val id: String = id //<room UUID>
+    }
 }

@@ -24,9 +24,9 @@ import com.thenetcircle.dino.interfaces.DinoErrorListener
 import com.thenetcircle.dino.interfaces.DinoRoomCreationListener
 import com.thenetcircle.dino.interfaces.DinoRoomEntryListener
 import com.thenetcircle.dino.model.data.CreateRoomPrivateModel
-import com.thenetcircle.dino.model.data.RoomListModel
+import com.thenetcircle.dino.model.data.RequestRoomList
 import com.thenetcircle.dino.model.results.RoomCreateResultModel
-import com.thenetcircle.dino.model.results.RoomListModelResult
+import com.thenetcircle.dino.model.results.RequestRoomListResult
 import com.thenetcircle.dinoandroidframework.fragment.TNCRoomListFragment
 
 /**
@@ -49,14 +49,14 @@ class TNCRoomListActivity : TNCBaseActivity(), DinoRoomEntryListener, DinoErrorL
     override fun createRoom(roomName: String, toUserID: Int) {
         dinoChatConnection.createPrivateRoom(CreateRoomPrivateModel(intent.extras.getString(CHANNELID), roomName, loginObject!!.data!!.loginActor.id.toInt(), toUserID), object : DinoRoomCreationListener {
             override fun onResult(result: RoomCreateResultModel) {
-                dinoChatConnection.getRoomList(RoomListModel(intent.extras.getString(CHANNELID)), this@TNCRoomListActivity, this@TNCRoomListActivity)
+                dinoChatConnection.getRoomList(RequestRoomList(intent.extras.getString(CHANNELID)), this@TNCRoomListActivity, this@TNCRoomListActivity)
             }
         }, this)
     }
 
     override fun onResume() {
         super.onResume()
-        dinoChatConnection.getRoomList(RoomListModel(intent.extras.getString(CHANNELID)), this, this)
+        dinoChatConnection.getRoomList(RequestRoomList(intent.extras.getString(CHANNELID)), this, this)
     }
 
     override fun joinRoom(roomID: String) {
@@ -69,7 +69,7 @@ class TNCRoomListActivity : TNCBaseActivity(), DinoRoomEntryListener, DinoErrorL
         Toast.makeText(this, error.toString(), Toast.LENGTH_LONG).show()
     }
 
-    override fun onResult(result: RoomListModelResult) {
+    override fun onResult(result: RequestRoomListResult) {
         roomListFragment.listRooms(result)
     }
 

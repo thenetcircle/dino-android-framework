@@ -206,7 +206,7 @@ class DinoChatConnection {
      * @param channelListListener success listener
      * @param errorListener fail listener
      */
-    fun getChannelList(channelListModel: ChannelListModel, @NonNull channelListListener: DinoChannelListListener, @NonNull errorListener: DinoErrorListener) {
+    fun getChannelList(channelListModel: RequestChannelList, @NonNull channelListListener: DinoChannelListListener, @NonNull errorListener: DinoErrorListener) {
         if (!generalChecks(errorListener)) {
             return
         }
@@ -220,7 +220,7 @@ class DinoChatConnection {
      * @param roomEntryListener success listener
      * @param errorListener fail listener
      */
-    fun getRoomList(roomListModel: RoomListModel, @NonNull roomEntryListener: DinoRoomEntryListener, @NonNull errorListener: DinoErrorListener) {
+    fun getRoomList(roomListModel: RequestRoomList, @NonNull roomEntryListener: DinoRoomEntryListener, @NonNull errorListener: DinoErrorListener) {
         if (!generalChecks(errorListener)) {
             return
         }
@@ -262,7 +262,7 @@ class DinoChatConnection {
      * @param dinoChatHistoryListener success listener
      * @param errorListener fail listener
      */
-    fun getChatRoomHistory(chatHistory: ChatHistory, @NonNull dinoChatHistoryListener: DinoChatHistoryListener, @NonNull errorListener: DinoErrorListener) {
+    fun getChatRoomHistory(chatHistory: RequestChatHistoryModel, @NonNull dinoChatHistoryListener: DinoChatHistoryListener, @NonNull errorListener: DinoErrorListener) {
         if (!generalChecks(errorListener)) {
             return
         }
@@ -276,7 +276,7 @@ class DinoChatConnection {
      * @param deliveryReceiptModel delivery model
      * @param errorListener fail listener
      */
-    fun sendMessageResponseReceived(@NonNull deliveryReceiptModel: DeliveryReceiptModel, @NonNull errorListener: DinoErrorListener) {
+    fun sendMessageResponseReceived(@NonNull deliveryReceiptModel: SendDeliveryReceiptModel, @NonNull errorListener: DinoErrorListener) {
         if (!generalChecks(errorListener)) {
             return
         }
@@ -289,7 +289,7 @@ class DinoChatConnection {
      * @param deliveryReceiptModel delivery model
      * @param errorListener fail listener
      */
-    fun sendMessageResponseRead(@NonNull deliveryReceiptModel: DeliveryReceiptModel, @NonNull errorListener: DinoErrorListener) {
+    fun sendMessageResponseRead(@NonNull deliveryReceiptModel: SendDeliveryReceiptModel, @NonNull errorListener: DinoErrorListener) {
         if (!generalChecks(errorListener)) {
             return
         }
@@ -316,7 +316,7 @@ class DinoChatConnection {
      * @param MessageStatusRequestListener success listener
      * @param errorListener fail listener
      */
-    fun getStatusHistory(messageStatusModel: MessageStatusModel, @NonNull MessageStatusRequestListener: DinoMessageStatusRequestListener, @NonNull errorListener: DinoErrorListener) {
+    fun getStatusHistory(messageStatusModel: RequestMessageStatusModel, @NonNull MessageStatusRequestListener: DinoMessageStatusRequestListener, @NonNull errorListener: DinoErrorListener) {
         if (!generalChecks(errorListener)) {
             return
         }
@@ -370,7 +370,7 @@ class DinoChatConnection {
                         if (dinoConfig.autoSendMessageReceivedACK) {
                             if (result.actor?.id != currentLoggedInUser?.data?.loginActor?.id) {
                                 val roomID = result.target?.id
-                                val delModel = DeliveryReceiptModel(DeliveryReceiptModel.DeliveryState.RECEIVED, roomID!!, DeliveryReceiptModel.DeliveryEntry(result.id!!))
+                                val delModel = SendDeliveryReceiptModel(SendDeliveryReceiptModel.DeliveryState.RECEIVED, roomID!!, SendDeliveryReceiptModel.DeliveryEntry(result.id!!))
                                 sendMessageResponseReceived(delModel, errorListener)
                             }
                         }
