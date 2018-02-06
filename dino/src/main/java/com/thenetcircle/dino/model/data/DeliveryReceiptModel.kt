@@ -27,10 +27,22 @@ import com.google.gson.annotations.SerializedName
  */
 class DeliveryReceiptModel private constructor(deliveryState: DeliveryState, roomID: String) {
 
-    enum class DeliveryState(val state: String) {
-        UNKNOWN("unknown"),
-        RECEIVED("receive"),
-        READ("read")
+    enum class DeliveryState(val state: String, val serverValue: String) {
+        UNKNOWN("unknown", "-1"),
+        NOT_ACK("not_ack", "0"),
+        RECEIVED("receive", "1"),
+        READ("read", "2");
+
+        companion object {
+            fun getStatus(content: String): DeliveryState {
+                for (i in 0 until values().size) {
+                    if (values()[i].serverValue == content) {
+                        return values()[i]
+                    }
+                }
+                return UNKNOWN
+            }
+        }
     }
 
     @SerializedName("verb")

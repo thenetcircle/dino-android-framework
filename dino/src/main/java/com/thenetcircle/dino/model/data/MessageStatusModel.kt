@@ -15,6 +15,7 @@
  */
 
 package com.thenetcircle.dino.model.data
+
 import com.google.gson.annotations.SerializedName
 
 /**
@@ -22,7 +23,7 @@ import com.google.gson.annotations.SerializedName
  *
  * @param userID the UUID of the receiving user
  */
-class MessageStatusModel private constructor (userID: String) {
+class MessageStatusModel private constructor(userID: String) {
     @SerializedName("verb")
     private val verb: String = "check"
     @SerializedName("target")
@@ -52,7 +53,7 @@ class MessageStatusModel private constructor (userID: String) {
         messageStatusRequestObject = MessageStatusRequestObject(messages)
     }
 
-    private class MessageStatusRequestObject(messages : List<MessageStatusRequest>) {
+    private class MessageStatusRequestObject(messages: List<MessageStatusRequest>) {
         @SerializedName("attachments")
         val attachments: List<MessageStatusRequest> = messages
     }
@@ -62,7 +63,7 @@ class MessageStatusModel private constructor (userID: String) {
      *
      * @param messageID the UUID of a message
      */
-    class MessageStatusRequest(messageID : String) {
+    class MessageStatusRequest(messageID: String) {
         @SerializedName("id")
         val id: String = messageID
     }

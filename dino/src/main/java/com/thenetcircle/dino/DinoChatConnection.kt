@@ -120,7 +120,7 @@ class DinoChatConnection {
 
         }
 
-        socket!!.on("gn_connect", object:Emitter.Listener {
+        socket!!.on("gn_connect", object : Emitter.Listener {
             override fun call(vararg args: Any?) {
                 off("gn_connect", this)
                 if (Looper.getMainLooper() == Looper.myLooper()) {
@@ -169,7 +169,7 @@ class DinoChatConnection {
             errorListener.onError(DinoError.NO_SOCKET_ERROR)
             return
         }
-        socket!!.on(responseEvent, object:Emitter.Listener {
+        socket!!.on(responseEvent, object : Emitter.Listener {
             override fun call(vararg args: Any?) {
                 if (args.isNotEmpty()) {
                     off(responseEvent, this)

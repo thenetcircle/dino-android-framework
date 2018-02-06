@@ -60,7 +60,7 @@ enum class DinoError constructor(var errorCode: Int) {
     ROOM_NAME_TOO_SHORT(711),
     INVALID_TOKEN(712),
     INVALID_LOGIN(713),
-    MSG_TOO_LONG (714),
+    MSG_TOO_LONG(714),
     MULTIPLE_ROOMS_WITH_NAME(715),
     TOO_MANY_ATTACHMENTS(716),
     NOT_ENABLED(717),

@@ -15,7 +15,9 @@
  */
 
 package com.thenetcircle.dino.model.results
+
 import com.google.gson.annotations.SerializedName
+import com.thenetcircle.dino.model.data.DeliveryReceiptModel
 
 
 /**
@@ -27,17 +29,23 @@ class MessageStatusModelResult : ModelResultParent() {
 }
 
 data class MessageStatusModelData(
-		@SerializedName("object") val currentStatusObject: CurrentStatusObject,
-		@SerializedName("verb") val verb: String, //check
-		@SerializedName("id") val roomID: String, //<server-generated UUID>
-		@SerializedName("published") val published: String //<server-generated timestamp RFC3339 format>
+        @SerializedName("object") val currentStatusObject: CurrentStatusObject,
+        @SerializedName("verb") val verb: String, //check
+        @SerializedName("id") val roomID: String, //<server-generated UUID>
+        @SerializedName("published") val published: String //<server-generated timestamp RFC3339 format>
 )
 
 data class CurrentStatusObject(
-		@SerializedName("attachments") val messageStatuses: List<CurrentStatus>
+        @SerializedName("attachments") val messageStatuses: List<CurrentStatus>
 )
 
-data class CurrentStatus(
-		@SerializedName("id") val id: String, //<msg UUID 1>
-		@SerializedName("content") val content: String //<ack status 1>
-)
+class CurrentStatus {
+    @SerializedName("id")
+    val id: String? = null //<msg UUID 1>
+    @SerializedName("content")
+    private val content: String? = null
+
+    val status: DeliveryReceiptModel.DeliveryState
+        get() = DeliveryReceiptModel.DeliveryState.getStatus(content!!)
+
+}

@@ -77,6 +77,10 @@ class TNCChatRoomFragment : Fragment(), View.OnClickListener, TNCChatViewHolderP
         recyclerAdapter.addMessage(message)
     }
 
+    fun updateMessageStatus(messageID: String, status: DeliveryReceiptModel.DeliveryState) {
+        recyclerAdapter.updateMessageStatus(messageID, status)
+    }
+
     fun updateMessageStatus(result: MessageStatus) {
         result.messageObject?.attachments?.forEach {
             if (result.verb == "read") {

@@ -96,7 +96,7 @@ class TNCChatRoomActivity : TNCBaseActivity(), DinoErrorListener, TNCChatRoomFra
                     dinoChatConnection.getStatusHistory(MessageStatusModel(it.userID, MessageStatusModel.MessageStatusRequest(messageId)),
                             object : DinoMessageStatusRequestListener {
                                 override fun onResult(result: MessageStatusModelResult) {
-                                    Log.d("status  update", result.toString())
+                                    chatRoomFragment.updateMessageStatus(messageId, result.data?.currentStatusObject?.messageStatuses?.get(0)?.status!!)
                                 }
                             }, this)
                 }
