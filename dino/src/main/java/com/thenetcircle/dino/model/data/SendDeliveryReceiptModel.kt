@@ -35,12 +35,10 @@ class SendDeliveryReceiptModel private constructor(deliveryState: DeliveryState,
 
         companion object {
             fun getStatus(content: String): DeliveryState {
-                for (i in 0 until values().size) {
-                    if (values()[i].serverValue == content) {
-                        return values()[i]
-                    }
-                }
-                return UNKNOWN
+                return (0 until values().size)
+                        .firstOrNull { values()[it].serverValue == content }
+                        ?.let { values()[it] }
+                        ?: UNKNOWN
             }
         }
     }

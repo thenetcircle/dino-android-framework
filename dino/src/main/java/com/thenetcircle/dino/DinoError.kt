@@ -74,12 +74,10 @@ enum class DinoError constructor(var errorCode: Int) {
 
     companion object {
         fun getErrorByCode(code: Int): DinoError {
-            for (i in 0 until values().size) {
-                if (values()[i].errorCode == code) {
-                    return values()[i]
-                }
-            }
-            return UNKNOWN_ERROR
+            return (0 until values().size)
+                    .firstOrNull { values()[it].errorCode == code }
+                    ?.let { values()[it] }
+                    ?: UNKNOWN_ERROR
         }
     }
 }
